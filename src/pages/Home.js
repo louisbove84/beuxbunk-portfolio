@@ -506,7 +506,8 @@ const Home = () => {
       />
 
       <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 3 }}>
-        <Grid container spacing={4} alignItems="center">
+        <Grid container spacing={4} alignItems="flex-start">
+          {/* Left Column - Hero Content */}
           <Grid item xs={12} md={6}>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -523,7 +524,7 @@ const Home = () => {
                   fontFamily: '"Courier New", monospace',
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
+                  fontSize: { xs: '2.5rem', md: '3rem' },
                 }}
               >
                 SPACE ENGINEER
@@ -538,7 +539,7 @@ const Home = () => {
                   fontFamily: '"Courier New", monospace',
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
-                  fontSize: { xs: '1.5rem', md: '2rem' },
+                  fontSize: { xs: '1.5rem', md: '1.8rem' },
                 }}
               >
                 LOUIS BOVE
@@ -551,12 +552,12 @@ const Home = () => {
                   lineHeight: 1.6,
                   fontFamily: '"Courier New", monospace',
                   textShadow: '1px 1px 0px #333',
-                  fontSize: { xs: '1rem', md: '1.2rem' },
+                  fontSize: { xs: '1rem', md: '1.1rem' },
                 }}
               >
                 MISSION: BUILDING SCALABLE APPLICATIONS AND SOLVING COMPLEX ALGORITHMIC CHALLENGES IN THE DIGITAL UNIVERSE.
               </Typography>
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 4 }}>
                 <Button
                   component={RouterLink}
                   to="/projects"
@@ -605,9 +606,89 @@ const Home = () => {
                   CONTACT HQ
                 </Button>
               </Box>
+
+              {/* Skills Section - Moved up */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                <Typography
+                  variant="h3"
+                  sx={{
+                    mb: 4,
+                    fontWeight: 900,
+                    color: '#ffffff',
+                    textShadow: '3px 3px 0px #ff6b6b',
+                    fontFamily: '"Courier New", monospace',
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    fontSize: { xs: '1.5rem', md: '1.8rem' },
+                  }}
+                >
+                  MISSION CAPABILITIES
+                </Typography>
+                
+                <Grid container spacing={2}>
+                  {skills.map((skill, index) => (
+                    <Grid item xs={12} sm={4} key={index}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                      >
+                        <Card
+                          sx={{
+                            height: '100%',
+                            backgroundColor: 'rgba(10, 10, 46, 0.8)',
+                            border: '3px solid #4a90e2',
+                            borderRadius: 2,
+                            '&:hover': {
+                              transform: 'translateY(-3px)',
+                              boxShadow: '0 8px 25px rgba(74, 144, 226, 0.5)',
+                              borderColor: '#ff6b6b',
+                              transition: 'all 0.3s ease',
+                            },
+                          }}
+                        >
+                          <CardContent sx={{ textAlign: 'center', py: 3 }}>
+                            <Box sx={{ color: '#ff6b6b', mb: 1 }}>
+                              {skill.icon}
+                            </Box>
+                            <Typography 
+                              variant="h6" 
+                              sx={{ 
+                                mb: 1, 
+                                fontWeight: 700,
+                                color: '#ffffff',
+                                fontFamily: '"Courier New", monospace',
+                                letterSpacing: '0.05em',
+                                fontSize: '0.9rem',
+                              }}
+                            >
+                              {skill.title}
+                            </Typography>
+                            <Typography 
+                              variant="body2" 
+                              sx={{ 
+                                color: '#4a90e2',
+                                fontFamily: '"Courier New", monospace',
+                                fontSize: '0.75rem',
+                              }}
+                            >
+                              {skill.description}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    </Grid>
+                  ))}
+                </Grid>
+              </motion.div>
             </motion.div>
           </Grid>
           
+          {/* Right Column - Game */}
           <Grid item xs={12} md={6}>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -618,86 +699,6 @@ const Home = () => {
             </motion.div>
           </Grid>
         </Grid>
-      </Container>
-
-      {/* Skills Section */}
-      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 3 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <Typography
-            variant="h3"
-            sx={{
-              textAlign: 'center',
-              mb: 6,
-              fontWeight: 900,
-              color: '#ffffff',
-              textShadow: '3px 3px 0px #ff6b6b',
-              fontFamily: '"Courier New", monospace',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-            }}
-          >
-            MISSION CAPABILITIES
-          </Typography>
-          
-          <Grid container spacing={4}>
-            {skills.map((skill, index) => (
-              <Grid item xs={12} md={4} key={index}>
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                >
-                  <Card
-                    sx={{
-                      height: '100%',
-                      backgroundColor: 'rgba(10, 10, 46, 0.8)',
-                      border: '3px solid #4a90e2',
-                      borderRadius: 2,
-                      '&:hover': {
-                        transform: 'translateY(-5px)',
-                        boxShadow: '0 10px 30px rgba(74, 144, 226, 0.5)',
-                        borderColor: '#ff6b6b',
-                        transition: 'all 0.3s ease',
-                      },
-                    }}
-                  >
-                    <CardContent sx={{ textAlign: 'center', py: 4 }}>
-                      <Box sx={{ color: '#ff6b6b', mb: 2 }}>
-                        {skill.icon}
-                      </Box>
-                      <Typography 
-                        variant="h5" 
-                        sx={{ 
-                          mb: 2, 
-                          fontWeight: 700,
-                          color: '#ffffff',
-                          fontFamily: '"Courier New", monospace',
-                          letterSpacing: '0.05em',
-                        }}
-                      >
-                        {skill.title}
-                      </Typography>
-                      <Typography 
-                        variant="body1" 
-                        sx={{ 
-                          color: '#4a90e2',
-                          fontFamily: '"Courier New", monospace',
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {skill.description}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </Grid>
-            ))}
-          </Grid>
-        </motion.div>
       </Container>
     </Box>
   );
