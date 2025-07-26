@@ -438,41 +438,6 @@ const Home = () => {
         },
       }}
     >
-      {/* Rocket Ship */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '20%',
-          right: '10%',
-          width: 80,
-          height: 120,
-          zIndex: 2,
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 0,
-            height: 0,
-            borderLeft: '20px solid transparent',
-            borderRight: '20px solid transparent',
-            borderBottom: '40px solid #ff6b6b',
-          },
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 40,
-            height: 80,
-            backgroundColor: '#4a90e2',
-            borderRadius: '20px 20px 0 0',
-          },
-        }}
-      />
-
       {/* Astronaut */}
       <Box
         sx={{
@@ -635,7 +600,7 @@ const Home = () => {
                   MISSION CAPABILITIES
                 </Typography>
                 
-                <Grid container spacing={1.5}>
+                <Grid container spacing={1}>
                   {skills.map((skill, index) => (
                     <Grid item xs={12} sm={4} key={index}>
                       <motion.div
@@ -649,6 +614,8 @@ const Home = () => {
                             backgroundColor: 'rgba(10, 10, 46, 0.8)',
                             border: '2px solid #4a90e2',
                             borderRadius: 1,
+                            maxWidth: '200px',
+                            mx: 'auto',
                             '&:hover': {
                               transform: 'translateY(-3px)',
                               boxShadow: '0 8px 25px rgba(74, 144, 226, 0.5)',
@@ -657,19 +624,19 @@ const Home = () => {
                             },
                           }}
                         >
-                          <CardContent sx={{ textAlign: 'center', py: 2, px: 1 }}>
-                            <Box sx={{ color: '#ff6b6b', mb: 1 }}>
-                              {React.cloneElement(skill.icon, { sx: { fontSize: { xs: 24, sm: 28, md: 32 } } })}
+                          <CardContent sx={{ textAlign: 'center', py: 1.5, px: 1 }}>
+                            <Box sx={{ color: '#ff6b6b', mb: 0.5 }}>
+                              {React.cloneElement(skill.icon, { sx: { fontSize: { xs: 20, sm: 24, md: 28 } } })}
                             </Box>
                             <Typography 
                               variant="h6" 
                               sx={{ 
-                                mb: 1, 
+                                mb: 0.5, 
                                 fontWeight: 700,
                                 color: '#ffffff',
                                 fontFamily: '"Courier New", monospace',
                                 letterSpacing: '0.05em',
-                                fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
+                                fontSize: { xs: '0.6rem', sm: '0.7rem', md: '0.8rem' },
                               }}
                             >
                               {skill.title}
@@ -679,8 +646,8 @@ const Home = () => {
                               sx={{ 
                                 color: '#4a90e2',
                                 fontFamily: '"Courier New", monospace',
-                                fontSize: { xs: '0.6rem', sm: '0.65rem', md: '0.75rem' },
-                                lineHeight: 1.3,
+                                fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.65rem' },
+                                lineHeight: 1.2,
                               }}
                             >
                               {skill.description}
