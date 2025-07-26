@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
   Container,
@@ -13,6 +13,335 @@ import { Link as RouterLink } from 'react-router-dom';
 import CodeIcon from '@mui/icons-material/Code';
 import StorageIcon from '@mui/icons-material/Storage';
 import BrushIcon from '@mui/icons-material/Brush';
+
+// Space Invaders Game Component
+const SpaceInvadersGame = () => {
+  const canvasRef = useRef(null);
+  const [gameState, setGameState] = useState('playing');
+  const [score, setScore] = useState(0);
+  const [gameObjects, setGameObjects] = useState({
+    player: { x: 150, y: 280, width: 20, height: 20 },
+    bullets: [],
+    enemies: [],
+    enemyBullets: [],
+  });
+
+  // Initialize game
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas size
+    canvas.width = 320;
+    canvas.height = 320;
+    
+    // Initialize enemies
+    const enemies = [];
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 8; col++) {
+        enemies.push({
+          x: col * 35 + 20,
+          y: row * 30 + 50,
+          width: 20,
+          height: 15,
+          direction: 1,
+        });
+      }
+    }
+    
+    setGameObjects(prev => ({ ...prev, enemies }));
+  }, []);
+
+  // Game loop
+  useEffect(() => {
+    if (gameState !== 'playing') return;
+
+    const gameLoop = setInterval(() => {
+      setGameObjects(prev => {
+        // Move enemies
+        const enemies = prev.enemies.map(enemy => ({
+          ...enemy,
+          x: enemy.x + enemy.direction * 0.5,
+        }));
+
+        // Change direction when hitting edges
+        if (enemies.some(e => e.x <= 0 || e.x >= 300)) {
+          enemies.forEach(enemy => {
+            enemy.direction *= -1;
+            enemy.y += 10;
+          });
+        }
+
+        // Move bullets
+        const bullets = prev.bullets.map(bullet => ({
+          ...bullet,
+          y: bullet.y - 3,
+        })).filter(bullet => bullet.y > 0);
+
+        // Move enemy bullets
+        const enemyBullets = prev.enemyBullets.map(bullet => ({
+          ...bullet,
+          y: bullet.y + 2,
+        })).filter(bullet => bullet.y < 320);
+
+        // Check collisions
+        const newBullets = bullets.filter(bullet => {
+          const hitEnemy = enemies.find(enemy => 
+            bullet.x < enemy.x + enemy.width &&
+            bullet.x + bullet.width > enemy.x &&
+            bullet.y < enemy.y + enemy.height &&
+            bullet.y + bullet.height > enemy.y
+          );
+          
+          if (hitEnemy) {
+            setScore(prev => prev + 10);
+            return false;
+          }
+          return true;
+        });
+
+        // Remove hit enemies
+        const newEnemies = enemies.filter(enemy => {
+          return !bullets.some(bullet => 
+            bullet.x < enemy.x + enemy.width &&
+            bullet.x + bullet.width > enemy.x &&
+            bullet.y < enemy.y + enemy.height &&
+            bullet.y + bullet.height > enemy.y
+          );
+        });
+
+        // Random enemy shooting
+        const newEnemyBullets = [...enemyBullets];
+        if (Math.random() < 0.02 && newEnemies.length > 0) {
+          const randomEnemy = newEnemies[Math.floor(Math.random() * newEnemies.length)];
+          newEnemyBullets.push({
+            x: randomEnemy.x + randomEnemy.width / 2,
+            y: randomEnemy.y + randomEnemy.height,
+            width: 2,
+            height: 8,
+          });
+        }
+
+        // Check if player is hit
+        const playerHit = newEnemyBullets.some(bullet => 
+          bullet.x < prev.player.x + prev.player.width &&
+          bullet.x + bullet.width > prev.player.x &&
+          bullet.y < prev.player.y + prev.player.height &&
+          bullet.y + bullet.height > prev.player.y
+        );
+
+        if (playerHit) {
+          setGameState('gameOver');
+        }
+
+        // Check win condition
+        if (newEnemies.length === 0) {
+          setGameState('won');
+        }
+
+        return {
+          ...prev,
+          bullets: newBullets,
+          enemies: newEnemies,
+          enemyBullets: newEnemyBullets,
+        };
+      });
+    }, 50);
+
+    return () => clearInterval(gameLoop);
+  }, [gameState]);
+
+  // Handle keyboard input
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (gameState !== 'playing') return;
+
+      setGameObjects(prev => {
+        switch (e.key) {
+          case 'ArrowLeft':
+            return {
+              ...prev,
+              player: {
+                ...prev.player,
+                x: Math.max(0, prev.player.x - 10),
+              },
+            };
+          case 'ArrowRight':
+            return {
+              ...prev,
+              player: {
+                ...prev.player,
+                x: Math.min(300, prev.player.x + 10),
+              },
+            };
+          case ' ':
+            return {
+              ...prev,
+              bullets: [
+                ...prev.bullets,
+                {
+                  x: prev.player.x + prev.player.width / 2,
+                  y: prev.player.y,
+                  width: 2,
+                  height: 8,
+                },
+              ],
+            };
+          default:
+            return prev;
+        }
+      });
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [gameState]);
+
+  // Draw game
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    
+    // Clear canvas
+    ctx.fillStyle = '#0a0a2e';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw stars
+    ctx.fillStyle = '#ffffff';
+    for (let i = 0; i < 50; i++) {
+      ctx.fillRect(
+        (i * 7) % canvas.width,
+        (i * 13) % canvas.height,
+        1,
+        1
+      );
+    }
+    
+    // Draw player
+    ctx.fillStyle = '#4a90e2';
+    ctx.fillRect(
+      gameObjects.player.x,
+      gameObjects.player.y,
+      gameObjects.player.width,
+      gameObjects.player.height
+    );
+    
+    // Draw enemies
+    ctx.fillStyle = '#ff6b6b';
+    gameObjects.enemies.forEach(enemy => {
+      ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+    });
+    
+    // Draw bullets
+    ctx.fillStyle = '#ffffff';
+    gameObjects.bullets.forEach(bullet => {
+      ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+    
+    // Draw enemy bullets
+    ctx.fillStyle = '#ff6b6b';
+    gameObjects.enemyBullets.forEach(bullet => {
+      ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+    
+    // Draw score
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '16px "Courier New"';
+    ctx.fillText(`SCORE: ${score}`, 10, 30);
+    
+    // Draw game over screen
+    if (gameState === 'gameOver') {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ff6b6b';
+      ctx.font = '24px "Courier New"';
+      ctx.fillText('GAME OVER', 80, 150);
+      ctx.font = '16px "Courier New"';
+      ctx.fillText(`FINAL SCORE: ${score}`, 80, 180);
+    }
+    
+    if (gameState === 'won') {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#4a90e2';
+      ctx.font = '24px "Courier New"';
+      ctx.fillText('MISSION COMPLETE!', 60, 150);
+      ctx.font = '16px "Courier New"';
+      ctx.fillText(`SCORE: ${score}`, 80, 180);
+    }
+  }, [gameObjects, score, gameState]);
+
+  const resetGame = () => {
+    setGameState('playing');
+    setScore(0);
+    setGameObjects({
+      player: { x: 150, y: 280, width: 20, height: 20 },
+      bullets: [],
+      enemies: [],
+      enemyBullets: [],
+    });
+  };
+
+  return (
+    <Box sx={{ textAlign: 'center' }}>
+      <Typography 
+        variant="h6" 
+        sx={{ 
+          mb: 2,
+          color: '#ffffff',
+          fontFamily: '"Courier New", monospace',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+        }}
+      >
+        SPACE INVADERS
+      </Typography>
+      <Box sx={{ position: 'relative', display: 'inline-block' }}>
+        <canvas
+          ref={canvasRef}
+          style={{
+            border: '3px solid #4a90e2',
+            borderRadius: 0,
+            backgroundColor: '#0a0a2e',
+          }}
+        />
+        {(gameState === 'gameOver' || gameState === 'won') && (
+          <Button
+            onClick={resetGame}
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, 50px)',
+              backgroundColor: '#ff6b6b',
+              color: '#ffffff',
+              fontFamily: '"Courier New", monospace',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              border: '2px solid #ffffff',
+              '&:hover': {
+                backgroundColor: '#ff5252',
+              },
+            }}
+          >
+            RESTART
+          </Button>
+        )}
+      </Box>
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          mt: 2,
+          color: '#4a90e2',
+          fontFamily: '"Courier New", monospace',
+          fontSize: '0.8rem',
+        }}
+      >
+        USE ARROWS TO MOVE, SPACE TO SHOOT
+      </Typography>
+    </Box>
+  );
+};
 
 const Home = () => {
   const skills = [
@@ -246,50 +575,7 @@ const Home = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <Box
-                sx={{
-                  width: '100%',
-                  height: 400,
-                  backgroundColor: 'rgba(74, 144, 226, 0.1)',
-                  borderRadius: 4,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '3px solid #4a90e2',
-                  position: 'relative',
-                  '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 100,
-                    height: 100,
-                    background: 'radial-gradient(circle, #ff6b6b 0%, transparent 70%)',
-                    borderRadius: '50%',
-                    animation: 'pulse 2s ease-in-out infinite',
-                  },
-                  '@keyframes pulse': {
-                    '0%, 100%': { transform: 'translate(-50%, -50%) scale(1)', opacity: 0.5 },
-                    '50%': { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 0.8 },
-                  },
-                }}
-              >
-                <Typography 
-                  variant="h4" 
-                  sx={{ 
-                    color: '#ffffff', 
-                    fontFamily: '"Courier New", monospace',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                    textShadow: '2px 2px 0px #333',
-                    zIndex: 2,
-                    position: 'relative',
-                  }}
-                >
-                  SPACE STATION
-                </Typography>
-              </Box>
+              <SpaceInvadersGame />
             </motion.div>
           </Grid>
         </Grid>
