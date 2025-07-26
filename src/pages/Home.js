@@ -156,6 +156,11 @@ const SpaceInvadersGame = () => {
     const handleKeyDown = (e) => {
       if (gameState !== 'playing') return;
 
+      // Prevent default behavior for game controls
+      if (e.key === ' ' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+      }
+
       setGameObjects(prev => {
         switch (e.key) {
           case 'ArrowLeft':
@@ -200,6 +205,8 @@ const SpaceInvadersGame = () => {
   // Draw game
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+    
     const ctx = canvas.getContext('2d');
     
     // Clear canvas
@@ -274,10 +281,25 @@ const SpaceInvadersGame = () => {
   const resetGame = () => {
     setGameState('playing');
     setScore(0);
+    
+    // Reinitialize enemies
+    const enemies = [];
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 8; col++) {
+        enemies.push({
+          x: col * 35 + 20,
+          y: row * 30 + 50,
+          width: 20,
+          height: 15,
+          direction: 1,
+        });
+      }
+    }
+    
     setGameObjects({
       player: { x: 150, y: 280, width: 20, height: 20 },
       bullets: [],
-      enemies: [],
+      enemies: enemies,
       enemyBullets: [],
     });
   };
@@ -319,9 +341,15 @@ const SpaceInvadersGame = () => {
               fontWeight: 700,
               textTransform: 'uppercase',
               border: '2px solid #ffffff',
+              padding: '8px 16px',
+              minWidth: '120px',
+              zIndex: 10,
               '&:hover': {
                 backgroundColor: '#ff5252',
+                transform: 'translate(-50%, 50px) scale(1.05)',
+                boxShadow: '0 0 20px rgba(255, 107, 107, 0.5)',
               },
+              transition: 'all 0.3s ease',
             }}
           >
             RESTART
@@ -335,9 +363,20 @@ const SpaceInvadersGame = () => {
           color: '#4a90e2',
           fontFamily: '"Courier New", monospace',
           fontSize: '0.8rem',
+          mb: 1,
         }}
       >
         USE ARROWS TO MOVE, SPACE TO SHOOT
+      </Typography>
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          color: '#ff6b6b',
+          fontFamily: '"Courier New", monospace',
+          fontSize: '0.7rem',
+        }}
+      >
+        CLICK RESTART TO PLAY AGAIN
       </Typography>
     </Box>
   );
