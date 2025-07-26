@@ -17,10 +17,10 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 
 const navItems = [
-  { name: 'Home', path: '/' },
-  { name: 'Projects', path: '/projects' },
-  { name: 'About', path: '/about' },
-  { name: 'Contact', path: '/contact' },
+  { name: 'MISSION CONTROL', path: '/' },
+  { name: 'PROJECTS', path: '/projects' },
+  { name: 'CREW INFO', path: '/about' },
+  { name: 'COMMUNICATIONS', path: '/contact' },
 ];
 
 const Navbar = () => {
@@ -35,8 +35,18 @@ const Navbar = () => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        BeuxBunk
+      <Typography 
+        variant="h6" 
+        sx={{ 
+          my: 2,
+          fontFamily: '"Courier New", monospace',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          color: '#ff6b6b',
+        }}
+      >
+        SPACE ENGINEER
       </Typography>
       <List>
         {navItems.map((item) => (
@@ -44,8 +54,18 @@ const Navbar = () => {
             <ListItemText 
               primary={item.name}
               sx={{
-                color: location.pathname === item.path ? theme.palette.primary.main : 'inherit',
+                color: location.pathname === item.path ? '#ff6b6b' : '#ffffff',
                 textAlign: 'center',
+                fontFamily: '"Courier New", monospace',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                '& .MuiListItemText-primary': {
+                  fontFamily: '"Courier New", monospace',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                },
               }}
             />
           </ListItem>
@@ -59,9 +79,10 @@ const Navbar = () => {
       <AppBar 
         position="fixed" 
         sx={{ 
-          backgroundColor: 'rgba(10, 25, 47, 0.85)',
+          backgroundColor: 'rgba(10, 10, 46, 0.95)',
           backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid rgba(100, 255, 218, 0.1)',
+          borderBottom: '3px solid #4a90e2',
+          boxShadow: '0 4px 20px rgba(74, 144, 226, 0.3)',
         }}
       >
         <Toolbar>
@@ -72,14 +93,20 @@ const Navbar = () => {
             sx={{
               flexGrow: 1,
               textDecoration: 'none',
-              color: 'inherit',
-              fontWeight: 700,
+              color: '#ff6b6b',
+              fontWeight: 900,
+              fontFamily: '"Courier New", monospace',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              textShadow: '2px 2px 0px #333',
               '&:hover': {
-                color: theme.palette.primary.main,
+                color: '#ffffff',
+                textShadow: '2px 2px 0px #ff6b6b',
+                transition: 'all 0.3s ease',
               },
             }}
           >
-            BeuxBunk
+            SPACE ENGINEER
           </Typography>
           
           {isMobile ? (
@@ -88,6 +115,14 @@ const Navbar = () => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
+              sx={{
+                color: '#ffffff',
+                border: '2px solid #4a90e2',
+                '&:hover': {
+                  backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                  borderColor: '#ff6b6b',
+                },
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -99,10 +134,19 @@ const Navbar = () => {
                   component={RouterLink}
                   to={item.path}
                   sx={{
-                    color: location.pathname === item.path ? theme.palette.primary.main : 'inherit',
+                    color: location.pathname === item.path ? '#ff6b6b' : '#ffffff',
+                    fontFamily: '"Courier New", monospace',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    border: location.pathname === item.path ? '2px solid #ff6b6b' : '2px solid transparent',
+                    borderRadius: 0,
                     '&:hover': {
-                      color: theme.palette.primary.main,
-                      backgroundColor: 'rgba(100, 255, 218, 0.1)',
+                      color: '#ff6b6b',
+                      backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                      borderColor: '#ff6b6b',
+                      transform: 'scale(1.05)',
+                      transition: 'all 0.3s ease',
                     },
                   }}
                 >
@@ -126,7 +170,8 @@ const Navbar = () => {
           '& .MuiDrawer-paper': { 
             boxSizing: 'border-box', 
             width: 240,
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: '#0a0a2e',
+            borderRight: '3px solid #4a90e2',
           },
         }}
       >

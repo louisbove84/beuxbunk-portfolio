@@ -18,25 +18,126 @@ const Home = () => {
   const skills = [
     {
       icon: <CodeIcon sx={{ fontSize: 40 }} />,
-      title: 'Software Development',
+      title: 'SOFTWARE DEVELOPMENT',
       description: 'Python, JavaScript, React, C++, Full-Stack Development',
     },
     {
       icon: <StorageIcon sx={{ fontSize: 40 }} />,
-      title: 'Data & AI',
+      title: 'DATA & AI',
       description: 'Machine Learning, Data Analysis, Algorithm Development',
     },
     {
       icon: <BrushIcon sx={{ fontSize: 40 }} />,
-      title: 'Problem Solving',
+      title: 'PROBLEM SOLVING',
       description: 'Complex Algorithm Design, System Architecture, Optimization',
     },
   ];
 
   return (
-    <Box sx={{ minHeight: '100vh', pt: 8 }}>
-      {/* Hero Section */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+    <Box 
+      sx={{ 
+        minHeight: '100vh', 
+        pt: 8,
+        background: 'linear-gradient(180deg, #0a0a2e 0%, #1a1a3a 50%, #0a0a2e 100%)',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `
+            radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+            radial-gradient(2px 2px at 40px 70px, #ffffff, transparent),
+            radial-gradient(1px 1px at 90px 40px, #ffffff, transparent),
+            radial-gradient(1px 1px at 130px 80px, #ffffff, transparent),
+            radial-gradient(2px 2px at 160px 30px, #ffffff, transparent)
+          `,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '200px 100px',
+          animation: 'twinkle 4s ease-in-out infinite alternate',
+          zIndex: 1,
+        },
+        '@keyframes twinkle': {
+          '0%': { opacity: 0.3 },
+          '100%': { opacity: 0.8 },
+        },
+      }}
+    >
+      {/* Rocket Ship */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '20%',
+          right: '10%',
+          width: 80,
+          height: 120,
+          zIndex: 2,
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 0,
+            height: 0,
+            borderLeft: '20px solid transparent',
+            borderRight: '20px solid transparent',
+            borderBottom: '40px solid #ff6b6b',
+          },
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 40,
+            height: 80,
+            backgroundColor: '#4a90e2',
+            borderRadius: '20px 20px 0 0',
+          },
+        }}
+      />
+
+      {/* Astronaut */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '60%',
+          left: '5%',
+          width: 60,
+          height: 80,
+          zIndex: 2,
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 30,
+            height: 30,
+            backgroundColor: '#ffffff',
+            borderRadius: '50%',
+            border: '3px solid #333',
+          },
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 40,
+            height: 50,
+            backgroundColor: '#ffffff',
+            borderRadius: '20px 20px 0 0',
+            border: '3px solid #333',
+          },
+        }}
+      />
+
+      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 3 }}>
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>
             <motion.div
@@ -47,38 +148,45 @@ const Home = () => {
               <Typography
                 variant="h1"
                 sx={{
-                  fontWeight: 700,
+                  fontWeight: 900,
                   mb: 2,
-                  background: 'linear-gradient(45deg, #00d4ff, #ff6b6b)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  color: '#ffffff',
+                  textShadow: '3px 3px 0px #ff6b6b, 6px 6px 0px #4a90e2',
+                  fontFamily: '"Courier New", monospace',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  fontSize: { xs: '2.5rem', md: '3.5rem' },
                 }}
               >
-                Hi, I'm Louis
+                SPACE ENGINEER
               </Typography>
               <Typography
                 variant="h2"
                 sx={{
-                  fontWeight: 600,
+                  fontWeight: 700,
                   mb: 3,
-                  color: 'text.secondary',
+                  color: '#4a90e2',
+                  textShadow: '2px 2px 0px #ffffff',
+                  fontFamily: '"Courier New", monospace',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  fontSize: { xs: '1.5rem', md: '2rem' },
                 }}
               >
-                Software Engineer
+                LOUIS BOVE
               </Typography>
               <Typography
                 variant="h5"
                 sx={{
                   mb: 4,
-                  color: 'text.secondary',
+                  color: '#ffffff',
                   lineHeight: 1.6,
+                  fontFamily: '"Courier New", monospace',
+                  textShadow: '1px 1px 0px #333',
+                  fontSize: { xs: '1rem', md: '1.2rem' },
                 }}
               >
-                Passionate software engineer with expertise in Python, JavaScript, and C++. 
-                I specialize in building scalable applications, developing machine learning solutions, 
-                and solving complex algorithmic challenges. Currently working on innovative projects 
-                that push the boundaries of technology.
+                MISSION: BUILDING SCALABLE APPLICATIONS AND SOLVING COMPLEX ALGORITHMIC CHALLENGES IN THE DIGITAL UNIVERSE.
               </Typography>
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button
@@ -87,13 +195,22 @@ const Home = () => {
                   variant="contained"
                   size="large"
                   sx={{
-                    backgroundColor: 'primary.main',
+                    backgroundColor: '#ff6b6b',
+                    border: '3px solid #ffffff',
+                    color: '#ffffff',
+                    fontFamily: '"Courier New", monospace',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
                     '&:hover': {
-                      backgroundColor: 'primary.dark',
+                      backgroundColor: '#ff5252',
+                      transform: 'scale(1.05)',
+                      boxShadow: '0 0 20px rgba(255, 107, 107, 0.5)',
                     },
+                    transition: 'all 0.3s ease',
                   }}
                 >
-                  View My Work
+                  START MISSION
                 </Button>
                 <Button
                   component={RouterLink}
@@ -101,15 +218,23 @@ const Home = () => {
                   variant="outlined"
                   size="large"
                   sx={{
-                    borderColor: 'primary.main',
-                    color: 'primary.main',
+                    borderColor: '#4a90e2',
+                    borderWidth: '3px',
+                    color: '#4a90e2',
+                    fontFamily: '"Courier New", monospace',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
                     '&:hover': {
-                      borderColor: 'primary.dark',
-                      backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                      borderColor: '#ffffff',
+                      backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                      transform: 'scale(1.05)',
+                      boxShadow: '0 0 20px rgba(74, 144, 226, 0.5)',
                     },
+                    transition: 'all 0.3s ease',
                   }}
                 >
-                  Get In Touch
+                  CONTACT HQ
                 </Button>
               </Box>
             </motion.div>
@@ -125,16 +250,44 @@ const Home = () => {
                 sx={{
                   width: '100%',
                   height: 400,
-                  backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                  backgroundColor: 'rgba(74, 144, 226, 0.1)',
                   borderRadius: 4,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  border: '2px solid rgba(0, 212, 255, 0.3)',
+                  border: '3px solid #4a90e2',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 100,
+                    height: 100,
+                    background: 'radial-gradient(circle, #ff6b6b 0%, transparent 70%)',
+                    borderRadius: '50%',
+                    animation: 'pulse 2s ease-in-out infinite',
+                  },
+                  '@keyframes pulse': {
+                    '0%, 100%': { transform: 'translate(-50%, -50%) scale(1)', opacity: 0.5 },
+                    '50%': { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 0.8 },
+                  },
                 }}
               >
-                <Typography variant="h4" sx={{ color: 'text.secondary' }}>
-                  Portfolio Image Placeholder
+                <Typography 
+                  variant="h4" 
+                  sx={{ 
+                    color: '#ffffff', 
+                    fontFamily: '"Courier New", monospace',
+                    textTransform: 'uppercase',
+                    fontWeight: 700,
+                    textShadow: '2px 2px 0px #333',
+                    zIndex: 2,
+                    position: 'relative',
+                  }}
+                >
+                  SPACE STATION
                 </Typography>
               </Box>
             </motion.div>
@@ -143,7 +296,7 @@ const Home = () => {
       </Container>
 
       {/* Skills Section */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 3 }}>
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -154,10 +307,15 @@ const Home = () => {
             sx={{
               textAlign: 'center',
               mb: 6,
-              fontWeight: 600,
+              fontWeight: 900,
+              color: '#ffffff',
+              textShadow: '3px 3px 0px #ff6b6b',
+              fontFamily: '"Courier New", monospace',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
             }}
           >
-            What I Do
+            MISSION CAPABILITIES
           </Typography>
           
           <Grid container spacing={4}>
@@ -171,23 +329,41 @@ const Home = () => {
                   <Card
                     sx={{
                       height: '100%',
-                      backgroundColor: 'background.paper',
-                      border: '1px solid rgba(100, 255, 218, 0.1)',
+                      backgroundColor: 'rgba(10, 10, 46, 0.8)',
+                      border: '3px solid #4a90e2',
+                      borderRadius: 2,
                       '&:hover': {
                         transform: 'translateY(-5px)',
-                        boxShadow: '0 10px 30px rgba(0, 212, 255, 0.2)',
+                        boxShadow: '0 10px 30px rgba(74, 144, 226, 0.5)',
+                        borderColor: '#ff6b6b',
                         transition: 'all 0.3s ease',
                       },
                     }}
                   >
                     <CardContent sx={{ textAlign: 'center', py: 4 }}>
-                      <Box sx={{ color: 'primary.main', mb: 2 }}>
+                      <Box sx={{ color: '#ff6b6b', mb: 2 }}>
                         {skill.icon}
                       </Box>
-                      <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
+                      <Typography 
+                        variant="h5" 
+                        sx={{ 
+                          mb: 2, 
+                          fontWeight: 700,
+                          color: '#ffffff',
+                          fontFamily: '"Courier New", monospace',
+                          letterSpacing: '0.05em',
+                        }}
+                      >
                         {skill.title}
                       </Typography>
-                      <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                      <Typography 
+                        variant="body1" 
+                        sx={{ 
+                          color: '#4a90e2',
+                          fontFamily: '"Courier New", monospace',
+                          fontSize: '0.9rem',
+                        }}
+                      >
                         {skill.description}
                       </Typography>
                     </CardContent>

@@ -12,30 +12,82 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#00d4ff',
+      main: '#4a90e2',
     },
     secondary: {
       main: '#ff6b6b',
     },
     background: {
-      default: '#0a192f',
-      paper: '#112240',
+      default: '#0a0a2e',
+      paper: '#1a1a3a',
     },
     text: {
-      primary: '#ccd6f6',
-      secondary: '#8892b0',
+      primary: '#ffffff',
+      secondary: '#4a90e2',
     },
   },
   typography: {
-    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Courier New", "Monaco", "Consolas", monospace',
     h1: {
-      fontWeight: 700,
+      fontWeight: 900,
+      fontFamily: '"Courier New", monospace',
+      letterSpacing: '0.1em',
     },
     h2: {
-      fontWeight: 600,
+      fontWeight: 700,
+      fontFamily: '"Courier New", monospace',
+      letterSpacing: '0.05em',
     },
     h3: {
+      fontWeight: 700,
+      fontFamily: '"Courier New", monospace',
+      letterSpacing: '0.05em',
+    },
+    h4: {
+      fontWeight: 700,
+      fontFamily: '"Courier New", monospace',
+    },
+    h5: {
       fontWeight: 600,
+      fontFamily: '"Courier New", monospace',
+    },
+    h6: {
+      fontWeight: 600,
+      fontFamily: '"Courier New", monospace',
+    },
+    body1: {
+      fontFamily: '"Courier New", monospace',
+    },
+    body2: {
+      fontFamily: '"Courier New", monospace',
+    },
+    button: {
+      fontFamily: '"Courier New", monospace',
+      fontWeight: 700,
+      textTransform: 'uppercase',
+      letterSpacing: '0.1em',
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+          borderWidth: '3px',
+          fontFamily: '"Courier New", monospace',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+          borderWidth: '3px',
+        },
+      },
     },
   },
 });
