@@ -438,42 +438,6 @@ const Home = () => {
         },
       }}
     >
-      {/* Astronaut */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '60%',
-          left: '5%',
-          width: 60,
-          height: 80,
-          zIndex: 2,
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 30,
-            height: 30,
-            backgroundColor: '#ffffff',
-            borderRadius: '50%',
-            border: '3px solid #333',
-          },
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 40,
-            height: 50,
-            backgroundColor: '#ffffff',
-            borderRadius: '20px 20px 0 0',
-            border: '3px solid #333',
-          },
-        }}
-      />
-
       <Container maxWidth="xl" sx={{ py: 4, position: 'relative', zIndex: 3 }}>
         <Grid container spacing={3} alignItems="flex-start">
           {/* Left Column - Hero Content */}
