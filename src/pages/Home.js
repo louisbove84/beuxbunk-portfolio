@@ -574,11 +574,11 @@ const Home = () => {
                       >
                         <Card
                           sx={{
-                            height: '100%',
+                            height: '180px',
                             backgroundColor: 'rgba(10, 10, 46, 0.8)',
                             border: '2px solid #4a90e2',
                             borderRadius: 1,
-                            maxWidth: '220px',
+                            maxWidth: '280px',
                             mx: 'auto',
                             '&:hover': {
                               transform: 'translateY(-3px)',
@@ -588,19 +588,19 @@ const Home = () => {
                             },
                           }}
                         >
-                          <CardContent sx={{ textAlign: 'center', py: 2, px: 1.5 }}>
-                            <Box sx={{ color: '#ff6b6b', mb: 1 }}>
-                              {React.cloneElement(skill.icon, { sx: { fontSize: { xs: 24, sm: 28, md: 32 } } })}
+                          <CardContent sx={{ textAlign: 'center', py: 2.5, px: 2, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <Box sx={{ color: '#ff6b6b', mb: 1.5 }}>
+                              {React.cloneElement(skill.icon, { sx: { fontSize: { xs: 28, sm: 32, md: 36 } } })}
                             </Box>
                             <Typography 
                               variant="h6" 
                               sx={{ 
-                                mb: 1, 
+                                mb: 1.5, 
                                 fontWeight: 700,
                                 color: '#ffffff',
                                 fontFamily: '"Courier New", monospace',
                                 letterSpacing: '0.05em',
-                                fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
+                                fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
                               }}
                             >
                               {skill.title}
@@ -610,8 +610,12 @@ const Home = () => {
                               sx={{ 
                                 color: '#4a90e2',
                                 fontFamily: '"Courier New", monospace',
-                                fontSize: { xs: '0.6rem', sm: '0.7rem', md: '0.8rem' },
-                                lineHeight: 1.3,
+                                fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
+                                lineHeight: 1.4,
+                                flex: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                               }}
                             >
                               {skill.description}
