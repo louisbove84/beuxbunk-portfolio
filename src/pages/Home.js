@@ -564,7 +564,7 @@ const Home = () => {
                   MISSION CAPABILITIES
                 </Typography>
                 
-                <Grid container spacing={1}>
+                <Grid container spacing={2}>
                   {skills.map((skill, index) => (
                     <Grid item xs={12} sm={4} key={index}>
                       <motion.div
@@ -578,7 +578,7 @@ const Home = () => {
                             backgroundColor: 'rgba(10, 10, 46, 0.8)',
                             border: '2px solid #4a90e2',
                             borderRadius: 1,
-                            maxWidth: '200px',
+                            maxWidth: '220px',
                             mx: 'auto',
                             '&:hover': {
                               transform: 'translateY(-3px)',
@@ -588,19 +588,19 @@ const Home = () => {
                             },
                           }}
                         >
-                          <CardContent sx={{ textAlign: 'center', py: 1.5, px: 1 }}>
-                            <Box sx={{ color: '#ff6b6b', mb: 0.5 }}>
-                              {React.cloneElement(skill.icon, { sx: { fontSize: { xs: 20, sm: 24, md: 28 } } })}
+                          <CardContent sx={{ textAlign: 'center', py: 2, px: 1.5 }}>
+                            <Box sx={{ color: '#ff6b6b', mb: 1 }}>
+                              {React.cloneElement(skill.icon, { sx: { fontSize: { xs: 24, sm: 28, md: 32 } } })}
                             </Box>
                             <Typography 
                               variant="h6" 
                               sx={{ 
-                                mb: 0.5, 
+                                mb: 1, 
                                 fontWeight: 700,
                                 color: '#ffffff',
                                 fontFamily: '"Courier New", monospace',
                                 letterSpacing: '0.05em',
-                                fontSize: { xs: '0.6rem', sm: '0.7rem', md: '0.8rem' },
+                                fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
                               }}
                             >
                               {skill.title}
@@ -610,8 +610,8 @@ const Home = () => {
                               sx={{ 
                                 color: '#4a90e2',
                                 fontFamily: '"Courier New", monospace',
-                                fontSize: { xs: '0.5rem', sm: '0.55rem', md: '0.65rem' },
-                                lineHeight: 1.2,
+                                fontSize: { xs: '0.6rem', sm: '0.7rem', md: '0.8rem' },
+                                lineHeight: 1.3,
                               }}
                             >
                               {skill.description}
