@@ -1,70 +1,141 @@
-# Getting Started with Create React App
+# BeuxBunk Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive portfolio website built with React and Material-UI, showcasing my projects and skills.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+- **Modern Design**: Clean, professional design with dark theme
+- **Responsive**: Works perfectly on desktop, tablet, and mobile
+- **Smooth Animations**: Framer Motion animations for enhanced UX
+- **Fast Performance**: Optimized React components and lazy loading
+- **SEO Friendly**: Proper meta tags and semantic HTML
+- **Contact Form**: Functional contact form for easy communication
+- **Project Showcase**: Beautiful project cards with live demos and GitHub links
 
-### `npm start`
+## 🛠️ Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend**: React.js, Material-UI, Framer Motion
+- **Styling**: CSS-in-JS with Material-UI's sx prop
+- **Routing**: React Router DOM
+- **Icons**: Material-UI Icons
+- **Deployment**: Vercel (with custom domain: beuxbunk.com)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📁 Project Structure
 
-### `npm test`
+```
+src/
+├── components/
+│   └── Navbar.js          # Navigation component
+├── pages/
+│   ├── Home.js           # Landing page with hero section
+│   ├── Projects.js       # Projects showcase
+│   ├── About.js          # About me and skills
+│   └── Contact.js        # Contact form and info
+├── App.js                # Main app component with routing
+└── index.js              # App entry point
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Getting Started
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (version 14 or higher)
+- npm or yarn
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/beuxbunk-portfolio.git
+cd beuxbunk-portfolio
+```
 
-### `npm run eject`
+2. Install dependencies:
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Start the development server:
+```bash
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Building for Production
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm run build
+```
 
-## Learn More
+This creates a `build` folder with optimized production files.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🎨 Customization
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Colors and Theme
 
-### Code Splitting
+The theme is defined in `src/App.js`. You can customize:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Primary color: `#00d4ff` (cyan)
+- Secondary color: `#ff6b6b` (coral)
+- Background: `#0a192f` (dark blue)
+- Text colors: `#ccd6f6` (light) and `#8892b0` (secondary)
 
-### Analyzing the Bundle Size
+### Content
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Update the following files to customize your content:
 
-### Making a Progressive Web App
+- **Personal Info**: `src/pages/Home.js` - Hero section
+- **Projects**: `src/pages/Projects.js` - Project cards
+- **About**: `src/pages/About.js` - Skills and experience
+- **Contact**: `src/pages/Contact.js` - Contact information and social links
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Adding New Pages
 
-### Advanced Configuration
+1. Create a new component in `src/pages/`
+2. Add the route in `src/App.js`
+3. Add navigation link in `src/components/Navbar.js`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📱 Responsive Design
 
-### Deployment
+The website is fully responsive with breakpoints:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px
+- **Desktop**: > 1024px
 
-### `npm run build` fails to minify
+## 🚀 Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your GitHub repository to Vercel
+3. Configure your custom domain (beuxbunk.com)
+4. Deploy automatically on every push
+
+### Other Platforms
+
+The build folder can be deployed to any static hosting service:
+- Netlify
+- GitHub Pages
+- AWS S3
+- Firebase Hosting
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Contact
+
+- **Website**: [beuxbunk.com](https://beuxbunk.com)
+- **Email**: your.email@example.com
+- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **LinkedIn**: [Your Name](https://linkedin.com/in/yourusername)
+
+---
+
+Made with ❤️ by Louis Bove
