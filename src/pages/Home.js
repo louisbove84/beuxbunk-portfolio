@@ -309,11 +309,12 @@ const SpaceInvadersGame = () => {
       <Typography 
         variant="h6" 
         sx={{ 
-          mb: 2,
+          mb: 1,
           color: '#ffffff',
           fontFamily: '"Courier New", monospace',
           fontWeight: 700,
           textTransform: 'uppercase',
+          fontSize: { xs: '0.9rem', sm: '1rem' },
         }}
       >
         SPACE INVADERS
@@ -322,9 +323,11 @@ const SpaceInvadersGame = () => {
         <canvas
           ref={canvasRef}
           style={{
-            border: '3px solid #4a90e2',
+            border: '2px solid #4a90e2',
             borderRadius: 0,
             backgroundColor: '#0a0a2e',
+            maxWidth: '100%',
+            height: 'auto',
           }}
         />
         {(gameState === 'gameOver' || gameState === 'won') && (
@@ -341,8 +344,9 @@ const SpaceInvadersGame = () => {
               fontWeight: 700,
               textTransform: 'uppercase',
               border: '2px solid #ffffff',
-              padding: '8px 16px',
-              minWidth: '120px',
+              padding: '6px 12px',
+              minWidth: '100px',
+              fontSize: { xs: '0.7rem', sm: '0.8rem' },
               zIndex: 10,
               '&:hover': {
                 backgroundColor: '#ff5252',
@@ -359,11 +363,11 @@ const SpaceInvadersGame = () => {
       <Typography 
         variant="body2" 
         sx={{ 
-          mt: 2,
+          mt: 1,
           color: '#4a90e2',
           fontFamily: '"Courier New", monospace',
-          fontSize: '0.8rem',
-          mb: 1,
+          fontSize: { xs: '0.6rem', sm: '0.7rem' },
+          mb: 0.5,
         }}
       >
         USE ARROWS TO MOVE, SPACE TO SHOOT
@@ -373,7 +377,7 @@ const SpaceInvadersGame = () => {
         sx={{ 
           color: '#ff6b6b',
           fontFamily: '"Courier New", monospace',
-          fontSize: '0.7rem',
+          fontSize: { xs: '0.5rem', sm: '0.6rem' },
         }}
       >
         CLICK RESTART TO PLAY AGAIN
@@ -505,10 +509,10 @@ const Home = () => {
         }}
       />
 
-      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 3 }}>
-        <Grid container spacing={4} alignItems="flex-start">
+      <Container maxWidth="xl" sx={{ py: 4, position: 'relative', zIndex: 3 }}>
+        <Grid container spacing={3} alignItems="flex-start">
           {/* Left Column - Hero Content */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} lg={6}>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -524,7 +528,7 @@ const Home = () => {
                   fontFamily: '"Courier New", monospace',
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  fontSize: { xs: '2.5rem', md: '3rem' },
+                  fontSize: { xs: '2rem', sm: '2.5rem', md: '2.8rem' },
                 }}
               >
                 SPACE ENGINEER
@@ -533,13 +537,13 @@ const Home = () => {
                 variant="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 3,
+                  mb: 2,
                   color: '#4a90e2',
                   textShadow: '2px 2px 0px #ffffff',
                   fontFamily: '"Courier New", monospace',
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
-                  fontSize: { xs: '1.5rem', md: '1.8rem' },
+                  fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.6rem' },
                 }}
               >
                 LOUIS BOVE
@@ -547,22 +551,22 @@ const Home = () => {
               <Typography
                 variant="h5"
                 sx={{
-                  mb: 4,
+                  mb: 3,
                   color: '#ffffff',
-                  lineHeight: 1.6,
+                  lineHeight: 1.5,
                   fontFamily: '"Courier New", monospace',
                   textShadow: '1px 1px 0px #333',
-                  fontSize: { xs: '1rem', md: '1.1rem' },
+                  fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                 }}
               >
                 MISSION: BUILDING SCALABLE APPLICATIONS AND SOLVING COMPLEX ALGORITHMIC CHALLENGES IN THE DIGITAL UNIVERSE.
               </Typography>
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 4 }}>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
                 <Button
                   component={RouterLink}
                   to="/projects"
                   variant="contained"
-                  size="large"
+                  size="medium"
                   sx={{
                     backgroundColor: '#ff6b6b',
                     border: '3px solid #ffffff',
@@ -571,6 +575,7 @@ const Home = () => {
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
+                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
                     '&:hover': {
                       backgroundColor: '#ff5252',
                       transform: 'scale(1.05)',
@@ -585,7 +590,7 @@ const Home = () => {
                   component={RouterLink}
                   to="/contact"
                   variant="outlined"
-                  size="large"
+                  size="medium"
                   sx={{
                     borderColor: '#4a90e2',
                     borderWidth: '3px',
@@ -594,6 +599,7 @@ const Home = () => {
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
+                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
                     '&:hover': {
                       borderColor: '#ffffff',
                       backgroundColor: 'rgba(74, 144, 226, 0.1)',
@@ -616,20 +622,20 @@ const Home = () => {
                 <Typography
                   variant="h3"
                   sx={{
-                    mb: 4,
+                    mb: 3,
                     fontWeight: 900,
                     color: '#ffffff',
                     textShadow: '3px 3px 0px #ff6b6b',
                     fontFamily: '"Courier New", monospace',
                     letterSpacing: '0.1em',
                     textTransform: 'uppercase',
-                    fontSize: { xs: '1.5rem', md: '1.8rem' },
+                    fontSize: { xs: '1.2rem', sm: '1.4rem', md: '1.6rem' },
                   }}
                 >
                   MISSION CAPABILITIES
                 </Typography>
                 
-                <Grid container spacing={2}>
+                <Grid container spacing={1.5}>
                   {skills.map((skill, index) => (
                     <Grid item xs={12} sm={4} key={index}>
                       <motion.div
@@ -641,8 +647,8 @@ const Home = () => {
                           sx={{
                             height: '100%',
                             backgroundColor: 'rgba(10, 10, 46, 0.8)',
-                            border: '3px solid #4a90e2',
-                            borderRadius: 2,
+                            border: '2px solid #4a90e2',
+                            borderRadius: 1,
                             '&:hover': {
                               transform: 'translateY(-3px)',
                               boxShadow: '0 8px 25px rgba(74, 144, 226, 0.5)',
@@ -651,9 +657,9 @@ const Home = () => {
                             },
                           }}
                         >
-                          <CardContent sx={{ textAlign: 'center', py: 3 }}>
+                          <CardContent sx={{ textAlign: 'center', py: 2, px: 1 }}>
                             <Box sx={{ color: '#ff6b6b', mb: 1 }}>
-                              {skill.icon}
+                              {React.cloneElement(skill.icon, { sx: { fontSize: { xs: 24, sm: 28, md: 32 } } })}
                             </Box>
                             <Typography 
                               variant="h6" 
@@ -663,7 +669,7 @@ const Home = () => {
                                 color: '#ffffff',
                                 fontFamily: '"Courier New", monospace',
                                 letterSpacing: '0.05em',
-                                fontSize: '0.9rem',
+                                fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
                               }}
                             >
                               {skill.title}
@@ -673,7 +679,8 @@ const Home = () => {
                               sx={{ 
                                 color: '#4a90e2',
                                 fontFamily: '"Courier New", monospace',
-                                fontSize: '0.75rem',
+                                fontSize: { xs: '0.6rem', sm: '0.65rem', md: '0.75rem' },
+                                lineHeight: 1.3,
                               }}
                             >
                               {skill.description}
@@ -689,7 +696,7 @@ const Home = () => {
           </Grid>
           
           {/* Right Column - Game */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} lg={6}>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
