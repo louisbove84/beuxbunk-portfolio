@@ -14,7 +14,6 @@ import { motion } from 'framer-motion';
 import EmailIcon from '@mui/icons-material/Email';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import TwitterIcon from '@mui/icons-material/Twitter';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -39,24 +38,19 @@ const Contact = () => {
 
   const socialLinks = [
     {
-      icon: <GitHubIcon />,
-      label: 'GitHub',
-      url: 'https://github.com/yourusername',
-    },
-    {
       icon: <LinkedInIcon />,
       label: 'LinkedIn',
-      url: 'https://linkedin.com/in/yourusername',
+      url: 'https://www.linkedin.com/in/louisbove84/',
     },
     {
-      icon: <TwitterIcon />,
-      label: 'Twitter',
-      url: 'https://twitter.com/yourusername',
+      icon: <GitHubIcon />,
+      label: 'GitHub',
+      url: 'https://github.com/louisbove84',
     },
     {
       icon: <EmailIcon />,
       label: 'Email',
-      url: 'mailto:your.email@example.com',
+      url: 'mailto:louisbove84@gmail.com',
     },
   ];
 
@@ -257,7 +251,7 @@ const Contact = () => {
                       Email
                     </Typography>
                     <Typography variant="body1" sx={{ color: 'primary.main' }}>
-                      your.email@example.com
+                      louisbove84@gmail.com
                     </Typography>
                   </Box>
 

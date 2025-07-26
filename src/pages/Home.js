@@ -7,7 +7,6 @@ import {
   Grid,
   Card,
   CardContent,
-  CardActions,
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Link as RouterLink } from 'react-router-dom';
@@ -19,18 +18,18 @@ const Home = () => {
   const skills = [
     {
       icon: <CodeIcon sx={{ fontSize: 40 }} />,
-      title: 'Frontend Development',
-      description: 'React, JavaScript, TypeScript, HTML/CSS',
+      title: 'Software Development',
+      description: 'Python, JavaScript, React, C++, Full-Stack Development',
     },
     {
       icon: <StorageIcon sx={{ fontSize: 40 }} />,
-      title: 'Backend Development',
-      description: 'Node.js, Python, C++, Database Design',
+      title: 'Data & AI',
+      description: 'Machine Learning, Data Analysis, Algorithm Development',
     },
     {
       icon: <BrushIcon sx={{ fontSize: 40 }} />,
-      title: 'UI/UX Design',
-      description: 'Material-UI, Responsive Design, User Experience',
+      title: 'Problem Solving',
+      description: 'Complex Algorithm Design, System Architecture, Optimization',
     },
   ];
 
@@ -66,7 +65,7 @@ const Home = () => {
                   color: 'text.secondary',
                 }}
               >
-                Full-Stack Developer
+                Software Engineer
               </Typography>
               <Typography
                 variant="h5"
@@ -76,8 +75,10 @@ const Home = () => {
                   lineHeight: 1.6,
                 }}
               >
-                I build modern web applications and solve complex problems with code. 
-                Passionate about creating user-friendly experiences and scalable solutions.
+                Passionate software engineer with expertise in Python, JavaScript, and C++. 
+                I specialize in building scalable applications, developing machine learning solutions, 
+                and solving complex algorithmic challenges. Currently working on innovative projects 
+                that push the boundaries of technology.
               </Typography>
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button

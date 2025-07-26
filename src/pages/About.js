@@ -7,32 +7,31 @@ import {
   Card,
   CardContent,
   LinearProgress,
-  Chip,
 } from '@mui/material';
 import { motion } from 'framer-motion';
 
 const About = () => {
   const skills = [
+    { name: 'Python', level: 95 },
     { name: 'JavaScript', level: 90 },
     { name: 'React', level: 85 },
-    { name: 'Node.js', level: 80 },
-    { name: 'Python', level: 75 },
-    { name: 'C++', level: 70 },
-    { name: 'SQL', level: 75 },
+    { name: 'C++', level: 80 },
+    { name: 'Machine Learning', level: 85 },
+    { name: 'Algorithm Design', level: 90 },
   ];
 
   const experiences = [
     {
-      title: 'Full-Stack Developer',
-      company: 'Tech Company',
+      title: 'Software Engineer',
+      company: 'Current Role',
       period: '2023 - Present',
-      description: 'Developed and maintained web applications using React and Node.js.',
+      description: 'Developing scalable applications and machine learning solutions. Specializing in Python, JavaScript, and C++ development with focus on algorithm optimization and system architecture.',
     },
     {
-      title: 'Software Engineer Intern',
-      company: 'Startup',
+      title: 'Software Development',
+      company: 'Previous Experience',
       period: '2022 - 2023',
-      description: 'Worked on backend development and database optimization.',
+      description: 'Worked on full-stack development projects, data analysis, and complex problem-solving. Developed expertise in React, Python, and algorithmic challenges.',
     },
   ];
 
@@ -78,16 +77,16 @@ const About = () => {
                 Who I Am
               </Typography>
               <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.8, color: 'text.secondary' }}>
-                I'm a passionate full-stack developer with a strong foundation in both frontend and backend technologies. 
-                I love solving complex problems and creating user-friendly applications that make a difference.
+                I'm a passionate software engineer with a strong foundation in Python, JavaScript, and C++. 
+                I specialize in building scalable applications, developing machine learning solutions, and solving complex algorithmic challenges.
               </Typography>
               <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.8, color: 'text.secondary' }}>
-                When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, 
-                or working on personal projects that challenge my skills and creativity.
+                My expertise spans from full-stack development with React to advanced algorithm design and optimization. 
+                I'm particularly interested in machine learning applications and pushing the boundaries of what's possible with code.
               </Typography>
               <Typography variant="body1" sx={{ lineHeight: 1.8, color: 'text.secondary' }}>
-                I believe in writing clean, maintainable code and staying up-to-date with the latest industry trends 
-                and best practices.
+                When I'm not coding, I'm constantly learning new technologies and working on innovative projects 
+                that challenge my problem-solving skills and technical abilities.
               </Typography>
             </motion.div>
           </Grid>
