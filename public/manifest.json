@@ -1,29 +1,21 @@
 {
-  "name": "Space Engineer - Space Invaders",
-  "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
-  "image": "https://beuxbunk-portfolio.vercel.app/api/frame-image",
-  "external_url": "https://beuxbunk-portfolio.vercel.app/frame",
-  "frame": {
-    "image": "https://beuxbunk-portfolio.vercel.app/api/frame-image",
-    "buttons": [
-      {
-        "label": "🎮 Play Space Invaders",
-        "action": "post"
-      },
-      {
-        "label": "🏠 Visit Portfolio",
-        "action": "link",
-        "target": "https://beuxbunk-portfolio.vercel.app"
-      }
-    ],
-    "post_url": "https://beuxbunk-portfolio.vercel.app/api/frame"
-  },
-  "mini_app": {
-    "name": "Space Engineer",
-    "description": "Interactive Space Invaders game with Farcaster integration",
-    "icon": "https://beuxbunk-portfolio.vercel.app/api/frame-image",
-    "url": "https://beuxbunk-portfolio.vercel.app/frame",
-    "category": "games",
-    "tags": ["game", "space", "invaders", "interactive", "minikit"]
+    "frame": {
+      "name": "Space Invaders",
+      "version": "1",
+      "iconUrl": "https://beuxbunk-portfolio.vercel.app/icon.png",
+      "homeUrl": "https://beuxbunk-portfolio.vercel.app",
+      "imageUrl": "https://beuxbunk-portfolio.vercel.app/image.png",
+      "splashImageUrl": "https://beuxbunk-portfolio.vercel.app/splash.png",
+      "splashBackgroundColor": "#0a0a2e",
+      "webhookUrl": "https://beuxbunk-portfolio.vercel.app/api/webhook",
+      "subtitle": "Space Engineer",
+      "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
+      "primaryCategory": "games",
+      "tags": [
+        "interactive",
+        "game"
+      ],
+      "tagline": "Play Space Invaders",
+      "ogDescription": "Interactive Space Invaders game with Farcaster integration"
+    }
   }
-} 
