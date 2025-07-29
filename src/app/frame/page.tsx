@@ -1,6 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { 
+  useMiniKit, 
+  useAddFrame, 
+  useOpenUrl, 
+  useClose, 
+  usePrimaryButton,
+  useViewProfile,
+  useNotification 
+} from '@coinbase/onchainkit/minikit';
 
 interface GameObject {
   x: number;
@@ -17,7 +26,7 @@ interface GameObjects {
   enemyBullets: GameObject[];
 }
 
-const SpaceInvadersFrame = () => {
+const SpaceInvadersGame = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameState, setGameState] = useState('playing');
   const [score, setScore] = useState(0);
@@ -28,6 +37,29 @@ const SpaceInvadersFrame = () => {
     enemyBullets: [],
   });
 
+  // MiniKit hooks
+  const { setFrameReady, isFrameReady, context } = useMiniKit();
+  const addFrame = useAddFrame();
+  const openUrl = useOpenUrl();
+  const close = useClose();
+  const viewProfile = useViewProfile();
+  const sendNotification = useNotification();
+
+  // Set frame ready when component mounts
+  useEffect(() => {
+    if (!isFrameReady) {
+      setFrameReady();
+    }
+  }, [setFrameReady, isFrameReady]);
+
+  // Primary button for game control
+  usePrimaryButton(
+    { text: gameState === 'playing' ? 'PAUSE GAME' : 'START GAME' },
+    () => {
+      setGameState(gameState === 'playing' ? 'paused' : 'playing');
+    }
+  );
+
   // Initialize game
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,9 +68,9 @@ const SpaceInvadersFrame = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // Set canvas size for frame
-    canvas.width = 400;
-    canvas.height = 400;
+    // Set canvas size
+    canvas.width = 320;
+    canvas.height = 320;
     
     // Initialize enemies
     const enemies: GameObject[] = [];
@@ -70,7 +102,7 @@ const SpaceInvadersFrame = () => {
         }));
 
         // Change direction when hitting edges
-        if (enemies.some((e: GameObject) => e.x <= 0 || e.x >= 360)) {
+        if (enemies.some((e: GameObject) => e.x <= 0 || e.x >= 300)) {
           enemies.forEach((enemy: GameObject) => {
             enemy.direction = (enemy.direction || 1) * -1;
             enemy.y += 10;
@@ -87,7 +119,7 @@ const SpaceInvadersFrame = () => {
         const enemyBullets = prev.enemyBullets.map((bullet: GameObject) => ({
           ...bullet,
           y: bullet.y + 2,
-        })).filter((bullet: GameObject) => bullet.y < 400);
+        })).filter((bullet: GameObject) => bullet.y < 320);
 
         // Enemy shooting logic
         const newEnemyBullets = [...enemyBullets];
@@ -101,58 +133,53 @@ const SpaceInvadersFrame = () => {
           });
         }
 
-        // Check bullet-enemy collisions
-        const newEnemies = enemies.filter((enemy: GameObject) => {
-          return !bullets.some((bullet: GameObject) => {
-            return bullet.x < enemy.x + enemy.width &&
-                   bullet.x + bullet.width > enemy.x &&
-                   bullet.y < enemy.y + enemy.height &&
-                   bullet.y + bullet.height > enemy.y;
-          });
-        });
-
-        // Remove bullets that hit enemies
+        // Check collisions
         const newBullets = bullets.filter((bullet: GameObject) => {
-          return !enemies.some((enemy: GameObject) => {
-            return bullet.x < enemy.x + enemy.width &&
-                   bullet.x + bullet.width > enemy.x &&
-                   bullet.y < enemy.y + enemy.height &&
-                   bullet.y + bullet.height > enemy.y;
-          });
+          const hitEnemy = enemies.find((enemy: GameObject) => 
+            bullet.x < enemy.x + enemy.width &&
+            bullet.x + bullet.width > enemy.x &&
+            bullet.y < enemy.y + enemy.height &&
+            bullet.y + bullet.height > enemy.y
+          );
+          
+          if (hitEnemy) {
+            setScore(prev => prev + 10);
+            return false;
+          }
+          return true;
         });
 
-        // Check enemy bullet-player collision
-        const playerHit = newEnemyBullets.some((bullet: GameObject) => {
-          return bullet.x < prev.player.x + prev.player.width &&
-                 bullet.x + bullet.width > prev.player.x &&
-                 bullet.y < prev.player.y + prev.player.height &&
-                 bullet.y + bullet.height > prev.player.y;
+        // Remove hit enemies
+        const newEnemies = enemies.filter((enemy: GameObject) => {
+          return !bullets.some((bullet: GameObject) => 
+            bullet.x < enemy.x + enemy.width &&
+            bullet.x + bullet.width > enemy.x &&
+            bullet.y < enemy.y + enemy.height &&
+            bullet.y + bullet.height > enemy.y
+          );
         });
+
+        // Check if player is hit
+        const playerHit = newEnemyBullets.some((bullet: GameObject) => 
+          bullet.x < prev.player.x + prev.player.width &&
+          bullet.x + bullet.width > prev.player.x &&
+          bullet.y < prev.player.y + prev.player.height &&
+          bullet.y + bullet.height > prev.player.y
+        );
 
         if (playerHit) {
           setGameState('gameOver');
         }
 
-        // Update score
-        const destroyedEnemies = enemies.length - newEnemies.length;
-        if (destroyedEnemies > 0) {
-          setScore(prev => prev + destroyedEnemies * 10);
-        }
-
-        // Check if enemies reached bottom
-        if (newEnemies.some((enemy: GameObject) => enemy.y > 250)) {
-          setGameState('gameOver');
-        }
-
-        // Check if all enemies destroyed
+        // Check win condition
         if (newEnemies.length === 0) {
-          setGameState('victory');
+          setGameState('won');
         }
 
         return {
           ...prev,
-          enemies: newEnemies,
           bullets: newBullets,
+          enemies: newEnemies,
           enemyBullets: newEnemyBullets,
         };
       });
@@ -165,6 +192,11 @@ const SpaceInvadersFrame = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (gameState !== 'playing') return;
+
+      // Prevent default behavior for game controls
+      if (e.key === ' ' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+      }
 
       setGameObjects(prev => {
         switch (e.key) {
@@ -181,20 +213,21 @@ const SpaceInvadersFrame = () => {
               ...prev,
               player: {
                 ...prev.player,
-                x: Math.min(380, prev.player.x + 10),
+                x: Math.min(300, prev.player.x + 10),
               },
             };
           case ' ':
-            // Shoot bullet
-            const newBullet: GameObject = {
-              x: prev.player.x + prev.player.width / 2 - 2,
-              y: prev.player.y,
-              width: 4,
-              height: 8,
-            };
             return {
               ...prev,
-              bullets: [...prev.bullets, newBullet],
+              bullets: [
+                ...prev.bullets,
+                {
+                  x: prev.player.x + prev.player.width / 2,
+                  y: prev.player.y,
+                  width: 2,
+                  height: 8,
+                },
+              ],
             };
           default:
             return prev;
@@ -213,11 +246,11 @@ const SpaceInvadersFrame = () => {
     
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
+    
     // Clear canvas
     ctx.fillStyle = '#0a0a2e';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+    
     // Draw player
     ctx.fillStyle = '#4a90e2';
     ctx.fillRect(
@@ -226,46 +259,49 @@ const SpaceInvadersFrame = () => {
       gameObjects.player.width,
       gameObjects.player.height
     );
-
+    
     // Draw enemies
     ctx.fillStyle = '#ff6b6b';
     gameObjects.enemies.forEach((enemy: GameObject) => {
       ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
     });
-
-            // Draw bullets
-        ctx.fillStyle = '#ffffff';
-        gameObjects.bullets.forEach((bullet: GameObject) => {
-          ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-        });
-
-        // Draw enemy bullets
-        ctx.fillStyle = '#ff6b6b';
-        gameObjects.enemyBullets.forEach((bullet: GameObject) => {
-          ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-        });
-
-    // Draw UI
+    
+    // Draw bullets
+    ctx.fillStyle = '#ffffff';
+    gameObjects.bullets.forEach((bullet: GameObject) => {
+      ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+    
+    // Draw enemy bullets
+    ctx.fillStyle = '#ff6b6b';
+    gameObjects.enemyBullets.forEach((bullet: GameObject) => {
+      ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+    
+    // Draw score
     ctx.fillStyle = '#ffffff';
     ctx.font = '16px "Courier New"';
-    ctx.fillText(`Score: ${score}`, 10, 30);
-
+    ctx.fillText(`SCORE: ${score}`, 10, 30);
+    
+    // Draw game over screen
     if (gameState === 'gameOver') {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#ff6b6b';
       ctx.font = '24px "Courier New"';
-      ctx.fillText('GAME OVER', canvas.width / 2 - 80, canvas.height / 2);
+      ctx.fillText('GAME OVER', 80, 150);
       ctx.font = '16px "Courier New"';
-      ctx.fillText(`Final Score: ${score}`, canvas.width / 2 - 60, canvas.height / 2 + 30);
-    } else if (gameState === 'victory') {
+      ctx.fillText(`FINAL SCORE: ${score}`, 80, 180);
+    }
+    
+    if (gameState === 'won') {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#4a90e2';
       ctx.font = '24px "Courier New"';
-      ctx.fillText('VICTORY!', canvas.width / 2 - 60, canvas.height / 2);
+      ctx.fillText('MISSION COMPLETE!', 60, 150);
       ctx.font = '16px "Courier New"';
-      ctx.fillText(`Score: ${score}`, canvas.width / 2 - 40, canvas.height / 2 + 30);
+      ctx.fillText(`SCORE: ${score}`, 80, 180);
     }
   }, [gameObjects, score, gameState]);
 
@@ -273,7 +309,7 @@ const SpaceInvadersFrame = () => {
     setGameState('playing');
     setScore(0);
     
-    // Re-initialize enemies
+    // Reinitialize enemies
     const enemies: GameObject[] = [];
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 8; col++) {
@@ -295,40 +331,108 @@ const SpaceInvadersFrame = () => {
     });
   };
 
+  const handleAddFrame = async () => {
+    const result = await addFrame();
+    if (result) {
+      console.log('Frame added:', result.url, result.token);
+    }
+  };
+
+  const handleSendNotification = async () => {
+    try {
+      await sendNotification({
+        title: 'New High Score! 🎉',
+        body: `Congratulations on achieving a score of ${score}!`
+      });
+    } catch (error) {
+      console.error('Failed to send notification:', error);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a0a2e] to-[#1a1a3a] flex flex-col items-center justify-center p-4">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-white mb-4 font-mono">
-          SPACE ENGINEER FRAME
-        </h1>
-        <p className="text-blue-400 mb-6 font-mono">
-          Use arrows to move, space to shoot
-        </p>
-        
-        <div className="relative inline-block">
-          <canvas
-            ref={canvasRef}
-            className="border-2 border-blue-500 rounded-none bg-[#0a0a2e]"
-            style={{ maxWidth: '100%', height: 'auto' }}
-          />
-        </div>
-        
-        <div className="mt-4 space-x-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+      {/* Header with MiniKit controls */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold text-white font-mono">SPACE INVADERS</h1>
+        <div className="flex gap-2">
           <button
-            onClick={resetGame}
-            tabIndex={gameState === 'playing' ? -1 : 0}
-            className="px-6 py-2 bg-red-500 text-white font-mono font-bold border-2 border-white hover:bg-red-600 transition-all duration-300 hover:scale-105"
+            type="button"
+            onClick={handleAddFrame}
+            className="cursor-pointer bg-transparent font-semibold text-sm text-blue-300 hover:text-blue-200"
           >
-            RESTART
+            SAVE FRAME
+          </button>
+          <button
+            type="button"
+            onClick={() => viewProfile()}
+            className="cursor-pointer bg-transparent font-semibold text-sm text-blue-300 hover:text-blue-200"
+          >
+            PROFILE
+          </button>
+          <button
+            type="button"
+            onClick={close}
+            className="cursor-pointer bg-transparent font-semibold text-sm text-red-400 hover:text-red-300"
+          >
+            CLOSE
           </button>
         </div>
-        
-        <p className="text-sm text-gray-400 mt-4 font-mono">
-          Louis Bove - Space Engineer Portfolio
-        </p>
       </div>
+
+      {/* Game Canvas */}
+      <div className="flex justify-center mb-4">
+        <div className="relative">
+          <canvas
+            ref={canvasRef}
+            className="border-2 border-blue-500 rounded-lg"
+            style={{
+              backgroundColor: '#0a0a2e',
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
+          {(gameState === 'gameOver' || gameState === 'won') && (
+            <button
+              onClick={resetGame}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-8 bg-red-500 text-white font-mono font-bold px-4 py-2 rounded hover:bg-red-600 transition-all duration-300"
+            >
+              RESTART
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Game Instructions */}
+      <div className="text-center text-gray-300 font-mono text-sm mb-4">
+        <p>USE ARROWS TO MOVE, SPACE TO SHOOT</p>
+        <p>CLICK RESTART TO PLAY AGAIN</p>
+      </div>
+
+      {/* Notification Button */}
+      {context?.client.added && (
+        <div className="text-center mb-4">
+          <button
+            type="button"
+            onClick={handleSendNotification}
+            className="bg-green-500 text-white px-4 py-2 rounded font-mono font-bold hover:bg-green-600 transition-all duration-300"
+          >
+            SEND NOTIFICATION
+          </button>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="absolute bottom-4 flex items-center w-screen max-w-[520px] justify-center">
+        <button
+          type="button"
+          className="px-2 py-1 flex justify-start rounded-2xl font-semibold opacity-40 border border-black text-xs"
+          onClick={() => openUrl('https://base.org/builders/minikit')}
+        >
+          BUILT WITH MINIKIT
+        </button>
+      </footer>
     </div>
   );
 };
 
-export default SpaceInvadersFrame; 
+export default SpaceInvadersGame; 

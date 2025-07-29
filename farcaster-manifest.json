@@ -1,0 +1,21 @@
+{
+  "name": "Space Engineer - Space Invaders",
+  "description": "Interactive Space Invaders game built with MiniKit",
+  "image": "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+  "external_url": "https://beuxbunk-portfolio.vercel.app/frame",
+  "frame": {
+    "image": "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+    "buttons": [
+      {
+        "label": "🎮 Play Space Invaders",
+        "action": "post"
+      },
+      {
+        "label": "🏠 Visit Portfolio",
+        "action": "link",
+        "target": "https://beuxbunk-portfolio.vercel.app"
+      }
+    ],
+    "post_url": "https://beuxbunk-portfolio.vercel.app/api/frame"
+  }
+} 
