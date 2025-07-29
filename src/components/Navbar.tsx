@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import {
   AppBar,
@@ -13,7 +15,8 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import MenuIcon from '@mui/icons-material/Menu';
 
 const navItems = [
@@ -21,13 +24,14 @@ const navItems = [
   { name: 'PROJECTS', path: '/projects' },
   { name: 'CREW INFO', path: '/about' },
   { name: 'COMMUNICATIONS', path: '/contact' },
+  { name: 'FRAME', path: '/frame' },
 ];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const location = useLocation();
+  const pathname = usePathname();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -50,11 +54,11 @@ const Navbar = () => {
       </Typography>
       <List>
         {navItems.map((item) => (
-          <ListItem key={item.name} component={RouterLink} to={item.path}>
+          <ListItem key={item.name} component={Link} href={item.path}>
             <ListItemText 
               primary={item.name}
               sx={{
-                color: location.pathname === item.path ? '#ff6b6b' : '#ffffff',
+                color: pathname === item.path ? '#ff6b6b' : '#ffffff',
                 textAlign: 'center',
                 fontFamily: '"Courier New", monospace',
                 fontWeight: 700,
@@ -88,8 +92,8 @@ const Navbar = () => {
         <Toolbar>
           <Typography
             variant="h6"
-            component={RouterLink}
-            to="/"
+            component={Link}
+            href="/"
             sx={{
               flexGrow: 1,
               textDecoration: 'none',
@@ -131,15 +135,15 @@ const Navbar = () => {
               {navItems.map((item) => (
                 <Button
                   key={item.name}
-                  component={RouterLink}
-                  to={item.path}
+                  component={Link}
+                  href={item.path}
                   sx={{
-                    color: location.pathname === item.path ? '#ff6b6b' : '#ffffff',
+                    color: pathname === item.path ? '#ff6b6b' : '#ffffff',
                     fontFamily: '"Courier New", monospace',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em',
-                    border: location.pathname === item.path ? '2px solid #ff6b6b' : '2px solid transparent',
+                    border: pathname === item.path ? '2px solid #ff6b6b' : '2px solid transparent',
                     borderRadius: 0,
                     '&:hover': {
                       color: '#ff6b6b',
