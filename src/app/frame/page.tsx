@@ -34,9 +34,21 @@ const SpaceInvadersGame = () => {
     // Signal that the app is ready - this is required to dismiss the splash screen
     const initializeApp = async () => {
       try {
+        // Wait for the component to be fully mounted
+        await new Promise(resolve => setTimeout(resolve, 100));
         await sdk.actions.ready();
+        console.log('✅ Farcaster SDK ready called successfully');
       } catch (error) {
-        console.error('Failed to initialize Farcaster SDK:', error);
+        console.error('❌ Failed to initialize Farcaster SDK:', error);
+        // Try again after a longer delay
+        setTimeout(async () => {
+          try {
+            await sdk.actions.ready();
+            console.log('✅ Farcaster SDK ready called on retry');
+          } catch (retryError) {
+            console.error('❌ Failed to initialize Farcaster SDK on retry:', retryError);
+          }
+        }, 2000);
       }
     };
     
@@ -70,6 +82,16 @@ const SpaceInvadersGame = () => {
     }
     
     setGameObjects(prev => ({ ...prev, enemies }));
+    
+    // Call ready after game is initialized
+    setTimeout(async () => {
+      try {
+        await sdk.actions.ready();
+        console.log('✅ Farcaster SDK ready called after game init');
+      } catch (error) {
+        console.error('❌ Failed to call ready after game init:', error);
+      }
+    }, 500);
   }, []);
 
   // Game loop
@@ -354,7 +376,7 @@ const SpaceInvadersGame = () => {
                  </button>
           <button
             type="button"
-            onClick={() => sdk.actions.close()}
+            onClick={close}
             className="cursor-pointer bg-transparent font-semibold text-sm text-red-400 hover:text-red-300"
           >
             CLOSE
