@@ -9,14 +9,36 @@ export const metadata: Metadata = {
     images: ['https://beuxbunk-portfolio.vercel.app/api/frame-image'],
   },
   other: {
-    'fc:frame': 'vNext',
-    'fc:frame:image': 'https://beuxbunk-portfolio.vercel.app/api/frame-image',
-    'fc:frame:button:1': '🎮 Play Space Invaders',
-    'fc:frame:button:1:action': 'post',
-    'fc:frame:button:2': '🏠 Visit Portfolio',
-    'fc:frame:button:2:action': 'link',
-    'fc:frame:button:2:target': 'https://beuxbunk-portfolio.vercel.app',
-    'fc:frame:post_url': 'https://beuxbunk-portfolio.vercel.app/api/frame',
+    // New fc:miniapp format for sharing
+    'fc:miniapp': JSON.stringify({
+      version: "1",
+      imageUrl: "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+      button: {
+        title: "🎮 Play Space Invaders",
+        action: {
+          type: "launch_miniapp",
+          url: "https://beuxbunk-portfolio.vercel.app/frame",
+          name: "Space Engineer",
+          splashImageUrl: "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+          splashBackgroundColor: "#0a0a2e"
+        }
+      }
+    }),
+    // Backward compatibility with fc:frame
+    'fc:frame': JSON.stringify({
+      version: "1",
+      imageUrl: "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+      button: {
+        title: "🎮 Play Space Invaders",
+        action: {
+          type: "launch_frame",
+          url: "https://beuxbunk-portfolio.vercel.app/frame",
+          name: "Space Engineer",
+          splashImageUrl: "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+          splashBackgroundColor: "#0a0a2e"
+        }
+      }
+    }),
   },
 }
 
