@@ -11,5 +11,10 @@
       "subtitle": "Space Engineer",
       "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
       "primaryCategory": "games"
+    },
+    "accountAssociation": {
+      "header": "eyJmaWQiOjg4NjUwMywidHlwZSI6ImF1dGgiLCJrZXkiOiIweEQyRTc4MzlDOTI2QTlBMzQ5ODdFM0E4NjI2ODFDYTUyZmU2M2M0ZTYifQ",
+      "payload": "eyJkb21haW4iOiJiZXV4YnVuay1wb3J0Zm9saW8udmVyY2VsLmFwcCJ9",
+      "signature": "+ecPgl5xb5KuH4UxSvKZdQY3wP8fQbGrX+Q8PgYAZ1sVMMfzRT8FYFGWGG1Gx3xW2Ow1MA4oJ7TrdGPtwOytVhw="
     }
 }
