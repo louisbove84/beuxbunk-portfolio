@@ -52,6 +52,14 @@ const SpaceInvadersGame = () => {
     }
   }, [setFrameReady, isFrameReady]);
 
+  // Call ready when the app is fully loaded
+  useEffect(() => {
+    // Signal that the app is ready by calling setFrameReady
+    if (!isFrameReady) {
+      setFrameReady();
+    }
+  }, [setFrameReady, isFrameReady]);
+
   // Primary button for game control
   usePrimaryButton(
     { text: gameState === 'playing' ? 'PAUSE GAME' : 'START GAME' },
