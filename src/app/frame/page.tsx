@@ -376,7 +376,7 @@ const SpaceInvadersGame = () => {
                  </button>
           <button
             type="button"
-            onClick={close}
+            onClick={() => sdk.actions.close()}
             className="cursor-pointer bg-transparent font-semibold text-sm text-red-400 hover:text-red-300"
           >
             CLOSE
