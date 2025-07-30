@@ -1,15 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  useMiniKit, 
-  useAddFrame, 
-  useOpenUrl, 
-  useClose, 
-  usePrimaryButton,
-  useViewProfile,
-  useNotification 
-} from '@coinbase/onchainkit/minikit';
+import { sdk } from '@farcaster/miniapp-sdk';
 
 interface GameObject {
   x: number;
@@ -37,36 +29,19 @@ const SpaceInvadersGame = () => {
     enemyBullets: [],
   });
 
-  // MiniKit hooks
-  const { setFrameReady, isFrameReady, context } = useMiniKit();
-  const addFrame = useAddFrame();
-  const openUrl = useOpenUrl();
-  const close = useClose();
-  const viewProfile = useViewProfile();
-  const sendNotification = useNotification();
-
-  // Set frame ready when component mounts
-  useEffect(() => {
-    if (!isFrameReady) {
-      setFrameReady();
-    }
-  }, [setFrameReady, isFrameReady]);
-
   // Call ready when the app is fully loaded
   useEffect(() => {
-    // Signal that the app is ready by calling setFrameReady
-    if (!isFrameReady) {
-      setFrameReady();
-    }
-  }, [setFrameReady, isFrameReady]);
-
-  // Primary button for game control
-  usePrimaryButton(
-    { text: gameState === 'playing' ? 'PAUSE GAME' : 'START GAME' },
-    () => {
-      setGameState(gameState === 'playing' ? 'paused' : 'playing');
-    }
-  );
+    // Signal that the app is ready - this is required to dismiss the splash screen
+    const initializeApp = async () => {
+      try {
+        await sdk.actions.ready();
+      } catch (error) {
+        console.error('Failed to initialize Farcaster SDK:', error);
+      }
+    };
+    
+    initializeApp();
+  }, []);
 
   // Initialize game
   useEffect(() => {
@@ -340,18 +315,18 @@ const SpaceInvadersGame = () => {
   };
 
   const handleAddFrame = async () => {
-    const result = await addFrame();
-    if (result) {
-      console.log('Frame added:', result.url, result.token);
+    try {
+      await sdk.actions.addFrame();
+      console.log('Frame added successfully');
+    } catch (error) {
+      console.error('Failed to add frame:', error);
     }
   };
 
   const handleSendNotification = async () => {
     try {
-      await sendNotification({
-        title: 'New High Score! 🎉',
-        body: `Congratulations on achieving a score of ${score}!`
-      });
+      // Note: sendNotification might not be available in the current SDK version
+      console.log('Notification feature not available in current SDK version');
     } catch (error) {
       console.error('Failed to send notification:', error);
     }
@@ -370,13 +345,13 @@ const SpaceInvadersGame = () => {
           >
             SAVE FRAME
           </button>
-          <button
-            type="button"
-            onClick={() => viewProfile()}
-            className="cursor-pointer bg-transparent font-semibold text-sm text-blue-300 hover:text-blue-200"
-          >
-            PROFILE
-          </button>
+                           <button
+                   type="button"
+                   onClick={() => sdk.actions.viewProfile({ fid: 0 })}
+                   className="cursor-pointer bg-transparent font-semibold text-sm text-blue-300 hover:text-blue-200"
+                 >
+                   PROFILE
+                 </button>
           <button
             type="button"
             onClick={close}
@@ -416,25 +391,23 @@ const SpaceInvadersGame = () => {
         <p>CLICK RESTART TO PLAY AGAIN</p>
       </div>
 
-      {/* Notification Button */}
-      {context?.client.added && (
-        <div className="text-center mb-4">
-          <button
-            type="button"
-            onClick={handleSendNotification}
-            className="bg-green-500 text-white px-4 py-2 rounded font-mono font-bold hover:bg-green-600 transition-all duration-300"
-          >
-            SEND NOTIFICATION
-          </button>
-        </div>
-      )}
+                   {/* Notification Button */}
+             <div className="text-center mb-4">
+               <button
+                 type="button"
+                 onClick={handleSendNotification}
+                 className="bg-green-500 text-white px-4 py-2 rounded font-mono font-bold hover:bg-green-600 transition-all duration-300"
+               >
+                 SEND NOTIFICATION
+               </button>
+             </div>
 
       {/* Footer */}
       <footer className="absolute bottom-4 flex items-center w-screen max-w-[520px] justify-center">
         <button
           type="button"
           className="px-2 py-1 flex justify-start rounded-2xl font-semibold opacity-40 border border-black text-xs"
-          onClick={() => openUrl('https://base.org/builders/minikit')}
+                           onClick={() => sdk.actions.openUrl('https://base.org/builders/minikit')}
         >
           BUILT WITH MINIKIT
         </button>
