@@ -7,7 +7,7 @@
   "frame": {
     "version": "1",
     "name": "Space Invaders",
-    "iconUrl": "https://beuxbunk-portfolio.vercel.app/icon.svg",
+    "iconUrl": "https://beuxbunk-portfolio.vercel.app/icon.png",
     "homeUrl": "https://beuxbunk-portfolio.vercel.app/frame",
     "primaryCategory": "games",
     "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
@@ -17,9 +17,9 @@
       "https://beuxbunk-portfolio.vercel.app/images/screenshot2.svg",
       "https://beuxbunk-portfolio.vercel.app/images/screenshot3.svg"
     ],
-    "imageUrl": "https://beuxbunk-portfolio.vercel.app/api/frame-image",
-    "heroImageUrl": "https://beuxbunk-portfolio.vercel.app/api/frame-image",
-    "splashImageUrl": "https://beuxbunk-portfolio.vercel.app/splash.svg",
+    "imageUrl": "https://beuxbunk-portfolio.vercel.app/hero.png",
+    "heroImageUrl": "https://beuxbunk-portfolio.vercel.app/hero.png",
+    "splashImageUrl": "https://beuxbunk-portfolio.vercel.app/splash.png",
     "splashBackgroundColor": "#0a0a2e"
   }
 }
