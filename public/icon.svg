@@ -1,0 +1,38 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="spaceGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0a2e;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#spaceGradient)"/>
+  
+  <!-- Stars -->
+  <circle cx="200" cy="150" r="2" fill="white" opacity="0.8"/>
+  <circle cx="800" cy="200" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="150" cy="300" r="1" fill="white" opacity="0.9"/>
+  <circle cx="900" cy="400" r="2" fill="white" opacity="0.7"/>
+  <circle cx="100" cy="600" r="1.5" fill="white" opacity="0.8"/>
+  <circle cx="850" cy="700" r="1" fill="white" opacity="0.9"/>
+  <circle cx="300" cy="800" r="2" fill="white" opacity="0.6"/>
+  <circle cx="700" cy="900" r="1.5" fill="white" opacity="0.8"/>
+  
+  <!-- Main spaceship/invader -->
+  <g transform="translate(512,400)">
+    <!-- Body -->
+    <rect x="-80" y="-40" width="160" height="80" fill="#00ff41" rx="10"/>
+    <!-- Wings -->
+    <polygon points="-120,-20 -80,-20 -80,20 -120,40" fill="#00ff41"/>
+    <polygon points="120,-20 80,-20 80,20 120,40" fill="#00ff41"/>
+    <!-- Details -->
+    <circle cx="-30" cy="-10" r="8" fill="#0a0a2e"/>
+    <circle cx="30" cy="-10" r="8" fill="#0a0a2e"/>
+    <rect x="-20" y="10" width="40" height="8" fill="#0a0a2e"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="512" y="600" text-anchor="middle" font-family="monospace" font-size="48" fill="white" font-weight="bold">SPACE</text>
+  <text x="512" y="660" text-anchor="middle" font-family="monospace" font-size="48" fill="#00ff41" font-weight="bold">ENGINEER</text>
+</svg>

@@ -7,15 +7,20 @@
   "miniapp": {
     "version": "1",
     "name": "Space Invaders",
-    "iconUrl": "https://beuxbunk-portfolio.vercel.app/icon.png",
+    "iconUrl": "https://beuxbunk-portfolio.vercel.app/icon.svg",
     "homeUrl": "https://beuxbunk-portfolio.vercel.app/frame",
-    "imageUrl": "https://beuxbunk-portfolio.vercel.app/image.png",
+    "imageUrl": "https://beuxbunk-portfolio.vercel.app/hero.svg",
     "buttonTitle": "🎮 Play Game",
-    "splashImageUrl": "https://beuxbunk-portfolio.vercel.app/splash.png",
+    "splashImageUrl": "https://beuxbunk-portfolio.vercel.app/splash.svg",
     "splashBackgroundColor": "#0a0a2e",
     "webhookUrl": "https://beuxbunk-portfolio.vercel.app/api/webhook",
     "subtitle": "Space Engineer",
     "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
+    "screenshotUrls": [
+      "https://beuxbunk-portfolio.vercel.app/images/screenshot1.svg",
+      "https://beuxbunk-portfolio.vercel.app/images/screenshot2.svg",
+      "https://beuxbunk-portfolio.vercel.app/images/screenshot3.svg"
+    ],
     "primaryCategory": "games",
     "tags": [
       "games",
@@ -23,6 +28,11 @@
       "arcade",
       "minikit",
       "farcaster"
-    ]
+    ],
+    "heroImageUrl": "https://beuxbunk-portfolio.vercel.app/hero.svg",
+    "tagline": "Classic arcade gaming meets modern web tech",
+    "ogTitle": "Space Engineer - Space Invaders",
+    "ogDescription": "Play the classic Space Invaders game with modern Farcaster integration",
+    "ogImageUrl": "https://beuxbunk-portfolio.vercel.app/og-image.svg"
   }
 }
