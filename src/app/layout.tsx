@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'BeuxBunk - Space Engineer Portfolio',
-  description: 'Louis Bove - Software Engineer and Space Enthusiast',
+  description: 'Software Engineer and Space Enthusiast',
   openGraph: {
     title: 'Space Engineer - Space Invaders',
     description: 'Interactive Space Invaders game built with MiniKit',

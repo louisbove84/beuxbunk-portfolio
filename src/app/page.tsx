@@ -23,7 +23,7 @@ const Home = () => {
                 SPACE ENGINEER
               </h1>
               <p className="text-xl text-blue-300 mb-8 font-mono">
-                Louis Bove • Software Engineer • Space Enthusiast
+                Software Engineer • Space Enthusiast
               </p>
               <div className="space-y-4">
                 <a

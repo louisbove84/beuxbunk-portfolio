@@ -36,7 +36,7 @@ export async function GET() {
       
       <!-- Subtitle -->
       <text x="600" y="280" text-anchor="middle" font-family="monospace" font-size="36" fill="#4a90e2">
-        LOUIS BOVE
+        SPACE ENGINEER
       </text>
       
       <!-- Description -->

@@ -1,6 +1,6 @@
 # Space Engineer Farcaster Frame
 
-This project includes a Farcaster Frame that showcases Louis Bove's Space Engineer portfolio with an interactive Space Invaders game.
+This project includes a Farcaster Frame that showcases a Space Engineer portfolio with an interactive Space Invaders game.
 
 ## Frame Features
 
