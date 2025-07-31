@@ -17,8 +17,8 @@
       "https://beuxbunk-portfolio.vercel.app/images/screenshot2.svg",
       "https://beuxbunk-portfolio.vercel.app/images/screenshot3.svg"
     ],
-    "imageUrl": "https://beuxbunk-portfolio.vercel.app/hero.png",
-    "heroImageUrl": "https://beuxbunk-portfolio.vercel.app/hero.png",
+    "imageUrl": "https://beuxbunk-portfolio.vercel.app/hero-3x2.png",
+    "heroImageUrl": "https://beuxbunk-portfolio.vercel.app/hero-3x2.png",
     "splashImageUrl": "https://beuxbunk-portfolio.vercel.app/splash.png",
     "splashBackgroundColor": "#0a0a2e"
   }

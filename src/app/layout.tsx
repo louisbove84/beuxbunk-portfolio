@@ -12,35 +12,35 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Space Engineer - Space Invaders',
     description: 'Interactive Space Invaders game built with MiniKit',
-    images: ['https://beuxbunk-portfolio.vercel.app/api/frame-image'],
+    images: ['https://beuxbunk-portfolio.vercel.app/hero-3x2.png'],
   },
   other: {
     // New fc:miniapp format for sharing
     'fc:miniapp': JSON.stringify({
       version: "1",
-      imageUrl: "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+      imageUrl: "https://beuxbunk-portfolio.vercel.app/hero-3x2.png",
       button: {
         title: "🎮 Play Space Invaders",
         action: {
           type: "launch_miniapp",
           url: "https://beuxbunk-portfolio.vercel.app/frame",
           name: "Space Engineer",
-          splashImageUrl: "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+          splashImageUrl: "https://beuxbunk-portfolio.vercel.app/splash.png",
           splashBackgroundColor: "#0a0a2e"
         }
       }
     }),
     // Backward compatibility with fc:frame
-    'fc:frame': JSON.stringify({
-      version: "1",
-      imageUrl: "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+          'fc:frame': JSON.stringify({
+        version: "1",
+        imageUrl: "https://beuxbunk-portfolio.vercel.app/hero-3x2.png",
       button: {
         title: "🎮 Play Space Invaders",
         action: {
           type: "launch_frame",
           url: "https://beuxbunk-portfolio.vercel.app/frame",
           name: "Space Engineer",
-          splashImageUrl: "https://beuxbunk-portfolio.vercel.app/api/frame-image",
+          splashImageUrl: "https://beuxbunk-portfolio.vercel.app/splash.png",
           splashBackgroundColor: "#0a0a2e"
         }
       }
