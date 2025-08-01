@@ -34,7 +34,7 @@ const SpaceInvadersGame = () => {
     async function init() {
       try {
         console.log('Before calling sdk.actions.ready');
-        await sdk.actions.ready({ disableNativeGestures: true });
+        await sdk.actions.ready();
         console.log('After calling sdk.actions.ready - SUCCESS');
       } catch (error) {
         console.error('SDK ready error:', error);
@@ -70,16 +70,6 @@ const SpaceInvadersGame = () => {
     }
     
     setGameObjects(prev => ({ ...prev, enemies }));
-    
-    // Call ready after game is initialized
-    setTimeout(async () => {
-      try {
-        await sdk.actions.ready();
-        console.log('✅ Farcaster SDK ready called after game init');
-      } catch (error) {
-        console.error('❌ Failed to call ready after game init:', error);
-      }
-    }, 500);
   }, []);
 
   // Game loop
@@ -417,9 +407,9 @@ const SpaceInvadersGame = () => {
         <button
           type="button"
           className="px-2 py-1 flex justify-start rounded-2xl font-semibold opacity-40 border border-black text-xs"
-                           onClick={() => sdk.actions.openUrl('https://base.org/builders/minikit')}
+          onClick={() => sdk.actions.openUrl('https://miniapps.farcaster.xyz')}
         >
-          BUILT WITH MINIKIT
+          BUILT WITH FARCASTER
         </button>
       </footer>
     </div>
