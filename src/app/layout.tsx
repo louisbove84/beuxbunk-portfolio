@@ -9,11 +9,6 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'BeuxBunk - Space Engineer Portfolio',
   description: 'Software Engineer and Space Enthusiast',
-    openGraph: {
-    title: 'Space Engineer - Space Invaders',
-    description: 'Interactive Space Invaders game built with MiniKit',
-    images: ['https://beuxbunk-portfolio.vercel.app/hero-3x2.png'],
-  },
 }
 
 export default function RootLayout({
