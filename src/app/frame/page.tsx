@@ -29,26 +29,27 @@ const SpaceInvadersGame = () => {
     enemyBullets: [],
   });
 
-  // Call ready when the app is fully loaded
+    // Call ready when the app is fully loaded - as per Farcaster SDK docs
   useEffect(() => {
-    // Signal that the app is ready - this is required to dismiss the splash screen
     const initializeApp = async () => {
       try {
-        // Wait for the component to be fully mounted
-        await new Promise(resolve => setTimeout(resolve, 100));
-        await sdk.actions.ready();
+        // Simple ready call as shown in documentation
+        // Using disableNativeGestures since this is a game with custom controls
+        await sdk.actions.ready({ disableNativeGestures: true });
         console.log('✅ Farcaster SDK ready called successfully');
       } catch (error) {
-        console.error('❌ Failed to initialize Farcaster SDK:', error);
-        // Try again after a longer delay
-        setTimeout(async () => {
-          try {
-            await sdk.actions.ready();
-            console.log('✅ Farcaster SDK ready called on retry');
-          } catch (retryError) {
-            console.error('❌ Failed to initialize Farcaster SDK on retry:', retryError);
-          }
-        }, 2000);
+        console.error('❌ Failed to call SDK ready:', error);
+        // Only retry if we're likely in a Farcaster environment
+        if (typeof window !== 'undefined' && window.location.href.includes('farcaster')) {
+          setTimeout(async () => {
+            try {
+              await sdk.actions.ready({ disableNativeGestures: true });
+              console.log('✅ Farcaster SDK ready called on retry');
+            } catch (retryError) {
+              console.error('❌ SDK ready retry failed:', retryError);
+            }
+          }, 1000);
+        }
       }
     };
     
