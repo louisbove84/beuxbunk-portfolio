@@ -29,68 +29,18 @@ const SpaceInvadersGame = () => {
     enemyBullets: [],
   });
 
-  // Debug SDK availability immediately
-  console.log('🔍 Component mounted. SDK check:', {
-    sdkExists: !!sdk,
-    actionsExists: !!sdk?.actions,
-    readyExists: !!sdk?.actions?.ready,
-    windowExists: typeof window !== 'undefined'
-  });
-
-  // Call ready when the app is fully loaded - as per Farcaster SDK docs
+  // Call ready when the app is fully loaded - simplified as per troubleshooting feedback
   useEffect(() => {
-    const initializeApp = async () => {
-      // Wait for the component to fully mount
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+    async function init() {
       try {
-        console.log('🔄 Attempting to call sdk.actions.ready()...');
-        console.log('SDK object:', sdk);
-        console.log('SDK actions:', sdk?.actions);
-        console.log('SDK ready function:', sdk?.actions?.ready);
-        
-        if (!sdk || !sdk.actions || !sdk.actions.ready) {
-          throw new Error('SDK or ready function not available');
-        }
-        
-        // Simple ready call as shown in documentation
-        // Using disableNativeGestures since this is a game with custom controls
+        console.log('Before calling sdk.actions.ready');
         await sdk.actions.ready({ disableNativeGestures: true });
-        console.log('✅ Farcaster SDK ready called successfully');
+        console.log('After calling sdk.actions.ready - SUCCESS');
       } catch (error) {
-        console.error('❌ Failed to call SDK ready:', error);
-        
-        // More aggressive retry strategy
-        let retryCount = 0;
-        const maxRetries = 3;
-        
-        const retryReady = async () => {
-          retryCount++;
-          console.log(`🔄 Retry attempt ${retryCount}/${maxRetries}`);
-          
-          try {
-            if (sdk && sdk.actions && sdk.actions.ready) {
-              await sdk.actions.ready({ disableNativeGestures: true });
-              console.log('✅ Farcaster SDK ready called on retry');
-            } else {
-              throw new Error('SDK still not available');
-            }
-          } catch (retryError) {
-            console.error(`❌ Retry ${retryCount} failed:`, retryError);
-            
-            if (retryCount < maxRetries) {
-              setTimeout(retryReady, 1000 * retryCount); // Exponential backoff
-            } else {
-              console.error('❌ All retry attempts failed. SDK may not be available.');
-            }
-          }
-        };
-        
-        setTimeout(retryReady, 500);
+        console.error('SDK ready error:', error);
       }
-    };
-    
-    initializeApp();
+    }
+    init();
   }, []);
 
   // Initialize game
@@ -476,4 +426,7 @@ const SpaceInvadersGame = () => {
   );
 };
 
-export default SpaceInvadersGame; 
+export default SpaceInvadersGame;
+
+// Required for Farcaster Mini Apps - forces dynamic rendering
+export const dynamic = 'force-dynamic'; 
