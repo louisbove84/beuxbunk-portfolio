@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { sdk } from '@farcaster/miniapp-sdk';
 
 interface GameObject {
   x: number;
@@ -22,6 +21,7 @@ const SpaceInvadersGame = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameState, setGameState] = useState('playing');
   const [score, setScore] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const [gameObjects, setGameObjects] = useState<GameObjects>({
     player: { x: 150, y: 280, width: 20, height: 20 },
     bullets: [],
@@ -29,18 +29,16 @@ const SpaceInvadersGame = () => {
     enemyBullets: [],
   });
 
-  // Call ready when the app is fully loaded - simplified as per troubleshooting feedback
+  // Initialize the game when component mounts
   useEffect(() => {
-    async function init() {
-      try {
-        console.log('Before calling sdk.actions.ready');
-        await sdk.actions.ready();
-        console.log('After calling sdk.actions.ready - SUCCESS');
-      } catch (error) {
-        console.error('SDK ready error:', error);
-      }
-    }
-    init();
+    console.log('Space Invaders game initialized');
+    // Detect if we're on mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   // Initialize game
@@ -71,6 +69,28 @@ const SpaceInvadersGame = () => {
     
     setGameObjects(prev => ({ ...prev, enemies }));
   }, []);
+
+  // Auto-shooting for mobile
+  useEffect(() => {
+    if (gameState !== 'playing' || !isMobile) return;
+
+    const autoShoot = setInterval(() => {
+      setGameObjects(prev => ({
+        ...prev,
+        bullets: [
+          ...prev.bullets,
+          {
+            x: prev.player.x + prev.player.width / 2,
+            y: prev.player.y,
+            width: 2,
+            height: 8,
+          },
+        ],
+      }));
+    }, 300); // Auto-shoot every 300ms on mobile
+
+    return () => clearInterval(autoShoot);
+  }, [gameState, isMobile]);
 
   // Game loop
   useEffect(() => {
@@ -200,18 +220,22 @@ const SpaceInvadersGame = () => {
               },
             };
           case ' ':
-            return {
-              ...prev,
-              bullets: [
-                ...prev.bullets,
-                {
-                  x: prev.player.x + prev.player.width / 2,
-                  y: prev.player.y,
-                  width: 2,
-                  height: 8,
-                },
-              ],
-            };
+            // Only allow manual shooting on desktop
+            if (!isMobile) {
+              return {
+                ...prev,
+                bullets: [
+                  ...prev.bullets,
+                  {
+                    x: prev.player.x + prev.player.width / 2,
+                    y: prev.player.y,
+                    width: 2,
+                    height: 8,
+                  },
+                ],
+              };
+            }
+            return prev;
           default:
             return prev;
         }
@@ -220,7 +244,34 @@ const SpaceInvadersGame = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [gameState]);
+  }, [gameState, isMobile]);
+
+  // Mobile touch controls
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (gameState !== 'playing') return;
+    
+    e.preventDefault();
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const touchX = (touch.clientX - rect.left) * scaleX;
+
+    // Move player to touch position (constrained to canvas width)
+    setGameObjects(prev => ({
+      ...prev,
+      player: {
+        ...prev.player,
+        x: Math.max(0, Math.min(canvas.width - prev.player.width, touchX - prev.player.width / 2)),
+      },
+    }));
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleTouchMove(e);
+  };
 
   // Draw game
   useEffect(() => {
@@ -314,52 +365,11 @@ const SpaceInvadersGame = () => {
     });
   };
 
-  const handleAddFrame = async () => {
-    try {
-      await sdk.actions.addFrame();
-      console.log('Frame added successfully');
-    } catch (error) {
-      console.error('Failed to add frame:', error);
-    }
-  };
-
-  const handleSendNotification = async () => {
-    try {
-      // Note: sendNotification might not be available in the current SDK version
-      console.log('Notification feature not available in current SDK version');
-    } catch (error) {
-      console.error('Failed to send notification:', error);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
-      {/* Header with MiniKit controls */}
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-white font-mono">SPACE INVADERS</h1>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={handleAddFrame}
-            className="cursor-pointer bg-transparent font-semibold text-sm text-blue-300 hover:text-blue-200"
-          >
-            SAVE FRAME
-          </button>
-                           <button
-                   type="button"
-                   onClick={() => sdk.actions.viewProfile({ fid: 0 })}
-                   className="cursor-pointer bg-transparent font-semibold text-sm text-blue-300 hover:text-blue-200"
-                 >
-                   PROFILE
-                 </button>
-          <button
-            type="button"
-            onClick={() => sdk.actions.close()}
-            className="cursor-pointer bg-transparent font-semibold text-sm text-red-400 hover:text-red-300"
-          >
-            CLOSE
-          </button>
-        </div>
+      {/* Game Title */}
+      <div className="text-center mb-4">
+        <h1 className="text-3xl font-bold text-white font-mono">SPACE INVADERS</h1>
       </div>
 
       {/* Game Canvas */}
@@ -372,8 +382,19 @@ const SpaceInvadersGame = () => {
               backgroundColor: '#0a0a2e',
               maxWidth: '100%',
               height: 'auto',
+              touchAction: 'none', // Prevent scrolling on touch
             }}
+            onTouchStart={isMobile ? handleTouchStart : undefined}
+            onTouchMove={isMobile ? handleTouchMove : undefined}
           />
+          
+          {/* Mobile touch area indicator */}
+          {isMobile && gameState === 'playing' && (
+            <div className="absolute bottom-2 left-2 right-2 h-16 bg-blue-500 bg-opacity-20 border border-blue-400 border-dashed rounded-lg flex items-center justify-center">
+              <span className="text-blue-300 text-xs font-mono">TOUCH AREA - DRAG TO MOVE</span>
+            </div>
+          )}
+          
           {(gameState === 'gameOver' || gameState === 'won') && (
             <button
               onClick={resetGame}
@@ -386,32 +407,20 @@ const SpaceInvadersGame = () => {
       </div>
 
       {/* Game Instructions */}
-      <div className="text-center text-gray-300 font-mono text-sm mb-4">
-        <p>USE ARROWS TO MOVE, SPACE TO SHOOT</p>
-        <p>CLICK RESTART TO PLAY AGAIN</p>
+      <div className="text-center text-gray-300 font-mono text-sm">
+        {isMobile ? (
+          <>
+            <p>TOUCH AND DRAG TO MOVE SHIP</p>
+            <p>AUTOMATIC SHOOTING ENABLED</p>
+            <p>CLICK RESTART TO PLAY AGAIN</p>
+          </>
+        ) : (
+          <>
+            <p>USE ARROWS TO MOVE, SPACE TO SHOOT</p>
+            <p>CLICK RESTART TO PLAY AGAIN</p>
+          </>
+        )}
       </div>
-
-                   {/* Notification Button */}
-             <div className="text-center mb-4">
-               <button
-                 type="button"
-                 onClick={handleSendNotification}
-                 className="bg-green-500 text-white px-4 py-2 rounded font-mono font-bold hover:bg-green-600 transition-all duration-300"
-               >
-                 SEND NOTIFICATION
-               </button>
-             </div>
-
-      {/* Footer */}
-      <footer className="absolute bottom-4 flex items-center w-screen max-w-[520px] justify-center">
-        <button
-          type="button"
-          className="px-2 py-1 flex justify-start rounded-2xl font-semibold opacity-40 border border-black text-xs"
-          onClick={() => sdk.actions.openUrl('https://miniapps.farcaster.xyz')}
-        >
-          BUILT WITH FARCASTER
-        </button>
-      </footer>
     </div>
   );
 };
@@ -419,4 +428,4 @@ const SpaceInvadersGame = () => {
 export default SpaceInvadersGame;
 
 // Required for Farcaster Mini Apps - forces dynamic rendering
-export const dynamic = 'force-dynamic'; 
+export const dynamic = 'force-dynamic';

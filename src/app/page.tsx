@@ -2,14 +2,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar';
 
 const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <Navbar />
-      
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 pt-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Left Column - Hero Content */}
           <div className="lg:col-span-1">
@@ -25,19 +22,12 @@ const Home = () => {
               <p className="text-xl text-blue-300 mb-8 font-mono">
                 Software Engineer • Space Enthusiast
               </p>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <a
                   href="/frame"
-                  className="inline-block bg-red-500 text-white px-8 py-3 rounded-lg font-mono font-bold hover:bg-red-600 transition-all duration-300 hover:scale-105"
+                  className="inline-block bg-red-500 text-white px-12 py-4 rounded-lg font-mono font-bold text-xl hover:bg-red-600 transition-all duration-300 hover:scale-105 shadow-lg"
                 >
-                  PLAY SPACE INVADERS
-                </a>
-                <br />
-                <a
-                  href="mailto:louis@beuxbunk.com"
-                  className="inline-block bg-blue-500 text-white px-8 py-3 rounded-lg font-mono font-bold hover:bg-blue-600 transition-all duration-300 hover:scale-105"
-                >
-                  CONTACT MISSION CONTROL
+                  🎮 PLAY SPACE INVADERS
                 </a>
               </div>
             </motion.div>

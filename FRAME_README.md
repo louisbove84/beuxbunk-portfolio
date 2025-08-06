@@ -69,4 +69,4 @@ To customize the frame:
 - TypeScript
 - Canvas API for game rendering
 - Farcaster Frame specification
-- Tailwind CSS for styling 
+- Tailwind CSS for styling

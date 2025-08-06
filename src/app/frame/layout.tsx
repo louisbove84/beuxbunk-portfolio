@@ -48,4 +48,4 @@ export default function FrameLayout({
   children: React.ReactNode
 }) {
   return <>{children}</>
-} 
+}

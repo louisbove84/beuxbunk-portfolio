@@ -1,45 +1,49 @@
-# BeuxBunk Portfolio
+# BeuxBunk Portfolio - Space Engineer
 
-A modern, responsive portfolio website built with React and Material-UI, showcasing my projects and skills.
+A modern, responsive portfolio website built with Next.js 15, featuring an interactive Space Invaders game and Farcaster Frame integration.
 
 ## 🚀 Features
 
-- **Modern Design**: Clean, professional design with dark theme
+- **Modern Design**: Clean, professional design with space engineer theme
 - **Responsive**: Works perfectly on desktop, tablet, and mobile
-- **Smooth Animations**: Framer Motion animations for enhanced UX
-- **Fast Performance**: Optimized React components and lazy loading
-- **SEO Friendly**: Proper meta tags and semantic HTML
-- **Contact Form**: Functional contact form for easy communication
-- **Project Showcase**: Beautiful project cards with live demos and GitHub links
+- **Interactive Game**: Space Invaders game with canvas rendering
+- **Farcaster Integration**: Full Farcaster Frame support with MiniKit SDK
+- **Fast Performance**: Optimized Next.js components with TypeScript
+- **Material-UI**: Professional UI components with custom space theme
 
 ## 🛠️ Technologies Used
 
-- **Frontend**: React.js, Material-UI, Framer Motion
-- **Styling**: CSS-in-JS with Material-UI's sx prop
-- **Routing**: React Router DOM
-- **Icons**: Material-UI Icons
-- **Deployment**: Vercel (with custom domain: beuxbunk.com)
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS
+- **Animation**: Framer Motion
+- **Farcaster**: MiniKit SDK, OnchainKit
+- **Deployment**: Vercel
 
 ## 📁 Project Structure
 
-```
-src/
-├── components/
-│   └── Navbar.js          # Navigation component
-├── pages/
-│   ├── Home.js           # Landing page with hero section
-│   ├── Projects.js       # Projects showcase
-│   ├── About.js          # About me and skills
-│   └── Contact.js        # Contact form and info
-├── App.js                # Main app component with routing
-└── index.js              # App entry point
-```
+### API Routes:
+- **`/src/app/api/frame/route.ts`** - Handles Farcaster frame interactions
+- **`/src/app/api/frame-image/route.ts`** - Generates dynamic SVG frame images
+
+### Frame Components:
+- **`/src/app/frame/page.tsx`** - Interactive Space Invaders game with MiniKit SDK
+- **`/src/app/frame/layout.tsx`** - Farcaster metadata and frame configuration
+
+### Main App Files:
+- **`/src/app/page.tsx`** - Homepage with Space Engineer theme and play button
+- **`/src/app/layout.tsx`** - Root layout with providers
+- **`/src/app/globals.css`** - Global styling with Tailwind
+- **`/src/app/providers.tsx`** - MiniKit provider configuration
+
+### Configuration:
+- **`farcaster-manifest.json`** - Frame manifest for Farcaster
+- **`FRAME_README.md`** - Comprehensive documentation
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (version 14 or higher)
+- Node.js (version 18 or higher)
 - npm or yarn
 
 ### Installation
@@ -57,7 +61,7 @@ npm install
 
 3. Start the development server:
 ```bash
-npm start
+npm run dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -68,33 +72,70 @@ npm start
 npm run build
 ```
 
-This creates a `build` folder with optimized production files.
+This creates a `.next` folder with optimized production files.
+
+## 🎮 Farcaster Frame Features
+
+### Frame URLs
+
+- **Frame Page**: `http://localhost:3000/frame`
+- **Frame Image API**: `http://localhost:3000/api/frame-image`
+- **Frame API**: `http://localhost:3000/api/frame`
+
+### Game Controls
+
+- **Arrow Keys**: Move left/right
+- **Spacebar**: Shoot
+- **Restart Button**: Reset the game
+
+### MiniKit Integration
+
+The frame includes full MiniKit SDK integration with:
+- Frame saving functionality
+- Profile viewing
+- Notification support
+- Close frame action
 
 ## 🎨 Customization
 
 ### Colors and Theme
 
-The theme is defined in `src/App.js`. You can customize:
-
-- Primary color: `#00d4ff` (cyan)
-- Secondary color: `#ff6b6b` (coral)
-- Background: `#0a192f` (dark blue)
-- Text colors: `#ccd6f6` (light) and `#8892b0` (secondary)
+The theme uses a space engineer aesthetic with:
+- Primary color: `#4a90e2` (blue)
+- Accent color: `#ff6b6b` (red)
+- Background: `#0a0a2e` (dark blue)
+- Text colors: `#ffffff` (white) and various space-themed colors
 
 ### Content
 
 Update the following files to customize your content:
 
-- **Personal Info**: `src/pages/Home.js` - Hero section
-- **Projects**: `src/pages/Projects.js` - Project cards
-- **About**: `src/pages/About.js` - Skills and experience
-- **Contact**: `src/pages/Contact.js` - Contact information and social links
+- **Personal Info**: `src/app/page.tsx` - Hero section and skills
+- **Game**: `src/app/frame/page.tsx` - Space Invaders game logic
+- **Navigation**: `src/components/Navbar.tsx` - Navigation items
+- **Theme**: `src/components/ThemeRegistry.tsx` - Material-UI theme
 
-### Adding New Pages
+## 🚀 Deployment
 
-1. Create a new component in `src/pages/`
-2. Add the route in `src/App.js`
-3. Add navigation link in `src/components/Navbar.js`
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your GitHub repository to Vercel
+3. Set environment variables:
+   - `NEXT_PUBLIC_URL` - Your production domain
+   - `NEXT_PUBLIC_ONCHAINKIT_API_KEY` - OnchainKit API key
+   - `NEXT_PUBLIC_ICON_URL` - Icon URL for MiniKit
+4. Deploy automatically on every push
+
+### Environment Variables
+
+Create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_URL=https://your-domain.vercel.app
+NEXT_PUBLIC_ONCHAINKIT_API_KEY=your-api-key
+NEXT_PUBLIC_ICON_URL=https://your-domain.vercel.app/icon.svg
+```
 
 ## 📱 Responsive Design
 
@@ -104,22 +145,12 @@ The website is fully responsive with breakpoints:
 - **Tablet**: 768px - 1024px
 - **Desktop**: > 1024px
 
-## 🚀 Deployment
+## 🧪 Testing
 
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Connect your GitHub repository to Vercel
-3. Configure your custom domain (beuxbunk.com)
-4. Deploy automatically on every push
-
-### Other Platforms
-
-The build folder can be deployed to any static hosting service:
-- Netlify
-- GitHub Pages
-- AWS S3
-- Firebase Hosting
+Test the Farcaster frame using:
+- Farcaster's frame validator
+- Local development server
+- Frame debugging tools
 
 ## 📝 License
 
@@ -132,10 +163,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📧 Contact
 
 - **Website**: [beuxbunk.com](https://beuxbunk.com)
-- **Email**: your.email@example.com
-- **GitHub**: [@yourusername](https://github.com/yourusername)
-- **LinkedIn**: [Your Name](https://linkedin.com/in/yourusername)
+- **Email**: louis@beuxbunk.com
+- **Frame**: Play Space Invaders directly in Farcaster
 
 ---
 
-Made with ❤️ by BeuxBunk
+Made with ❤️ by BeuxBunk - Space Engineer
