@@ -1,12 +1,4 @@
 {
-  "functions": {
-    "src/app/api/frame/route.ts": {
-      "maxDuration": 10
-    },
-    "src/app/api/frame-image/route.ts": {
-      "maxDuration": 10
-    }
-  },
   "headers": [
     {
       "source": "/api/frame-image",
