@@ -1,23 +1,22 @@
 {
   "frame": {
-    "name": "Space Engineer - Game Hub",
+    "name": "Endless Runner",
     "version": "1",
     "iconUrl": "https://www.beuxbunk.com/icon.png",
-    "homeUrl": "https://www.beuxbunk.com",
-    "imageUrl": "https://www.beuxbunk.com/api/frame-image",
-    "buttonTitle": "Play Games",
+    "homeUrl": "https://www.beuxbunk.com/frame2",
+    "imageUrl": "https://www.beuxbunk.com/api/frame2-image",
+    "buttonTitle": "Play Runner",
     "splashImageUrl": "https://www.beuxbunk.com/splash.png",
-    "splashBackgroundColor": "#0a0a2e",
+    "splashBackgroundColor": "#87CEEB",
     "webhookUrl": "https://www.beuxbunk.com/api/webhook",
     "subtitle": "Space Engineer",
-    "description": "Two interactive games: Space Invaders and Endless Runner. Built with Next.js and optimized for Farcaster.",
+    "description": "Side-scrolling endless runner game with jump controls. Avoid obstacles and run as far as you can!",
     "screenshotUrls": [
-      "https://www.beuxbunk.com/images/screenshot1.svg",
       "https://www.beuxbunk.com/images/screenshot2.svg"
     ],
     "primaryCategory": "games",
     "heroImageUrl": "https://www.beuxbunk.com/hero-3x2.png",
-    "tagline": "games",
+    "tagline": "runner",
     "ogImageUrl": "https://www.beuxbunk.com/icon.png"
   },
   "accountAssociation": {
