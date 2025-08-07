@@ -1,25 +1,40 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Space Engineer - Space Invaders',
-  description: 'Interactive Space Invaders game built with MiniKit',
+  title: 'Meme Games Hub - Choose Your Chaos',
+  description: 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
   openGraph: {
-    title: 'Space Engineer - Space Invaders',
-    description: 'Interactive Space Invaders game built with MiniKit',
+    title: 'Meme Games Hub - Choose Your Chaos',
+    description: 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
     images: ['https://www.beuxbunk.com/api/frame-image'],
+    type: 'website',
+    url: 'https://www.beuxbunk.com/frame',
   },
   other: {
     // Standard Farcaster Frame meta tags
     'fc:frame': 'vNext',
     'fc:frame:image': 'https://www.beuxbunk.com/api/frame-image',
     'fc:frame:post_url': 'https://www.beuxbunk.com/api/frame',
-    'fc:frame:button:1': '🎮 Play Space Invaders',
+    'fc:frame:button:1': '🚀 Space Invaders',
+    'fc:frame:button:1:action': 'post',
+    'fc:frame:button:2': '🔥 This Is Fine',
+    'fc:frame:button:2:action': 'post',
     
     // Twitter/X meta tags for better sharing
     'twitter:card': 'summary_large_image',
-    'twitter:title': 'Space Engineer - Space Invaders',
-    'twitter:description': 'Interactive Space Invaders game built with MiniKit',
+    'twitter:title': 'Meme Games Hub - Choose Your Chaos',
+    'twitter:description': 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
     'twitter:image': 'https://www.beuxbunk.com/api/frame-image',
+    'twitter:site': '@beuxbunk',
+    
+    // Additional Open Graph for better feed display
+    'og:title': 'Meme Games Hub - Choose Your Chaos',
+    'og:description': 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
+    'og:image': 'https://www.beuxbunk.com/api/frame-image',
+    'og:image:width': '1200',
+    'og:image:height': '630',
+    'og:type': 'website',
+    'og:url': 'https://www.beuxbunk.com/frame',
   },
 }
 

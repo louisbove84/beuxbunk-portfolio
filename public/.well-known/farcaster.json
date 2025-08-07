@@ -2,11 +2,11 @@
   "frame": {
     "name": "Meme Games Hub",
     "version": "1",
-    "iconUrl": "https://www.beuxbunk.com/icon.png",
+    "iconUrl": "https://www.beuxbunk.com/itsFine.jpg",
     "homeUrl": "https://www.beuxbunk.com",
     "imageUrl": "https://www.beuxbunk.com/api/frame-image",
     "buttonTitle": "Play Meme Games",
-    "splashImageUrl": "https://www.beuxbunk.com/splash.png",
+    "splashImageUrl": "https://www.beuxbunk.com/api/frame-image",
     "splashBackgroundColor": "#FF6B6B",
     "webhookUrl": "https://www.beuxbunk.com/api/webhook",
     "subtitle": "Choose Your Meme",
@@ -16,9 +16,9 @@
       "https://www.beuxbunk.com/images/screenshot2.svg"
     ],
     "primaryCategory": "games",
-    "heroImageUrl": "https://www.beuxbunk.com/hero-3x2.png",
+    "heroImageUrl": "https://www.beuxbunk.com/itsFine.jpg",
     "tagline": "memes",
-    "ogImageUrl": "https://www.beuxbunk.com/icon.png"
+    "ogImageUrl": "https://www.beuxbunk.com/api/frame-image"
   },
   "accountAssociation": {
     "header": "eyJmaWQiOjg4NjUwMywidHlwZSI6ImF1dGgiLCJrZXkiOiIweEQyRTc4MzlDOTI2QTlBMzQ5ODdFM0E4NjI2ODFDYTUyZmU2M2M0ZTYifQ",
