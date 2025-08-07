@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     } else if (buttonIndex === 2) {
       // This Is Fine button
       return NextResponse.json({
-        image: `${baseUrl}/api/frame2-image`,
+        image: `${baseUrl}/api/frame-image`,
         buttons: [
           {
             label: '🔥 Play This Is Fine',
