@@ -9,36 +9,19 @@ export const metadata: Metadata = {
     images: ['https://www.beuxbunk.com/api/frame-image'],
   },
   other: {
-    // New fc:miniapp format for sharing
-    'fc:miniapp': JSON.stringify({
-      version: "1",
-      imageUrl: "https://www.beuxbunk.com/api/frame-image",
-      button: {
-        title: "🎮 Play Space Invaders",
-        action: {
-          type: "launch_miniapp",
-          url: "https://www.beuxbunk.com/frame",
-          name: "Space Engineer",
-          splashImageUrl: "https://www.beuxbunk.com/api/frame-image",
-          splashBackgroundColor: "#0a0a2e"
-        }
-      }
-    }),
-    // Backward compatibility with fc:frame
-    'fc:frame': JSON.stringify({
-      version: "1",
-      imageUrl: "https://www.beuxbunk.com/api/frame-image",
-      button: {
-        title: "🎮 Play Space Invaders",
-        action: {
-          type: "launch_frame",
-          url: "https://www.beuxbunk.com/frame",
-          name: "Space Engineer",
-          splashImageUrl: "https://www.beuxbunk.com/api/frame-image",
-          splashBackgroundColor: "#0a0a2e"
-        }
-      }
-    }),
+    // Standard Farcaster Frame meta tags
+    'fc:frame': 'vNext',
+    'fc:frame:image': 'https://www.beuxbunk.com/api/frame-image',
+    'fc:frame:post_url': 'https://www.beuxbunk.com/api/frame',
+    'fc:frame:button:1': '🎮 Play Space Invaders',
+    'fc:frame:button:1:action': 'link',
+    'fc:frame:button:1:target': 'https://www.beuxbunk.com/frame',
+    
+    // Twitter/X meta tags for better sharing
+    'twitter:card': 'summary_large_image',
+    'twitter:title': 'Space Engineer - Space Invaders',
+    'twitter:description': 'Interactive Space Invaders game built with MiniKit',
+    'twitter:image': 'https://www.beuxbunk.com/api/frame-image',
   },
 }
 
