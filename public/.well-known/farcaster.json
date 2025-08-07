@@ -1,25 +1,26 @@
 {
+  "frame": {
+    "name": "Space Invaders",
+    "version": "1",
+    "iconUrl": "https://www.beuxbunk.com/icon.png",
+    "homeUrl": "https://www.beuxbunk.com",
+    "imageUrl": "https://www.beuxbunk.com/image.png",
+    "buttonTitle": "Open mini app",
+    "splashImageUrl": "https://www.beuxbunk.com/splash.png",
+    "splashBackgroundColor": "#0a0a2e",
+    "webhookUrl": "https://www.beuxbunk.com/api/webhook",
+    "subtitle": "Space Engineer",
+    "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
+    "screenshotUrls": [
+      "https://www.beuxbunk.com/images/screenshot1.svg"
+    ],
+    "primaryCategory": "games",
+    "heroImageUrl": "https://www.beuxbunk.com/hero-3x2.png",
+    "tagline": "space",
+    "ogImageUrl": "https://www.beuxbunk.com/icon.png"
+  },
   "accountAssociation": {
     "header": "eyJmaWQiOjg4NjUwMywidHlwZSI6ImF1dGgiLCJrZXkiOiIweEQyRTc4MzlDOTI2QTlBMzQ5ODdFM0E4NjI2ODFDYTUyZmU2M2M0ZTYifQ",
-    "payload": "eyJkb21haW4iOiJiZXV4YnVuay1wb3J0Zm9saW8udmVyY2VsLmFwcCJ9",
-    "signature": "+ecPgl5xb5KuH4UxSvKZdQY3wP8fQbGrX+Q8PgYAZ1sVMMfzRT8FYFGWGG1Gx3xW2Ow1MA4oJ7TrdGPtwOytVhw="
-  },
-  "frame": {
-    "version": "1",
-    "name": "Space Invaders",
-    "iconUrl": "https://www.beuxbunk.com/icon.png",
-    "homeUrl": "https://www.beuxbunk.com/frame",
-    "primaryCategory": "games",
-    "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
-    "subtitle": "Space Engineer",
-    "screenshotUrls": [
-      "https://www.beuxbunk.com/images/screenshot1.svg",
-      "https://www.beuxbunk.com/images/screenshot2.svg",
-      "https://www.beuxbunk.com/images/screenshot3.svg"
-    ],
-    "imageUrl": "https://www.beuxbunk.com/hero-3x2.png",
-    "heroImageUrl": "https://www.beuxbunk.com/hero-3x2.png",
-    "splashImageUrl": "https://www.beuxbunk.com/splash.png",
-    "splashBackgroundColor": "#0a0a2e"
+    "payload": "eyJkb21haW4iOiJ3d3cuYmV1eGJ1bmsuY29tIn0",
+    "signature": "hPjYZZSZd+erQ2cMXwJZs6c6O8WnNTcka4LxeLIkfnxlJsp/MvHXIRn6I58YFB6aL+YJ0W0KU4tQucWJT1CkYBs="
   }
-}
