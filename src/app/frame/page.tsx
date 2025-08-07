@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { sdk } from '@farcaster/miniapp-sdk';
 
 interface GameObject {
   x: number;
@@ -32,6 +33,20 @@ const SpaceInvadersGame = () => {
   // Initialize the game when component mounts
   useEffect(() => {
     console.log('Space Invaders game initialized');
+    
+    // Initialize SDK and tell Farcaster the app is ready
+    const initializeSDK = async () => {
+      try {
+        console.log('Calling sdk.actions.ready()');
+        await sdk.actions.ready();
+        console.log('SDK ready - app should now be visible in Farcaster');
+      } catch (error) {
+        console.error('SDK ready error:', error);
+      }
+    };
+    
+    initializeSDK();
+    
     // Detect if we're on mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
