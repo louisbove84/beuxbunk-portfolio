@@ -1,16 +1,17 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  // Create a simple SVG image for the frame
+  // Create a meme-themed SVG image for the frame
   const svg = `
     <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#0a0a2e;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#1a1a3a;stop-opacity:1" />
+        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#4ECDC4;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#45B7D1;stop-opacity:1" />
         </linearGradient>
         <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
           <feMerge> 
             <feMergeNode in="coloredBlur"/>
             <feMergeNode in="SourceGraphic"/>
@@ -20,67 +21,91 @@ export async function GET() {
       
       <rect width="1200" height="630" fill="url(#bg)"/>
       
-      <!-- Stars background -->
-      <g fill="#ffffff" opacity="0.8">
-        ${Array.from({ length: 100 }, () => {
+      <!-- Meme sparkles background -->
+      <g fill="#FFD93D" opacity="0.9">
+        ${Array.from({ length: 50 }, () => {
           const x = Math.random() * 1200;
           const y = Math.random() * 630;
-          return `<circle cx="${x}" cy="${y}" r="1"/>`;
+          const size = Math.random() * 3 + 1;
+          return `<polygon points="${x},${y-size} ${x+size},${y} ${x},${y+size} ${x-size},${y}" fill="#FFD93D"/>`;
         }).join('')}
       </g>
       
       <!-- Main title -->
-      <text x="600" y="200" text-anchor="middle" font-family="monospace" font-size="72" font-weight="bold" fill="#ffffff" filter="url(#glow)">
-        SPACE ENGINEER
+      <text x="600" y="180" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="64" font-weight="bold" fill="#FFFFFF" stroke="#000" stroke-width="3" filter="url(#glow)">
+        MEME GAMES HUB
       </text>
       
       <!-- Subtitle -->
-      <text x="600" y="280" text-anchor="middle" font-family="monospace" font-size="36" fill="#4a90e2">
-        Choose Your Game
+      <text x="600" y="240" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="28" fill="#FFFFFF" stroke="#000" stroke-width="2">
+        Choose Your Chaos! 🎮
       </text>
       
-      <!-- Game Options -->
-      <text x="300" y="360" text-anchor="middle" font-family="monospace" font-size="24" fill="#ff6b6b">
-        🚀 SPACE INVADERS
-      </text>
-      <text x="900" y="360" text-anchor="middle" font-family="monospace" font-size="24" fill="#32CD32">
-        🔥 THIS IS FINE
-      </text>
+      <!-- Game Options with meme styling -->
+      <g transform="translate(200, 320)">
+        <!-- Space Invaders section -->
+        <rect x="0" y="0" width="200" height="100" rx="15" fill="#FF6B6B" stroke="#FFFFFF" stroke-width="4"/>
+        <text x="100" y="35" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="20" fill="#FFFFFF" font-weight="bold">
+          🚀 SPACE
+        </text>
+        <text x="100" y="60" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="20" fill="#FFFFFF" font-weight="bold">
+          INVADERS
+        </text>
+        <text x="100" y="85" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="14" fill="#FFFF99">
+          pew pew pew!
+        </text>
+      </g>
       
-      <!-- Game elements preview -->
-      <g transform="translate(400, 400)">
-        <!-- Player ship -->
-        <rect x="0" y="0" width="20" height="20" fill="#4a90e2"/>
-        <rect x="5" y="-5" width="10" height="5" fill="#4a90e2"/>
-        
-        <!-- Enemies -->
-        <rect x="50" y="0" width="15" height="12" fill="#ff6b6b"/>
-        <rect x="80" y="0" width="15" height="12" fill="#ff6b6b"/>
-        <rect x="110" y="0" width="15" height="12" fill="#ff6b6b"/>
-        
-        <!-- Bullets -->
-        <rect x="10" y="-20" width="4" height="8" fill="#ffffff"/>
-        <rect x="60" y="-15" width="4" height="8" fill="#ffffff"/>
+      <g transform="translate(800, 320)">
+        <!-- This Is Fine section -->
+        <rect x="0" y="0" width="200" height="100" rx="15" fill="#32CD32" stroke="#FFFFFF" stroke-width="4"/>
+        <text x="100" y="35" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="20" fill="#FFFFFF" font-weight="bold">
+          🔥 THIS IS
+        </text>
+        <text x="100" y="60" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="20" fill="#FFFFFF" font-weight="bold">
+          FINE
+        </text>
+        <text x="100" y="85" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="14" fill="#FFFF99">
+          everything's ok!
+        </text>
+      </g>
+      
+      <!-- Meme characters preview -->
+      <g transform="translate(300, 480)">
+        <!-- Space Invader (pixelated alien) -->
+        <rect x="0" y="0" width="8" height="8" fill="#00FF00"/>
+        <rect x="8" y="0" width="8" height="8" fill="#00FF00"/>
+        <rect x="16" y="0" width="8" height="8" fill="#00FF00"/>
+        <rect x="24" y="0" width="8" height="8" fill="#00FF00"/>
+        <rect x="32" y="0" width="8" height="8" fill="#00FF00"/>
+        <rect x="0" y="8" width="8" height="8" fill="#00FF00"/>
+        <rect x="32" y="8" width="8" height="8" fill="#00FF00"/>
+        <rect x="8" y="16" width="8" height="8" fill="#00FF00"/>
+        <rect x="16" y="16" width="8" height="8" fill="#00FF00"/>
+        <rect x="24" y="16" width="8" height="8" fill="#00FF00"/>
+      </g>
+      
+      <g transform="translate(700, 480)">
+        <!-- This Is Fine dog (simplified) -->
+        <circle cx="20" cy="15" r="12" fill="#8B4513"/>
+        <rect x="10" y="25" width="20" height="20" fill="#8B4513"/>
+        <rect x="15" y="5" width="10" height="8" fill="#A0522D"/>
+        <circle cx="15" cy="12" r="2" fill="#000"/>
+        <circle cx="25" cy="12" r="2" fill="#000"/>
+        <!-- Fire around dog -->
+        <polygon points="5,40 10,30 15,40" fill="#FF4500"/>
+        <polygon points="35,40 40,30 45,40" fill="#FF4500"/>
+        <polygon points="0,35 5,25 10,35" fill="#FF6347"/>
       </g>
       
       <!-- Frame indicator -->
-      <rect x="20" y="20" width="200" height="60" rx="10" fill="rgba(74, 144, 226, 0.2)" stroke="#4a90e2" stroke-width="2"/>
-      <text x="120" y="55" text-anchor="middle" font-family="monospace" font-size="16" fill="#4a90e2">
-        FARCaster Frame
+      <rect x="20" y="20" width="220" height="60" rx="15" fill="rgba(255, 107, 107, 0.3)" stroke="#FF6B6B" stroke-width="3"/>
+      <text x="130" y="45" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="18" fill="#FFFFFF" font-weight="bold" stroke="#000" stroke-width="1">
+        🎮 Farcaster Frame
       </text>
-      
-      <!-- Buttons preview -->
-      <g transform="translate(700, 500)">
-        <rect x="0" y="0" width="140" height="40" rx="5" fill="#ff6b6b" stroke="#ffffff" stroke-width="2"/>
-        <text x="70" y="25" text-anchor="middle" font-family="monospace" font-size="14" fill="#ffffff">
-          🚀 Space Invaders
-        </text>
-        
-        <rect x="160" y="0" width="140" height="40" rx="5" fill="#32CD32" stroke="#ffffff" stroke-width="2"/>
-        <text x="230" y="25" text-anchor="middle" font-family="monospace" font-size="14" fill="#ffffff">
-          🔥 This Is Fine
-        </text>
-      </g>
+      <text x="130" y="65" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="14" fill="#FFFF99">
+        Much wow, such games!
+      </text>
     </svg>
   `;
 

@@ -1,22 +1,23 @@
 {
   "frame": {
-    "name": "Space Invaders",
+    "name": "Meme Games Hub",
     "version": "1",
     "iconUrl": "https://www.beuxbunk.com/icon.png",
     "homeUrl": "https://www.beuxbunk.com",
-    "imageUrl": "https://www.beuxbunk.com/image.png",
-    "buttonTitle": "Open mini app",
+    "imageUrl": "https://www.beuxbunk.com/api/frame-image",
+    "buttonTitle": "Play Meme Games",
     "splashImageUrl": "https://www.beuxbunk.com/splash.png",
-    "splashBackgroundColor": "#0a0a2e",
+    "splashBackgroundColor": "#FF6B6B",
     "webhookUrl": "https://www.beuxbunk.com/api/webhook",
-    "subtitle": "Space Engineer",
-    "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
+    "subtitle": "Choose Your Meme",
+    "description": "Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos and play classic games with meme twists!",
     "screenshotUrls": [
-      "https://www.beuxbunk.com/images/screenshot1.svg"
+      "https://www.beuxbunk.com/images/screenshot1.svg",
+      "https://www.beuxbunk.com/images/screenshot2.svg"
     ],
     "primaryCategory": "games",
     "heroImageUrl": "https://www.beuxbunk.com/hero-3x2.png",
-    "tagline": "space",
+    "tagline": "memes",
     "ogImageUrl": "https://www.beuxbunk.com/icon.png"
   },
   "accountAssociation": {

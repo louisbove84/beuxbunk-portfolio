@@ -1,105 +1,128 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  // Create SVG for the endless runner frame
+  // Create meme-themed SVG for the This Is Fine runner frame
   const svg = `
     <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#98FB98;stop-opacity:1" />
+        <linearGradient id="fireGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#FF4500;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#FF6347;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#DC143C;stop-opacity:1" />
         </linearGradient>
-        <linearGradient id="groundGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#228B22;stop-opacity:1" />
-          <stop offset="30%" style="stop-color:#8B4513;stop-opacity:1" />
-        </linearGradient>
+        <filter id="memeGlow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
       </defs>
       
-      <!-- Sky background -->
-      <rect width="1200" height="630" fill="url(#skyGradient)"/>
+      <!-- Burning room background -->
+      <rect width="100%" height="100%" fill="url(#fireGradient)" />
       
-      <!-- Clouds -->
-      <g fill="rgba(255,255,255,0.8)">
-        <ellipse cx="200" cy="120" rx="40" ry="20"/>
-        <ellipse cx="220" cy="110" rx="50" ry="25"/>
-        <ellipse cx="240" cy="120" rx="35" ry="18"/>
-        
-        <ellipse cx="500" cy="80" rx="45" ry="22"/>
-        <ellipse cx="520" cy="70" rx="55" ry="28"/>
-        <ellipse cx="545" cy="80" rx="40" ry="20"/>
-        
-        <ellipse cx="800" cy="140" rx="35" ry="18"/>
-        <ellipse cx="815" cy="130" rx="45" ry="23"/>
-        <ellipse cx="835" cy="140" rx="30" ry="15"/>
-        
-        <ellipse cx="1000" cy="100" rx="50" ry="25"/>
-        <ellipse cx="1025" cy="90" rx="60" ry="30"/>
-        <ellipse cx="1050" cy="100" rx="40" ry="20"/>
+      <!-- Smoke clouds -->
+      <g fill="#696969" opacity="0.6">
+        <ellipse cx="200" cy="100" rx="50" ry="25"/>
+        <ellipse cx="250" cy="120" rx="60" ry="30"/>
+        <ellipse cx="300" cy="90" rx="40" ry="20"/>
+        <ellipse cx="800" cy="150" rx="70" ry="35"/>
+        <ellipse cx="880" cy="130" rx="55" ry="28"/>
+        <ellipse cx="1000" cy="110" rx="45" ry="23"/>
       </g>
       
-      <!-- Ground -->
-      <rect x="0" y="450" width="1200" height="180" fill="url(#groundGradient)"/>
+      <!-- Floor (burning) -->
+      <rect x="0" y="580" width="1200" height="50" fill="#8B4513" />
+      <g fill="#FF4500">
+        <polygon points="50,580 70,560 90,580" />
+        <polygon points="200,580 220,560 240,580" />
+        <polygon points="400,580 420,560 440,580" />
+        <polygon points="600,580 620,560 640,580" />
+        <polygon points="800,580 820,560 840,580" />
+        <polygon points="1000,580 1020,560 1040,580" />
+      </g>
       
-      <!-- Running character (player) -->
-      <g transform="translate(150,400)">
+      <!-- This Is Fine Dog (main character) -->
+      <g transform="translate(100, 480)">
         <!-- Body -->
-        <rect x="0" y="0" width="30" height="40" fill="#FF6B6B" rx="5"/>
+        <rect x="20" y="40" width="60" height="60" fill="#8B4513" rx="5"/>
         <!-- Head -->
-        <circle cx="15" cy="-10" r="12" fill="#FFB6C1"/>
-        <!-- Eyes -->
-        <circle cx="10" cy="-12" r="2" fill="#000"/>
-        <circle cx="20" cy="-12" r="2" fill="#000"/>
-        <!-- Mouth -->
-        <ellipse cx="15" cy="-6" rx="4" ry="2" fill="#000"/>
-        <!-- Arms -->
-        <rect x="-5" y="5" width="8" height="20" fill="#FFB6C1" rx="4"/>
-        <rect x="27" y="5" width="8" height="20" fill="#FFB6C1" rx="4"/>
-        <!-- Legs (running position) -->
-        <rect x="5" y="40" width="8" height="25" fill="#FFB6C1" rx="4"/>
-        <rect x="17" y="35" width="8" height="30" fill="#FFB6C1" rx="4"/>
+        <circle cx="50" cy="30" r="25" fill="#8B4513" />
+        <!-- Eyes (calm expression) -->
+        <circle cx="40" cy="25" r="4" fill="white" />
+        <circle cx="60" cy="25" r="4" fill="white" />
+        <circle cx="40" cy="25" r="2" fill="black" />
+        <circle cx="60" cy="25" r="2" fill="black" />
+        <!-- Smile -->
+        <path d="M 35 35 Q 50 42 65 35" stroke="black" stroke-width="2" fill="none" />
+        <!-- Hat -->
+        <rect x="30" y="5" width="40" height="10" fill="#A0522D" rx="2"/>
+        <rect x="25" y="15" width="50" height="5" fill="#A0522D" rx="2"/>
+        <!-- Legs -->
+        <rect x="10" y="85" width="15" height="25" fill="#8B4513" rx="3"/>
+        <rect x="75" y="85" width="15" height="25" fill="#8B4513" rx="3"/>
+        <!-- Coffee mug -->
+        <rect x="85" y="35" width="12" height="15" fill="#D2B48C" rx="2"/>
+        <rect x="92" y="38" width="6" height="2" fill="#654321" />
+        <!-- Steam from coffee -->
+        <path d="M 91 30 Q 93 25 91 20" stroke="#FFF" stroke-width="1" fill="none" opacity="0.7"/>
+        <path d="M 94 28 Q 96 23 94 18" stroke="#FFF" stroke-width="1" fill="none" opacity="0.7"/>
       </g>
       
-      <!-- Obstacles -->
-      <rect x="400" y="420" width="30" height="45" fill="#8B4513" rx="3"/>
-      <rect x="600" y="415" width="35" height="50" fill="#8B4513" rx="3"/>
-      <rect x="850" y="425" width="25" height="40" fill="#8B4513" rx="3"/>
-      
-      <!-- Motion lines behind character -->
-      <g stroke="#FFF" stroke-width="3" opacity="0.6">
-        <line x1="50" y1="380" x2="100" y2="390"/>
-        <line x1="40" y1="400" x2="90" y2="410"/>
-        <line x1="60" y1="420" x2="110" y2="430"/>
-        <line x1="30" y1="440" x2="80" y2="450"/>
+      <!-- Fire obstacles -->
+      <g fill="#FF4500">
+        <polygon points="900,580 915,540 930,580" />
+        <polygon points="910,580 925,540 940,580" />
+      </g>
+      <g fill="#FF6347">
+        <polygon points="905,580 920,545 935,580" />
       </g>
       
-      <!-- Title -->
-      <text x="600" y="80" font-family="monospace" font-size="48" font-weight="bold" text-anchor="middle" fill="#000" stroke="#FFF" stroke-width="2">
-        SPACE ENGINEER
+      <!-- Falling debris -->
+      <rect x="700" y="50" width="30" height="40" fill="#696969" rx="3"/>
+      <rect x="750" y="80" width="25" height="35" fill="#808080" rx="3"/>
+      <rect x="600" y="30" width="20" height="30" fill="#696969" rx="2"/>
+      
+      <!-- Coffee collectibles -->
+      <g fill="#D2B48C">
+        <rect x="500" y="400" width="15" height="18" rx="2"/>
+        <rect x="300" y="350" width="15" height="18" rx="2"/>
+        <rect x="450" y="420" width="15" height="18" rx="2"/>
+      </g>
+      <g fill="#654321">
+        <rect x="507" y="403" width="4" height="2"/>
+        <rect x="307" y="353" width="4" height="2"/>
+        <rect x="457" y="423" width="4" height="2"/>
+      </g>
+      
+      <!-- Meme title -->
+      <text x="600" y="80" font-family="Comic Sans MS, cursive" font-size="48" font-weight="bold" fill="#FFFFFF" stroke="#000" stroke-width="3" text-anchor="middle" filter="url(#memeGlow)">
+        THIS IS FINE RUNNER
       </text>
       
-      <!-- Subtitle -->
-      <text x="600" y="130" font-family="monospace" font-size="32" font-weight="bold" text-anchor="middle" fill="#2F4F4F">
-        Endless Runner
-      </text>
-      
-      <!-- Game description -->
-      <text x="600" y="200" font-family="monospace" font-size="24" text-anchor="middle" fill="#2F4F4F">
-        Jump over obstacles and run as far as you can!
+      <!-- Meme subtitle -->
+      <text x="600" y="130" font-family="Comic Sans MS, cursive" font-size="24" fill="#FFFF99" stroke="#000" stroke-width="2" text-anchor="middle">
+        🔥 Everything is totally fine! 🔥
       </text>
       
       <!-- Instructions -->
-      <text x="600" y="250" font-family="monospace" font-size="20" text-anchor="middle" fill="#2F4F4F">
-        TAP to JUMP • Avoid the obstacles
+      <text x="600" y="170" font-family="Comic Sans MS, cursive" font-size="18" fill="#FFFFFF" stroke="#000" stroke-width="1" text-anchor="middle">
+        Tap to Jump • Duck to Survive • Collect Coffee!
       </text>
       
-      <!-- Frame border -->
-      <rect x="10" y="10" width="1180" height="610" fill="none" stroke="#2F4F4F" stroke-width="8" rx="20"/>
-      
-      <!-- Play button indicator -->
-      <rect x="500" y="520" width="200" height="60" fill="#32CD32" stroke="#228B22" stroke-width="3" rx="10"/>
-      <text x="600" y="560" font-family="monospace" font-size="24" font-weight="bold" text-anchor="middle" fill="#FFF">
-        🏃 PLAY GAME
+      <!-- Meme speech bubble -->
+      <ellipse cx="280" cy="350" rx="70" ry="35" fill="#FFFFFF" stroke="#000" stroke-width="2"/>
+      <polygon points="260,375 240,390 280,385" fill="#FFFFFF" stroke="#000" stroke-width="2"/>
+      <text x="280" y="345" font-family="Comic Sans MS, cursive" font-size="12" fill="#000" text-anchor="middle" font-weight="bold">
+        "This is fine."
       </text>
+      <text x="280" y="360" font-family="Comic Sans MS, cursive" font-size="10" fill="#666" text-anchor="middle">
+        - Famous Dog
+      </text>
+      
+      <!-- Meme border -->
+      <rect x="10" y="10" width="1180" height="610" fill="none" stroke="#FFD93D" stroke-width="8" rx="20"/>
     </svg>
   `;
 
