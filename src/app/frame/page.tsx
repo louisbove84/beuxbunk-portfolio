@@ -403,12 +403,7 @@ const SpaceInvadersGame = () => {
             onTouchMove={isMobile ? handleTouchMove : undefined}
           />
           
-          {/* Mobile touch area indicator - positioned to not cover ship */}
-          {isMobile && gameState === 'playing' && (
-            <div className="absolute bottom-2 left-2 right-2 h-8 bg-blue-500 bg-opacity-10 border border-blue-400 border-dashed rounded-lg flex items-center justify-center">
-              <span className="text-blue-300 text-xs font-mono opacity-70">TOUCH AREA - DRAG TO MOVE</span>
-            </div>
-          )}
+
           
           {(gameState === 'gameOver' || gameState === 'won') && (
             <button
@@ -421,21 +416,12 @@ const SpaceInvadersGame = () => {
         </div>
       </div>
 
-      {/* Game Instructions */}
-      <div className="text-center text-gray-300 font-mono text-sm">
-        {isMobile ? (
-          <>
-            <p>TOUCH AND DRAG TO MOVE SHIP</p>
-            <p>AUTOMATIC SHOOTING ENABLED</p>
-            <p>CLICK RESTART TO PLAY AGAIN</p>
-          </>
-        ) : (
-          <>
-            <p>USE ARROWS TO MOVE, SPACE TO SHOOT</p>
-            <p>CLICK RESTART TO PLAY AGAIN</p>
-          </>
-        )}
-      </div>
+      {/* Mobile touch area indicator - positioned below game */}
+      {isMobile && gameState === 'playing' && (
+        <div className="mt-4 mx-4 h-8 bg-blue-500 bg-opacity-10 border border-blue-400 border-dashed rounded-lg flex items-center justify-center">
+          <span className="text-blue-300 text-xs font-mono opacity-70">TOUCH AREA - DRAG TO MOVE</span>
+        </div>
+      )}
     </div>
   );
 };
