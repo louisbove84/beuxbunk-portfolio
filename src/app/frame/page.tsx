@@ -64,9 +64,25 @@ const SpaceInvadersGame = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // Set canvas size
-    canvas.width = 320;
-    canvas.height = 320;
+    // Set canvas size based on device
+    if (isMobile) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      // Update player position for mobile (bottom of screen with room)
+      setGameObjects(prev => ({
+        ...prev,
+        player: { 
+          x: window.innerWidth / 2 - 10, 
+          y: window.innerHeight - 80, // 80px from bottom for touch area
+          width: 20, 
+          height: 20 
+        }
+      }));
+    } else {
+      canvas.width = 320;
+      canvas.height = 320;
+    }
     
     // Initialize enemies
     const enemies: GameObject[] = [];
@@ -300,6 +316,34 @@ const SpaceInvadersGame = () => {
     ctx.fillStyle = '#0a0a2e';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
+    // Draw touch indicator behind player (mobile only)
+    if (isMobile) {
+      // Draw semi-transparent circle behind ship
+      ctx.fillStyle = 'rgba(74, 144, 226, 0.2)';
+      ctx.beginPath();
+      ctx.arc(
+        gameObjects.player.x + gameObjects.player.width / 2,
+        gameObjects.player.y + gameObjects.player.height / 2,
+        40, // radius
+        0,
+        2 * Math.PI
+      );
+      ctx.fill();
+      
+      // Draw dashed circle border
+      ctx.strokeStyle = 'rgba(74, 144, 226, 0.4)';
+      ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.setLineDash([]); // Reset line dash
+      
+      // Draw small hand icon or arrow pointing to ship
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.font = '16px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('👆', gameObjects.player.x + gameObjects.player.width / 2, gameObjects.player.y - 10);
+    }
+    
     // Draw player
     ctx.fillStyle = '#4a90e2';
     ctx.fillRect(
@@ -381,22 +425,24 @@ const SpaceInvadersGame = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+    <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 ${isMobile ? 'p-0' : 'p-4'}`}>
       {/* Game Title */}
-      <div className="text-center mb-4">
-        <h1 className="text-3xl font-bold text-white font-mono">SPACE INVADERS</h1>
-      </div>
+      {!isMobile && (
+        <div className="text-center mb-4">
+          <h1 className="text-3xl font-bold text-white font-mono">SPACE INVADERS</h1>
+        </div>
+      )}
 
       {/* Game Canvas */}
-      <div className="flex justify-center mb-4">
-        <div className="relative">
+      <div className={`flex justify-center ${isMobile ? 'h-screen' : 'mb-4'}`}>
+        <div className="relative w-full h-full">
           <canvas
             ref={canvasRef}
-            className="border-2 border-blue-500 rounded-lg"
+            className={isMobile ? '' : 'border-2 border-blue-500 rounded-lg'}
             style={{
               backgroundColor: '#0a0a2e',
-              maxWidth: '100%',
-              height: 'auto',
+              width: isMobile ? '100vw' : '320px',
+              height: isMobile ? '100vh' : '320px',
               touchAction: 'none', // Prevent scrolling on touch
             }}
             onTouchStart={isMobile ? handleTouchStart : undefined}
@@ -416,12 +462,7 @@ const SpaceInvadersGame = () => {
         </div>
       </div>
 
-      {/* Mobile touch area indicator - positioned below game */}
-      {isMobile && gameState === 'playing' && (
-        <div className="mt-4 mx-4 h-8 bg-blue-500 bg-opacity-10 border border-blue-400 border-dashed rounded-lg flex items-center justify-center">
-          <span className="text-blue-300 text-xs font-mono opacity-70">TOUCH AREA - DRAG TO MOVE</span>
-        </div>
-      )}
+
     </div>
   );
 };
