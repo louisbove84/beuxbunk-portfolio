@@ -4,7 +4,7 @@
     "version": "1",
     "iconUrl": "https://www.beuxbunk.com/itsFine.jpg",
     "homeUrl": "https://www.beuxbunk.com",
-    "imageUrl": "https://www.beuxbunk.com/itsFine.jpg",
+    "imageUrl": "https://www.beuxbunk.com/itsFine-3x2.jpg",
     "buttonTitle": "Play Meme Games",
     "splashImageUrl": "https://www.beuxbunk.com/itsFine.jpg",
     "splashBackgroundColor": "#FF6B6B",
@@ -16,9 +16,9 @@
       "https://www.beuxbunk.com/images/screenshot2.svg"
     ],
     "primaryCategory": "games",
-    "heroImageUrl": "https://www.beuxbunk.com/itsFine.jpg",
+    "heroImageUrl": "https://www.beuxbunk.com/itsFine-3x2.jpg",
     "tagline": "memes",
-    "ogImageUrl": "https://www.beuxbunk.com/itsFine.jpg"
+    "ogImageUrl": "https://www.beuxbunk.com/itsFine-3x2.jpg"
   },
   "accountAssociation": {
     "header": "eyJmaWQiOjg4NjUwMywidHlwZSI6ImF1dGgiLCJrZXkiOiIweEQyRTc4MzlDOTI2QTlBMzQ5ODdFM0E4NjI2ODFDYTUyZmU2M2M0ZTYifQ",

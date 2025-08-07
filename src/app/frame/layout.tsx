@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Meme Games Hub - Choose Your Chaos',
     description: 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
-    images: ['https://www.beuxbunk.com/itsFine.jpg'],
+    images: ['https://www.beuxbunk.com/itsFine-3x2.jpg'],
     type: 'website',
     url: 'https://www.beuxbunk.com/frame',
   },
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     // Mini App embed (new format)
     'fc:miniapp': JSON.stringify({
       version: "1",
-      imageUrl: "https://www.beuxbunk.com/itsFine.jpg",
+      imageUrl: "https://www.beuxbunk.com/itsFine-3x2.jpg",
       button: {
         title: "🎮 Play Meme Games",
         action: {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     }),
     // Standard Farcaster Frame meta tags (for backward compatibility)
     'fc:frame': 'vNext',
-    'fc:frame:image': 'https://www.beuxbunk.com/itsFine.jpg',
+    'fc:frame:image': 'https://www.beuxbunk.com/itsFine-3x2.jpg',
     'fc:frame:post_url': 'https://www.beuxbunk.com/api/frame',
     'fc:frame:button:1': '🚀 Space Invaders',
     'fc:frame:button:1:action': 'post',
@@ -39,15 +39,15 @@ export const metadata: Metadata = {
     'twitter:card': 'summary_large_image',
     'twitter:title': 'Meme Games Hub - Choose Your Chaos',
     'twitter:description': 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
-    'twitter:image': 'https://www.beuxbunk.com/itsFine.jpg',
+    'twitter:image': 'https://www.beuxbunk.com/itsFine-3x2.jpg',
     'twitter:site': '@beuxbunk',
     
     // Additional Open Graph for better feed display
     'og:title': 'Meme Games Hub - Choose Your Chaos',
     'og:description': 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
-    'og:image': 'https://www.beuxbunk.com/itsFine.jpg',
+    'og:image': 'https://www.beuxbunk.com/itsFine-3x2.jpg',
     'og:image:width': '1200',
-    'og:image:height': '630',
+    'og:image:height': '800',
     'og:type': 'website',
     'og:url': 'https://www.beuxbunk.com/frame',
   },
