@@ -8,32 +8,43 @@ interface GameObject {
   y: number;
   width: number;
   height: number;
-  velocity?: number;
+  type?: 'flame' | 'debris' | 'coffee';
 }
 
 interface GameObjects {
-  player: GameObject;
+  player: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    velocityY: number;
+    isJumping: boolean;
+    isDucking: boolean;
+  };
   obstacles: GameObject[];
-  clouds: GameObject[];
+  collectibles: GameObject[];
 }
 
-const SideScrollGame = () => {
+const ThisIsFineGame = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameState, setGameState] = useState('playing');
   const [score, setScore] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [gameObjects, setGameObjects] = useState<GameObjects>({
+    player: { x: 50, y: 0, width: 40, height: 50, velocityY: 0, isJumping: false, isDucking: false },
+    obstacles: [],
+    collectibles: [],
+  });
   const [gameWidth, setGameWidth] = useState(320);
   const [gameHeight, setGameHeight] = useState(320);
-  const [isJumping, setIsJumping] = useState(false);
-  const [gameObjects, setGameObjects] = useState<GameObjects>({
-    player: { x: 50, y: 200, width: 20, height: 20, velocity: 0 },
-    obstacles: [],
-    clouds: [],
-  });
+  const groundY = 0; // Will be set dynamically
+  const gravity = 0.5;
+  const jumpPower = -10;
+  const scrollSpeed = 2;
 
   // Initialize the game when component mounts
   useEffect(() => {
-    console.log('Side Scroll game initialized');
+    console.log('This Is Fine game initialized');
     
     // Initialize SDK and tell Farcaster the app is ready
     const initializeSDK = async () => {
@@ -70,6 +81,7 @@ const SideScrollGame = () => {
     
     // Set canvas size based on device
     const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
     
     // Set actual canvas size (internal resolution)
     canvas.width = gameWidth * dpr;
@@ -82,31 +94,20 @@ const SideScrollGame = () => {
     canvas.style.width = gameWidth + 'px';
     canvas.style.height = gameHeight + 'px';
     
-    // Initialize player position
-    const groundY = gameHeight - 60;
+    // Update player position
+    const playerHeight = 50;
     setGameObjects(prev => ({
       ...prev,
       player: { 
         x: 50, 
-        y: groundY - 20, 
-        width: 20, 
-        height: 20,
-        velocity: 0
+        y: gameHeight - playerHeight - 50, // Ground level
+        width: 40, 
+        height: playerHeight,
+        velocityY: 0,
+        isJumping: false,
+        isDucking: false
       }
     }));
-    
-    // Initialize background clouds
-    const clouds: GameObject[] = [];
-    for (let i = 0; i < 5; i++) {
-      clouds.push({
-        x: Math.random() * gameWidth,
-        y: Math.random() * (gameHeight / 3),
-        width: 30 + Math.random() * 20,
-        height: 15 + Math.random() * 10,
-      });
-    }
-    
-    setGameObjects(prev => ({ ...prev, clouds }));
   }, [gameWidth, gameHeight]);
 
   // Game loop
@@ -115,111 +116,182 @@ const SideScrollGame = () => {
 
     const gameLoop = setInterval(() => {
       setGameObjects(prev => {
-        const groundY = gameHeight - 60;
-        const newPlayer = { ...prev.player };
-        
-        // Apply gravity
-        if (newPlayer.y < groundY - 20) {
-          newPlayer.velocity = (newPlayer.velocity || 0) + 0.8; // gravity
-          newPlayer.y += newPlayer.velocity;
-        } else {
-          // On ground
-          newPlayer.y = groundY - 20;
-          newPlayer.velocity = 0;
-          setIsJumping(false);
+        let { player, obstacles, collectibles } = prev;
+
+        // Apply gravity and jumping
+        player.velocityY += gravity;
+        player.y += player.velocityY;
+
+        // Ground collision
+        const groundLevel = gameHeight - 50 - (player.isDucking ? 25 : player.height);
+        if (player.y > groundLevel) {
+          player.y = groundLevel;
+          player.velocityY = 0;
+          player.isJumping = false;
         }
-        
-        // Move obstacles left and add new ones
-        const obstacles = prev.obstacles
-          .map(obstacle => ({ ...obstacle, x: obstacle.x - 3 }))
-          .filter(obstacle => obstacle.x > -obstacle.width);
-        
-        // Add new obstacles randomly
-        if (Math.random() < 0.02 && (obstacles.length === 0 || obstacles[obstacles.length - 1].x < gameWidth - 200)) {
+
+        // Duck height adjustment
+        if (player.isDucking) {
+          player.height = 25;
+        } else {
+          player.height = 50;
+        }
+
+        // Move obstacles and collectibles left (scroll)
+        obstacles = obstacles.map(obs => ({ ...obs, x: obs.x - scrollSpeed }))
+          .filter(obs => obs.x + obs.width > 0);
+
+        collectibles = collectibles.map(col => ({ ...col, x: col.x - scrollSpeed }))
+          .filter(col => col.x + col.width > 0);
+
+        // Spawn new obstacles and collectibles
+        if (Math.random() < 0.05) { // Chance to spawn flame on ground
           obstacles.push({
             x: gameWidth,
-            y: groundY - 30,
+            y: gameHeight - 50 - 30,
             width: 20,
             height: 30,
+            type: 'flame'
           });
         }
-        
-        // Move clouds slowly
-        const clouds = prev.clouds.map(cloud => ({
-          ...cloud,
-          x: cloud.x - 0.5 < -cloud.width ? gameWidth + Math.random() * 100 : cloud.x - 0.5,
-        }));
-        
-        // Check collisions
-        const playerRect = {
-          x: newPlayer.x,
-          y: newPlayer.y,
-          width: newPlayer.width,
-          height: newPlayer.height,
-        };
-        
-        const collision = obstacles.some(obstacle => {
-          return (
-            playerRect.x < obstacle.x + obstacle.width &&
-            playerRect.x + playerRect.width > obstacle.x &&
-            playerRect.y < obstacle.y + obstacle.height &&
-            playerRect.y + playerRect.height > obstacle.y
-          );
-        });
-        
-        if (collision) {
-          setGameState('gameOver');
-          return prev;
+        if (Math.random() < 0.03) { // Chance to spawn debris from ceiling
+          obstacles.push({
+            x: gameWidth,
+            y: 0,
+            width: 30,
+            height: 40,
+            type: 'debris'
+          });
         }
-        
+        if (Math.random() < 0.02) { // Chance to spawn coffee
+          collectibles.push({
+            x: gameWidth,
+            y: Math.random() * (gameHeight - 150) + 50,
+            width: 20,
+            height: 20,
+            type: 'coffee'
+          });
+        }
+
+        // Check collisions with obstacles
+        const playerHit = obstacles.some(obs => 
+          player.x < obs.x + obs.width &&
+          player.x + player.width > obs.x &&
+          player.y < obs.y + obs.height &&
+          player.y + player.height > obs.y
+        );
+
+        if (playerHit) {
+          setGameState('gameOver');
+        }
+
+        // Check collectibles
+        const newCollectibles = collectibles.filter(col => {
+          const collected = player.x < col.x + col.width &&
+            player.x + player.width > col.x &&
+            player.y < col.y + col.height &&
+            player.y + player.height > col.y;
+          
+          if (collected) {
+            setScore(prev => prev + 10);
+            return false;
+          }
+          return true;
+        });
+
+        // Increase score over time
+        setScore(prev => prev + 1);
+
         return {
-          player: newPlayer,
+          player,
           obstacles,
-          clouds,
+          collectibles: newCollectibles
         };
       });
-      
-      // Increase score
-      setScore(prev => prev + 1);
-    }, 1000 / 60); // 60 FPS
+    }, 30);
 
     return () => clearInterval(gameLoop);
-  }, [gameState, gameHeight]);
+  }, [gameState, gameWidth, gameHeight]);
 
-  // Handle keyboard input (desktop)
+  // Handle keyboard input
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (gameState !== 'playing') return;
-      
-      if (e.code === 'Space' && !isJumping) {
-        e.preventDefault();
-        jump();
+
+      if (e.key === 'ArrowDown') {
+        setGameObjects(prev => ({
+          ...prev,
+          player: { ...prev.player, isDucking: true }
+        }));
+      }
+      if (e.key === ' ' || e.key === 'ArrowUp') {
+        setGameObjects(prev => {
+          if (!prev.player.isJumping) {
+            return {
+              ...prev,
+              player: { ...prev.player, velocityY: jumpPower, isJumping: true }
+            };
+          }
+          return prev;
+        });
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown') {
+        setGameObjects(prev => ({
+          ...prev,
+          player: { ...prev.player, isDucking: false }
+        }));
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [gameState, isJumping, gameWidth]);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [gameState]);
 
   // Mobile touch controls
-  const handleTouchStart = () => {
-    if (gameState === 'playing' && !isJumping) {
-      jump();
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (gameState !== 'playing') return;
+    
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const touchY = touch.clientY - rect.top;
+
+    if (touchY < gameHeight / 2) {
+      // Upper half: jump
+      setGameObjects(prev => {
+        if (!prev.player.isJumping) {
+          return {
+            ...prev,
+            player: { ...prev.player, velocityY: jumpPower, isJumping: true }
+          };
+        }
+        return prev;
+      });
+    } else {
+      // Lower half: duck
+      setGameObjects(prev => ({
+        ...prev,
+        player: { ...prev.player, isDucking: true }
+      }));
     }
   };
 
-  const jump = () => {
-    setIsJumping(true);
+  const handleTouchEnd = (e: React.TouchEvent) => {
     setGameObjects(prev => ({
       ...prev,
-      player: {
-        ...prev.player,
-        velocity: -15, // Jump velocity
-      }
+      player: { ...prev.player, isDucking: false }
     }));
   };
 
-  // Render game
+  // Draw game
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -227,61 +299,78 @@ const SideScrollGame = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // Clear canvas with sky gradient
-    const gradient = ctx.createLinearGradient(0, 0, 0, gameHeight);
-    gradient.addColorStop(0, '#87CEEB'); // Sky blue
-    gradient.addColorStop(1, '#98FB98'); // Light green
-    ctx.fillStyle = gradient;
+    // Clear canvas
+    ctx.fillStyle = '#0a0a2e';
     ctx.fillRect(0, 0, gameWidth, gameHeight);
     
-    // Draw clouds
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    gameObjects.clouds.forEach(cloud => {
-      ctx.beginPath();
-      ctx.arc(cloud.x, cloud.y, cloud.width / 3, 0, 2 * Math.PI);
-      ctx.arc(cloud.x + cloud.width / 3, cloud.y, cloud.width / 2, 0, 2 * Math.PI);
-      ctx.arc(cloud.x + (cloud.width * 2) / 3, cloud.y, cloud.width / 3, 0, 2 * Math.PI);
-      ctx.fill();
-    });
+    // Draw background (simple burning room)
+    ctx.fillStyle = '#8B4513'; // Brown floor
+    ctx.fillRect(0, gameHeight - 50, gameWidth, 50);
     
-    // Draw ground
-    const groundY = gameHeight - 60;
-    ctx.fillStyle = '#8B4513'; // Brown
-    ctx.fillRect(0, groundY, gameWidth, 60);
+    // Draw player (simple dog with hat)
+    const { player } = gameObjects;
+    const dogX = player.x;
+    const dogY = player.y;
+    const dogW = player.width;
+    const dogH = player.height;
     
-    // Draw grass on ground
-    ctx.fillStyle = '#228B22'; // Green
-    ctx.fillRect(0, groundY, gameWidth, 10);
+    // Body
+    ctx.fillStyle = '#8B4513';
+    ctx.fillRect(dogX + dogW * 0.2, dogY + dogH * 0.4, dogW * 0.6, dogH * 0.6);
     
-    // Draw touch indicator for mobile (full screen tap area)
-    if (isMobile && gameState === 'playing') {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-      ctx.font = '16px monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('TAP TO JUMP', gameWidth / 2, gameHeight - 20);
-    }
+    // Head
+    ctx.beginPath();
+    ctx.arc(dogX + dogW * 0.5, dogY + dogH * 0.3, dogH * 0.25, 0, 2 * Math.PI);
+    ctx.fill();
     
-    // Draw player (simple character)
-    ctx.fillStyle = '#FF6B6B';
-    ctx.fillRect(gameObjects.player.x, gameObjects.player.y, gameObjects.player.width, gameObjects.player.height);
+    // Eyes
+    ctx.fillStyle = '#FFFFFF';
+    ctx.beginPath();
+    ctx.arc(dogX + dogW * 0.35, dogY + dogH * 0.25, dogH * 0.05, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(dogX + dogW * 0.65, dogY + dogH * 0.25, dogH * 0.05, 0, 2 * Math.PI);
+    ctx.fill();
     
-    // Draw simple face on player
-    ctx.fillStyle = '#000';
-    ctx.fillRect(gameObjects.player.x + 5, gameObjects.player.y + 5, 2, 2); // Eye
-    ctx.fillRect(gameObjects.player.x + 13, gameObjects.player.y + 5, 2, 2); // Eye
-    ctx.fillRect(gameObjects.player.x + 7, gameObjects.player.y + 12, 6, 2); // Mouth
+    // Hat
+    ctx.fillStyle = '#A0522D';
+    ctx.fillRect(dogX + dogW * 0.3, dogY, dogW * 0.4, dogH * 0.1);
+    ctx.fillRect(dogX + dogW * 0.2, dogY + dogH * 0.1, dogW * 0.6, dogH * 0.05);
+    
+    // Legs (simple)
+    ctx.fillStyle = '#8B4513';
+    ctx.fillRect(dogX, dogY + dogH * 0.7, dogW * 0.2, dogH * 0.3);
+    ctx.fillRect(dogX + dogW * 0.8, dogY + dogH * 0.7, dogW * 0.2, dogH * 0.3);
     
     // Draw obstacles
-    ctx.fillStyle = '#8B4513';
-    gameObjects.obstacles.forEach(obstacle => {
-      ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+    gameObjects.obstacles.forEach(obs => {
+      if (obs.type === 'flame') {
+        ctx.fillStyle = '#FF4500';
+        ctx.beginPath();
+        ctx.moveTo(obs.x, obs.y + obs.height);
+        ctx.lineTo(obs.x + obs.width / 2, obs.y);
+        ctx.lineTo(obs.x + obs.width, obs.y + obs.height);
+        ctx.closePath();
+        ctx.fill();
+      } else if (obs.type === 'debris') {
+        ctx.fillStyle = '#808080';
+        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+      }
+    });
+    
+    // Draw collectibles (coffee cups)
+    gameObjects.collectibles.forEach(col => {
+      ctx.fillStyle = '#D2B48C';
+      ctx.fillRect(col.x, col.y, col.width, col.height);
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(col.x + col.width * 0.7, col.y + col.height / 2, col.width * 0.3, col.height / 2); // Handle
     });
     
     // Draw score
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = '#ffffff';
     ctx.font = '16px "Courier New"';
-    ctx.textAlign = 'left';
-    ctx.fillText(`SCORE: ${Math.floor(score / 10)}`, 10, 30);
+    const scoreText = `SCORE: ${score}`;
+    ctx.fillText(scoreText, gameWidth / 2 - ctx.measureText(scoreText).width / 2, 30);
     
     // Draw game over screen
     if (gameState === 'gameOver') {
@@ -289,34 +378,31 @@ const SideScrollGame = () => {
       ctx.fillRect(0, 0, gameWidth, gameHeight);
       ctx.fillStyle = '#ff6b6b';
       ctx.font = '24px "Courier New"';
-      ctx.textAlign = 'center';
-      const gameOverText = 'GAME OVER';
-      ctx.fillText(gameOverText, gameWidth / 2, gameHeight / 2 - 20);
+      const gameOverText = 'THIS IS NOT FINE!';
+      ctx.fillText(gameOverText, gameWidth / 2 - ctx.measureText(gameOverText).width / 2, gameHeight / 2 - 20);
       ctx.font = '16px "Courier New"';
-      const finalScoreText = `DISTANCE: ${Math.floor(score / 10)}`;
-      ctx.fillText(finalScoreText, gameWidth / 2, gameHeight / 2 + 10);
+      const finalScoreText = `FINAL SCORE: ${score}`;
+      ctx.fillText(finalScoreText, gameWidth / 2 - ctx.measureText(finalScoreText).width / 2, gameHeight / 2 + 10);
     }
-  }, [gameObjects, score, gameState, gameWidth, gameHeight, isMobile]);
+  }, [gameObjects, score, gameState, gameWidth, gameHeight]);
 
   const resetGame = () => {
     setGameState('playing');
     setScore(0);
-    setIsJumping(false);
     
-    const groundY = gameHeight - 60;
     setGameObjects({
-      player: { x: 50, y: groundY - 20, width: 20, height: 20, velocity: 0 },
+      player: { x: 50, y: gameHeight - 50 - 50, width: 40, height: 50, velocityY: 0, isJumping: false, isDucking: false },
       obstacles: [],
-      clouds: gameObjects.clouds, // Keep clouds
+      collectibles: [],
     });
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-blue-400 via-green-400 to-blue-400 ${isMobile ? 'p-0' : 'p-4'}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 ${isMobile ? 'p-0' : 'p-4'}`}>
       {/* Game Title */}
       {!isMobile && (
         <div className="text-center mb-4">
-          <h1 className="text-3xl font-bold text-white font-mono">ENDLESS RUNNER</h1>
+          <h1 className="text-3xl font-bold text-white font-mono">THIS IS FINE</h1>
         </div>
       )}
 
@@ -325,21 +411,22 @@ const SideScrollGame = () => {
         <div className="relative w-full h-full">
           <canvas
             ref={canvasRef}
-            className={isMobile ? '' : 'border-2 border-green-500 rounded-lg'}
+            className={isMobile ? '' : 'border-2 border-blue-500 rounded-lg'}
             style={{
-              backgroundColor: '#87CEEB',
+              backgroundColor: '#0a0a2e',
               width: `${gameWidth}px`,
               height: `${gameHeight}px`,
               touchAction: 'none', // Prevent scrolling on touch
               imageRendering: 'pixelated', // Keep crisp pixels for retro feel
             }}
             onTouchStart={isMobile ? handleTouchStart : undefined}
+            onTouchEnd={isMobile ? handleTouchEnd : undefined}
           />
           
-          {(gameState === 'gameOver') && (
+          {gameState === 'gameOver' && (
             <button
               onClick={resetGame}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-20 bg-green-500 text-white font-mono font-bold px-4 py-2 rounded hover:bg-green-600 transition-all duration-300"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-20 bg-red-500 text-white font-mono font-bold px-4 py-2 rounded hover:bg-red-600 transition-all duration-300"
             >
               RESTART
             </button>
@@ -350,7 +437,7 @@ const SideScrollGame = () => {
   );
 };
 
-export default SideScrollGame;
+export default ThisIsFineGame;
 
 // Required for Farcaster Mini Apps - forces dynamic rendering
 export const dynamic = 'force-dynamic';
