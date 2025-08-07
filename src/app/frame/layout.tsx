@@ -6,14 +6,29 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Meme Games Hub - Choose Your Chaos',
     description: 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
-    images: ['https://www.beuxbunk.com/api/frame-image'],
+    images: ['https://www.beuxbunk.com/itsFine.jpg'],
     type: 'website',
     url: 'https://www.beuxbunk.com/frame',
   },
   other: {
-    // Standard Farcaster Frame meta tags
+    // Mini App embed (new format)
+    'fc:miniapp': JSON.stringify({
+      version: "1",
+      imageUrl: "https://www.beuxbunk.com/itsFine.jpg",
+      button: {
+        title: "🎮 Play Meme Games",
+        action: {
+          type: "launch_miniapp",
+          url: "https://www.beuxbunk.com/frame",
+          name: "Meme Games Hub",
+          splashImageUrl: "https://www.beuxbunk.com/itsFine.jpg",
+          splashBackgroundColor: "#FF6B6B"
+        }
+      }
+    }),
+    // Standard Farcaster Frame meta tags (for backward compatibility)
     'fc:frame': 'vNext',
-    'fc:frame:image': 'https://www.beuxbunk.com/api/frame-image',
+    'fc:frame:image': 'https://www.beuxbunk.com/itsFine.jpg',
     'fc:frame:post_url': 'https://www.beuxbunk.com/api/frame',
     'fc:frame:button:1': '🚀 Space Invaders',
     'fc:frame:button:1:action': 'post',
@@ -24,13 +39,13 @@ export const metadata: Metadata = {
     'twitter:card': 'summary_large_image',
     'twitter:title': 'Meme Games Hub - Choose Your Chaos',
     'twitter:description': 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
-    'twitter:image': 'https://www.beuxbunk.com/api/frame-image',
+    'twitter:image': 'https://www.beuxbunk.com/itsFine.jpg',
     'twitter:site': '@beuxbunk',
     
     // Additional Open Graph for better feed display
     'og:title': 'Meme Games Hub - Choose Your Chaos',
     'og:description': 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
-    'og:image': 'https://www.beuxbunk.com/api/frame-image',
+    'og:image': 'https://www.beuxbunk.com/itsFine.jpg',
     'og:image:width': '1200',
     'og:image:height': '630',
     'og:type': 'website',
