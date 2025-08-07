@@ -14,8 +14,6 @@ export const metadata: Metadata = {
     'fc:frame:image': 'https://www.beuxbunk.com/api/frame-image',
     'fc:frame:post_url': 'https://www.beuxbunk.com/api/frame',
     'fc:frame:button:1': '🎮 Play Space Invaders',
-    'fc:frame:button:1:action': 'link',
-    'fc:frame:button:1:target': 'https://www.beuxbunk.com/frame',
     
     // Twitter/X meta tags for better sharing
     'twitter:card': 'summary_large_image',
