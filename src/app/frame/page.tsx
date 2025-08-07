@@ -29,6 +29,8 @@ const SpaceInvadersGame = () => {
     enemies: [],
     enemyBullets: [],
   });
+  const [gameWidth, setGameWidth] = useState(320);
+  const [gameHeight, setGameHeight] = useState(320);
 
   // Initialize the game when component mounts
   useEffect(() => {
@@ -47,16 +49,19 @@ const SpaceInvadersGame = () => {
     
     initializeSDK();
     
-    // Detect if we're on mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    // Detect if we're on mobile and set dimensions
+    const updateDimensions = () => {
+      const mobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+      setIsMobile(mobile);
+      setGameWidth(mobile ? window.innerWidth : 320);
+      setGameHeight(mobile ? window.innerHeight : 320);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  // Initialize game
+  // Initialize canvas and game objects when dimensions change
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -65,53 +70,56 @@ const SpaceInvadersGame = () => {
     if (!ctx) return;
     
     // Set canvas size based on device
-    if (isMobile) {
-      // Set high resolution for crisp graphics
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      
-      // Set actual canvas size (internal resolution)
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      
-      // Scale the drawing context to match device pixel ratio
-      ctx.scale(dpr, dpr);
-      
-      // Set CSS size to fill screen
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-      
-      // Update player position for mobile (bottom of screen with room)
-      setGameObjects(prev => ({
-        ...prev,
-        player: { 
-          x: window.innerWidth / 2 - 10, 
-          y: window.innerHeight - 80, // 80px from bottom for touch area
-          width: 20, 
-          height: 20 
-        }
-      }));
-    } else {
-      canvas.width = 320;
-      canvas.height = 320;
-    }
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
     
-    // Initialize enemies
+    // Set actual canvas size (internal resolution)
+    canvas.width = gameWidth * dpr;
+    canvas.height = gameHeight * dpr;
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(dpr, dpr);
+    
+    // Set CSS size
+    canvas.style.width = gameWidth + 'px';
+    canvas.style.height = gameHeight + 'px';
+    
+    // Update player position
+    setGameObjects(prev => ({
+      ...prev,
+      player: { 
+        x: gameWidth / 2 - 10, 
+        y: gameHeight - 120, // Moved higher to make room for controls
+        width: 20, 
+        height: 20 
+      }
+    }));
+    
+    // Initialize enemies, centered
+    const enemyWidth = 20;
+    const enemyHeight = 15;
+    const colGap = 15;
+    const rowGap = 30;
+    const numCols = 8;
+    const numRows = 3;
+    const enemiesSpan = (numCols - 1) * (enemyWidth + colGap) + enemyWidth;
+    const leftMargin = (gameWidth - enemiesSpan) / 2;
+    
     const enemies: GameObject[] = [];
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 8; col++) {
+    for (let row = 0; row < numRows; row++) {
+      for (let col = 0; col < numCols; col++) {
         enemies.push({
-          x: col * 35 + 20,
-          y: row * 30 + 50,
-          width: 20,
-          height: 15,
+          x: col * (enemyWidth + colGap) + leftMargin,
+          y: row * (enemyHeight + rowGap) + 50,
+          width: enemyWidth,
+          height: enemyHeight,
           direction: 1,
         });
       }
     }
     
     setGameObjects(prev => ({ ...prev, enemies }));
-  }, []);
+  }, [gameWidth, gameHeight]);
 
   // Auto-shooting for mobile
   useEffect(() => {
@@ -123,7 +131,7 @@ const SpaceInvadersGame = () => {
         bullets: [
           ...prev.bullets,
           {
-            x: prev.player.x + prev.player.width / 2,
+            x: prev.player.x + prev.player.width / 2 - 1,
             y: prev.player.y,
             width: 2,
             height: 8,
@@ -148,11 +156,18 @@ const SpaceInvadersGame = () => {
         }));
 
         // Change direction when hitting edges
-        if (enemies.some((e: GameObject) => e.x <= 0 || e.x >= 300)) {
+        const enemyWidth = 20; // Consistent with init
+        if (enemies.some((e: GameObject) => e.x <= 0 || e.x >= gameWidth - enemyWidth)) {
           enemies.forEach((enemy: GameObject) => {
             enemy.direction = (enemy.direction || 1) * -1;
             enemy.y += 10;
           });
+        }
+
+        // Check if enemies reached bottom
+        if (enemies.some((e: GameObject) => e.y + e.height >= prev.player.y)) {
+          setGameState('gameOver');
+          return prev;
         }
 
         // Move bullets
@@ -165,7 +180,7 @@ const SpaceInvadersGame = () => {
         const enemyBullets = prev.enemyBullets.map((bullet: GameObject) => ({
           ...bullet,
           y: bullet.y + 2,
-        })).filter((bullet: GameObject) => bullet.y < 320);
+        })).filter((bullet: GameObject) => bullet.y < gameHeight);
 
         // Enemy shooting logic
         const newEnemyBullets = [...enemyBullets];
@@ -232,7 +247,7 @@ const SpaceInvadersGame = () => {
     }, 50);
 
     return () => clearInterval(gameLoop);
-  }, [gameState]);
+  }, [gameState, gameWidth, gameHeight]);
 
   // Handle keyboard input
   useEffect(() => {
@@ -259,7 +274,7 @@ const SpaceInvadersGame = () => {
               ...prev,
               player: {
                 ...prev.player,
-                x: Math.min(300, prev.player.x + 10),
+                x: Math.min(gameWidth - prev.player.width, prev.player.x + 10),
               },
             };
           case ' ':
@@ -270,7 +285,7 @@ const SpaceInvadersGame = () => {
                 bullets: [
                   ...prev.bullets,
                   {
-                    x: prev.player.x + prev.player.width / 2,
+                    x: prev.player.x + prev.player.width / 2 - 1,
                     y: prev.player.y,
                     width: 2,
                     height: 8,
@@ -287,7 +302,7 @@ const SpaceInvadersGame = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [gameState, isMobile]);
+  }, [gameState, isMobile, gameWidth]);
 
   // Mobile touch controls
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -299,15 +314,14 @@ const SpaceInvadersGame = () => {
 
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const touchX = (touch.clientX - rect.left) * scaleX;
+    const touchX = touch.clientX - rect.left; // Logical CSS pixels, no * dpr
 
     // Move player to touch position (constrained to canvas width)
     setGameObjects(prev => ({
       ...prev,
       player: {
         ...prev.player,
-        x: Math.max(0, Math.min(canvas.width - prev.player.width, touchX - prev.player.width / 2)),
+        x: Math.max(0, Math.min(gameWidth - prev.player.width, touchX - prev.player.width / 2)),
       },
     }));
   };
@@ -326,17 +340,17 @@ const SpaceInvadersGame = () => {
     
     // Clear canvas
     ctx.fillStyle = '#0a0a2e';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, gameWidth, gameHeight);
     
     // Draw touch indicator below player (mobile only)
     if (isMobile) {
       // Draw semi-transparent circle below ship
       const circleX = gameObjects.player.x + gameObjects.player.width / 2;
-      const circleY = gameObjects.player.y + gameObjects.player.height + 50;
+      const circleY = gameObjects.player.y + gameObjects.player.height + 30; // Reduced offset
       
       ctx.fillStyle = 'rgba(74, 144, 226, 0.2)';
       ctx.beginPath();
-      ctx.arc(circleX, circleY, 40, 0, 2 * Math.PI);
+      ctx.arc(circleX, circleY, 30, 0, 2 * Math.PI); // Reduced radius
       ctx.fill();
       
       // Draw dashed circle border
@@ -348,24 +362,36 @@ const SpaceInvadersGame = () => {
       
       // Draw small hand icon in the center of circle
       ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-      ctx.font = '24px monospace';
+      ctx.font = '20px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('👆', circleX, circleY + 8);
+      ctx.fillText('👆', circleX, circleY + 6);
     }
     
-    // Draw player
+    // Draw player (simple ship shape)
     ctx.fillStyle = '#4a90e2';
-    ctx.fillRect(
-      gameObjects.player.x,
-      gameObjects.player.y,
-      gameObjects.player.width,
-      gameObjects.player.height
-    );
+    ctx.beginPath();
+    ctx.moveTo(gameObjects.player.x + gameObjects.player.width / 2, gameObjects.player.y);
+    ctx.lineTo(gameObjects.player.x, gameObjects.player.y + gameObjects.player.height);
+    ctx.lineTo(gameObjects.player.x + gameObjects.player.width, gameObjects.player.y + gameObjects.player.height);
+    ctx.closePath();
+    ctx.fill();
     
-    // Draw enemies
+    // Draw enemies (simple invader shape)
     ctx.fillStyle = '#ff6b6b';
     gameObjects.enemies.forEach((enemy: GameObject) => {
-      ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+      const w = enemy.width;
+      const h = enemy.height;
+      const x = enemy.x;
+      const y = enemy.y;
+      // Body
+      ctx.fillRect(x + w * 0.1, y + h * 0.2, w * 0.8, h * 0.4);
+      ctx.fillRect(x + w * 0.3, y, w * 0.4, h * 0.2);
+      // Legs
+      ctx.fillRect(x, y + h * 0.6, w * 0.2, h * 0.4);
+      ctx.fillRect(x + w * 0.8, y + h * 0.6, w * 0.2, h * 0.4);
+      // Arms
+      ctx.fillRect(x + w * 0.2, y + h * 0.6, w * 0.2, h * 0.2);
+      ctx.fillRect(x + w * 0.6, y + h * 0.6, w * 0.2, h * 0.2);
     });
     
     // Draw bullets
@@ -380,53 +406,67 @@ const SpaceInvadersGame = () => {
       ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     });
     
-    // Draw score
+    // Draw score (centered at top)
     ctx.fillStyle = '#ffffff';
     ctx.font = '16px "Courier New"';
-    ctx.fillText(`SCORE: ${score}`, 10, 30);
+    const scoreText = `SCORE: ${score}`;
+    ctx.fillText(scoreText, gameWidth / 2 - ctx.measureText(scoreText).width / 2, 30);
     
     // Draw game over screen
     if (gameState === 'gameOver') {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, gameWidth, gameHeight);
       ctx.fillStyle = '#ff6b6b';
       ctx.font = '24px "Courier New"';
-      ctx.fillText('GAME OVER', 80, 150);
+      const gameOverText = 'GAME OVER';
+      ctx.fillText(gameOverText, gameWidth / 2 - ctx.measureText(gameOverText).width / 2, gameHeight / 2 - 20);
       ctx.font = '16px "Courier New"';
-      ctx.fillText(`FINAL SCORE: ${score}`, 80, 180);
+      const finalScoreText = `FINAL SCORE: ${score}`;
+      ctx.fillText(finalScoreText, gameWidth / 2 - ctx.measureText(finalScoreText).width / 2, gameHeight / 2 + 10);
     }
     
     if (gameState === 'won') {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, gameWidth, gameHeight);
       ctx.fillStyle = '#4a90e2';
       ctx.font = '24px "Courier New"';
-      ctx.fillText('MISSION COMPLETE!', 60, 150);
+      const wonText = 'MISSION COMPLETE!';
+      ctx.fillText(wonText, gameWidth / 2 - ctx.measureText(wonText).width / 2, gameHeight / 2 - 20);
       ctx.font = '16px "Courier New"';
-      ctx.fillText(`SCORE: ${score}`, 80, 180);
+      const scoreTextWon = `SCORE: ${score}`;
+      ctx.fillText(scoreTextWon, gameWidth / 2 - ctx.measureText(scoreTextWon).width / 2, gameHeight / 2 + 10);
     }
-  }, [gameObjects, score, gameState]);
+  }, [gameObjects, score, gameState, gameWidth, gameHeight, isMobile]);
 
   const resetGame = () => {
     setGameState('playing');
     setScore(0);
     
     // Reinitialize enemies
+    const enemyWidth = 20;
+    const enemyHeight = 15;
+    const colGap = 15;
+    const rowGap = 30;
+    const numCols = 8;
+    const numRows = 3;
+    const enemiesSpan = (numCols - 1) * (enemyWidth + colGap) + enemyWidth;
+    const leftMargin = (gameWidth - enemiesSpan) / 2;
+    
     const enemies: GameObject[] = [];
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 8; col++) {
+    for (let row = 0; row < numRows; row++) {
+      for (let col = 0; col < numCols; col++) {
         enemies.push({
-          x: col * 35 + 20,
-          y: row * 30 + 50,
-          width: 20,
-          height: 15,
+          x: col * (enemyWidth + colGap) + leftMargin,
+          y: row * (enemyHeight + rowGap) + 50,
+          width: enemyWidth,
+          height: enemyHeight,
           direction: 1,
         });
       }
     }
     
     setGameObjects({
-      player: { x: 150, y: 280, width: 20, height: 20 },
+      player: { x: gameWidth / 2 - 10, y: gameHeight - 120, width: 20, height: 20 },
       bullets: [],
       enemies: enemies,
       enemyBullets: [],
@@ -450,8 +490,8 @@ const SpaceInvadersGame = () => {
             className={isMobile ? '' : 'border-2 border-blue-500 rounded-lg'}
             style={{
               backgroundColor: '#0a0a2e',
-              width: isMobile ? '100vw' : '320px',
-              height: isMobile ? '100vh' : '320px',
+              width: `${gameWidth}px`,
+              height: `${gameHeight}px`,
               touchAction: 'none', // Prevent scrolling on touch
               imageRendering: 'pixelated', // Keep crisp pixels for retro feel
             }}
@@ -459,20 +499,16 @@ const SpaceInvadersGame = () => {
             onTouchMove={isMobile ? handleTouchMove : undefined}
           />
           
-
-          
           {(gameState === 'gameOver' || gameState === 'won') && (
             <button
               onClick={resetGame}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-8 bg-red-500 text-white font-mono font-bold px-4 py-2 rounded hover:bg-red-600 transition-all duration-300"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-20 bg-red-500 text-white font-mono font-bold px-4 py-2 rounded hover:bg-red-600 transition-all duration-300"
             >
               RESTART
             </button>
           )}
         </div>
       </div>
-
-
     </div>
   );
 };
