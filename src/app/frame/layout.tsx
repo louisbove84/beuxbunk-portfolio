@@ -26,20 +26,13 @@ export const metadata: Metadata = {
         }
       }
     }),
-    // Standard Farcaster Frame meta tags (for backward compatibility)
-    'fc:frame': 'vNext',
-    'fc:frame:image': 'https://www.beuxbunk.com/itsFine-3x2.jpg',
-    'fc:frame:post_url': 'https://www.beuxbunk.com/api/frame',
-    'fc:frame:button:1': '🚀 Space Invaders',
-    'fc:frame:button:1:action': 'post',
-    'fc:frame:button:2': '🔥 This Is Fine',
-    'fc:frame:button:2:action': 'post',
     
     // Twitter/X meta tags for better sharing
     'twitter:card': 'summary_large_image',
     'twitter:title': 'Meme Games Hub - Choose Your Chaos',
     'twitter:description': 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
     'twitter:image': 'https://www.beuxbunk.com/itsFine-3x2.jpg',
+    'twitter:url': 'https://www.beuxbunk.com/frame',
     'twitter:site': '@beuxbunk',
     
     // Additional Open Graph for better feed display
