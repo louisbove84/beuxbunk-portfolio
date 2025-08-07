@@ -70,8 +70,7 @@ const SpaceInvadersGame = () => {
     if (!ctx) return;
     
     // Set canvas size based on device
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
+          const dpr = window.devicePixelRatio || 1;
     
     // Set actual canvas size (internal resolution)
     canvas.width = gameWidth * dpr;

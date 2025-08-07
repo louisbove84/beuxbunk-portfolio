@@ -116,7 +116,7 @@ const SideScrollGame = () => {
     const gameLoop = setInterval(() => {
       setGameObjects(prev => {
         const groundY = gameHeight - 60;
-        let newPlayer = { ...prev.player };
+        const newPlayer = { ...prev.player };
         
         // Apply gravity
         if (newPlayer.y < groundY - 20) {
@@ -130,7 +130,7 @@ const SideScrollGame = () => {
         }
         
         // Move obstacles left and add new ones
-        let obstacles = prev.obstacles
+        const obstacles = prev.obstacles
           .map(obstacle => ({ ...obstacle, x: obstacle.x - 3 }))
           .filter(obstacle => obstacle.x > -obstacle.width);
         
@@ -199,7 +199,7 @@ const SideScrollGame = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [gameState, isJumping]);
+  }, [gameState, isJumping, gameWidth]);
 
   // Mobile touch controls
   const handleTouchStart = () => {
