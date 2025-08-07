@@ -7,19 +7,19 @@
   "frame": {
     "version": "1",
     "name": "Space Invaders",
-    "iconUrl": "https://beuxbunk.com.app/icon.png",
-    "homeUrl": "https://beuxbunk.com.app/frame",
+    "iconUrl": "https://www.beuxbunk.com/icon.png",
+    "homeUrl": "https://www.beuxbunk.com/frame",
     "primaryCategory": "games",
     "description": "Interactive Space Invaders game built with MiniKit. Play the classic game with modern web technology and Farcaster integration.",
     "subtitle": "Space Engineer",
     "screenshotUrls": [
-      "https://beuxbunk.com.app/images/screenshot1.svg",
-      "https://beuxbunk.com.app/images/screenshot2.svg",
-      "https://beuxbunk.com.app/images/screenshot3.svg"
+      "https://www.beuxbunk.com/images/screenshot1.svg",
+      "https://www.beuxbunk.com/images/screenshot2.svg",
+      "https://www.beuxbunk.com/images/screenshot3.svg"
     ],
-    "imageUrl": "https://beuxbunk.com.app/hero-3x2.png",
-    "heroImageUrl": "https://beuxbunk.com.app/hero-3x2.png",
-    "splashImageUrl": "https://beuxbunk.com.app/splash.png",
+    "imageUrl": "https://www.beuxbunk.com/hero-3x2.png",
+    "heroImageUrl": "https://www.beuxbunk.com/hero-3x2.png",
+    "splashImageUrl": "https://www.beuxbunk.com/splash.png",
     "splashBackgroundColor": "#0a0a2e"
   }
 }
