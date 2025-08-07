@@ -14,101 +14,41 @@ export async function POST(request: NextRequest) {
     if (buttonIndex === 1) {
       // Play Space Invaders button
       return NextResponse.json({
-        frames: [
+        image: `${baseUrl}/api/frame-image`,
+        buttons: [
           {
-            image: `${baseUrl}/api/frame-image`,
-            buttons: [
-              {
-                label: '🎮 Play Game',
-                action: 'link',
-                target: `${baseUrl}/frame`,
-              },
-              {
-                label: '🏠 Back to Frame',
-                action: 'post',
-              },
-            ],
-            postUrl: `${baseUrl}/api/frame`,
+            label: '🎮 Play Game',
+            action: 'link',
+            target: `${baseUrl}/frame`,
+          },
+          {
+            label: '🏠 Back to Frame',
+            action: 'post',
           },
         ],
+        postUrl: `${baseUrl}/api/frame`,
       });
     } else if (buttonIndex === 2) {
       // Visit Portfolio button
       return NextResponse.json({
-        frames: [
+        image: `${baseUrl}/api/frame-image`,
+        buttons: [
           {
-            image: `${baseUrl}/api/frame-image`,
-            buttons: [
-              {
-                label: '🚀 View Portfolio',
-                action: 'link',
-                target: baseUrl,
-              },
-              {
-                label: '🎮 Play Game',
-                action: 'link',
-                target: `${baseUrl}/frame`,
-              },
-            ],
-            postUrl: `${baseUrl}/api/frame`,
+            label: '🚀 View Portfolio',
+            action: 'link',
+            target: baseUrl,
+          },
+          {
+            label: '🎮 Play Game',
+            action: 'link',
+            target: `${baseUrl}/frame`,
           },
         ],
+        postUrl: `${baseUrl}/api/frame`,
       });
     } else {
       // Default response (back button or initial load)
       return NextResponse.json({
-        frames: [
-          {
-            image: `${baseUrl}/api/frame-image`,
-            buttons: [
-              {
-                label: '🎮 Play Space Invaders',
-                action: 'post',
-              },
-              {
-                label: '🏠 Visit Portfolio',
-                action: 'link',
-                target: baseUrl,
-              },
-            ],
-            postUrl: `${baseUrl}/api/frame`,
-          },
-        ],
-      });
-    }
-  } catch (error) {
-    console.error('Frame API error:', error);
-    
-    const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
-    
-    return NextResponse.json({
-      frames: [
-        {
-          image: `${baseUrl}/api/frame-image`,
-          buttons: [
-            {
-              label: '🎮 Play Space Invaders',
-              action: 'post',
-            },
-            {
-              label: '🏠 Visit Portfolio',
-              action: 'link',
-              target: baseUrl,
-            },
-          ],
-          postUrl: `${baseUrl}/api/frame`,
-        },
-      ],
-    });
-  }
-}
-
-export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
-  
-  return NextResponse.json({
-    frames: [
-      {
         image: `${baseUrl}/api/frame-image`,
         buttons: [
           {
@@ -122,7 +62,47 @@ export async function GET() {
           },
         ],
         postUrl: `${baseUrl}/api/frame`,
+      });
+    }
+  } catch (error) {
+    console.error('Frame API error:', error);
+    
+    const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
+    
+    return NextResponse.json({
+      image: `${baseUrl}/api/frame-image`,
+      buttons: [
+        {
+          label: '🎮 Play Space Invaders',
+          action: 'post',
+        },
+        {
+          label: '🏠 Visit Portfolio',
+          action: 'link',
+          target: baseUrl,
+        },
+      ],
+      postUrl: `${baseUrl}/api/frame`,
+    });
+  }
+}
+
+export async function GET() {
+  const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
+  
+  return NextResponse.json({
+    image: `${baseUrl}/api/frame-image`,
+    buttons: [
+      {
+        label: '🎮 Play Space Invaders',
+        action: 'post',
+      },
+      {
+        label: '🏠 Visit Portfolio',
+        action: 'link',
+        target: baseUrl,
       },
     ],
+    postUrl: `${baseUrl}/api/frame`,
   });
 }
