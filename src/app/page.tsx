@@ -23,12 +23,20 @@ const Home = () => {
                 Software Engineer • Space Enthusiast
               </p>
               <div className="space-y-6">
-                <a
-                  href="/frame"
-                  className="inline-block bg-red-500 text-white px-12 py-4 rounded-lg font-mono font-bold text-xl hover:bg-red-600 transition-all duration-300 hover:scale-105 shadow-lg"
-                >
-                  🎮 PLAY SPACE INVADERS
-                </a>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a
+                    href="/frame"
+                    className="inline-block bg-red-500 text-white px-8 py-4 rounded-lg font-mono font-bold text-lg hover:bg-red-600 transition-all duration-300 hover:scale-105 shadow-lg"
+                  >
+                    🚀 SPACE INVADERS
+                  </a>
+                  <a
+                    href="/frame2"
+                    className="inline-block bg-green-500 text-white px-8 py-4 rounded-lg font-mono font-bold text-lg hover:bg-green-600 transition-all duration-300 hover:scale-105 shadow-lg"
+                  >
+                    🏃 ENDLESS RUNNER
+                  </a>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -42,20 +50,21 @@ const Home = () => {
               className="bg-black bg-opacity-50 rounded-lg p-6 border-2 border-blue-500"
             >
               <h2 className="text-2xl font-bold text-white mb-4 font-mono">
-                INTERACTIVE SPACE INVADERS
+                INTERACTIVE MINI GAMES
               </h2>
               <div className="bg-gray-900 rounded-lg p-4 mb-4">
                 <div className="text-green-400 font-mono text-sm">
-                  <div>SPACE ENGINEER v1.0</div>
+                  <div>SPACE ENGINEER v2.0</div>
                   <div>Loading game modules...</div>
                   <div>Farcaster Frame integration: ACTIVE</div>
-                  <div>Enemy AI: ENABLED</div>
-                  <div>Player controls: READY</div>
+                  <div>Space Invaders: READY</div>
+                  <div>Endless Runner: READY</div>
+                  <div>Mobile controls: OPTIMIZED</div>
                 </div>
               </div>
               <p className="text-gray-300 text-sm font-mono">
-                Experience the classic Space Invaders game with modern web technology. 
-                Built with Next.js and optimized for Farcaster Frames.
+                Two interactive games: classic Space Invaders and side-scrolling Endless Runner. 
+                Built with Next.js and optimized for Farcaster Frames with mobile touch controls.
               </p>
             </motion.div>
           </div>
