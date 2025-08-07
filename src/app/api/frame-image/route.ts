@@ -36,12 +36,15 @@ export async function GET() {
       
       <!-- Subtitle -->
       <text x="600" y="280" text-anchor="middle" font-family="monospace" font-size="36" fill="#4a90e2">
-        SPACE ENGINEER
+        Choose Your Game
       </text>
       
-      <!-- Description -->
-      <text x="600" y="340" text-anchor="middle" font-family="monospace" font-size="24" fill="#ffffff">
-        Interactive Space Invaders Game
+      <!-- Game Options -->
+      <text x="300" y="360" text-anchor="middle" font-family="monospace" font-size="24" fill="#ff6b6b">
+        🚀 SPACE INVADERS
+      </text>
+      <text x="900" y="360" text-anchor="middle" font-family="monospace" font-size="24" fill="#32CD32">
+        🔥 THIS IS FINE
       </text>
       
       <!-- Game elements preview -->
@@ -67,15 +70,15 @@ export async function GET() {
       </text>
       
       <!-- Buttons preview -->
-      <g transform="translate(800, 500)">
-        <rect x="0" y="0" width="120" height="40" rx="5" fill="#ff6b6b" stroke="#ffffff" stroke-width="2"/>
-        <text x="60" y="25" text-anchor="middle" font-family="monospace" font-size="14" fill="#ffffff">
-          PLAY GAME
+      <g transform="translate(700, 500)">
+        <rect x="0" y="0" width="140" height="40" rx="5" fill="#ff6b6b" stroke="#ffffff" stroke-width="2"/>
+        <text x="70" y="25" text-anchor="middle" font-family="monospace" font-size="14" fill="#ffffff">
+          🚀 Space Invaders
         </text>
         
-        <rect x="140" y="0" width="120" height="40" rx="5" fill="transparent" stroke="#4a90e2" stroke-width="2"/>
-        <text x="200" y="25" text-anchor="middle" font-family="monospace" font-size="14" fill="#4a90e2">
-          PORTFOLIO
+        <rect x="160" y="0" width="140" height="40" rx="5" fill="#32CD32" stroke="#ffffff" stroke-width="2"/>
+        <text x="230" y="25" text-anchor="middle" font-family="monospace" font-size="14" fill="#ffffff">
+          🔥 This Is Fine
         </text>
       </g>
     </svg>

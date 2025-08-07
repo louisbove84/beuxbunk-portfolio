@@ -10,7 +10,7 @@
     "splashBackgroundColor": "#0a0a2e",
     "webhookUrl": "https://www.beuxbunk.com/api/webhook",
     "subtitle": "Space Engineer",
-    "description": "Two interactive games: Space Invaders and Endless Runner. Built with Next.js and optimized for Farcaster.",
+    "description": "Choose between two interactive games: Space Invaders and This Is Fine Runner. Built with Next.js and optimized for Farcaster.",
     "screenshotUrls": [
       "https://www.beuxbunk.com/images/screenshot1.svg",
       "https://www.beuxbunk.com/images/screenshot2.svg"

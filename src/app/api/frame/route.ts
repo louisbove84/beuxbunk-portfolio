@@ -12,25 +12,42 @@ export async function POST(request: NextRequest) {
     
     // Different responses based on button clicked
     if (buttonIndex === 1) {
-      // Play Space Invaders button
+      // Space Invaders button
       return NextResponse.json({
         image: `${baseUrl}/api/frame-image`,
         buttons: [
           {
-            label: '🎮 Play Game',
+            label: '🚀 Play Space Invaders',
             action: 'link',
-            target: `${baseUrl}/frame`,
+            target: `${baseUrl}/frame?game=spaceinvaders`,
+          },
+        ],
+        postUrl: `${baseUrl}/api/frame`,
+      });
+    } else if (buttonIndex === 2) {
+      // This Is Fine button
+      return NextResponse.json({
+        image: `${baseUrl}/api/frame2-image`,
+        buttons: [
+          {
+            label: '🔥 Play This Is Fine',
+            action: 'link',
+            target: `${baseUrl}/frame?game=runner`,
           },
         ],
         postUrl: `${baseUrl}/api/frame`,
       });
     } else {
-      // Default response (back button or initial load)
+      // Default response - game selection
       return NextResponse.json({
         image: `${baseUrl}/api/frame-image`,
         buttons: [
           {
-            label: '🎮 Play Space Invaders',
+            label: '🚀 Space Invaders',
+            action: 'post',
+          },
+          {
+            label: '🔥 This Is Fine',
             action: 'post',
           },
         ],
@@ -46,7 +63,11 @@ export async function POST(request: NextRequest) {
       image: `${baseUrl}/api/frame-image`,
       buttons: [
         {
-          label: '🎮 Play Space Invaders',
+          label: '🚀 Space Invaders',
+          action: 'post',
+        },
+        {
+          label: '🔥 This Is Fine',
           action: 'post',
         },
       ],
@@ -62,7 +83,11 @@ export async function GET() {
     image: `${baseUrl}/api/frame-image`,
     buttons: [
       {
-        label: '🎮 Play Space Invaders',
+        label: '🚀 Space Invaders',
+        action: 'post',
+      },
+      {
+        label: '🔥 This Is Fine',
         action: 'post',
       },
     ],

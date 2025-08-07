@@ -18,6 +18,31 @@ interface GameObjects {
   enemyBullets: GameObject[];
 }
 
+const GameRouter = () => {
+  const [gameType, setGameType] = useState<'spaceinvaders' | 'runner'>('spaceinvaders');
+
+  useEffect(() => {
+    // Check URL parameters to determine which game to show
+    const urlParams = new URLSearchParams(window.location.search);
+    const game = urlParams.get('game');
+    
+    if (game === 'runner') {
+      setGameType('runner');
+    } else {
+      setGameType('spaceinvaders');
+    }
+  }, []);
+
+  if (gameType === 'runner') {
+    // Redirect to the dedicated runner page
+    window.location.href = '/frame2';
+    return <div>Redirecting to This Is Fine...</div>;
+  }
+
+  // Default to Space Invaders
+  return <SpaceInvadersGame />;
+};
+
 const SpaceInvadersGame = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameState, setGameState] = useState('playing');
@@ -512,7 +537,7 @@ const SpaceInvadersGame = () => {
   );
 };
 
-export default SpaceInvadersGame;
+export default GameRouter;
 
 // Required for Farcaster Mini Apps - forces dynamic rendering
 export const dynamic = 'force-dynamic';
