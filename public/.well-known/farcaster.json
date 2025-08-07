@@ -4,9 +4,9 @@
     "version": "1",
     "iconUrl": "https://www.beuxbunk.com/itsFine.jpg",
     "homeUrl": "https://www.beuxbunk.com",
-    "imageUrl": "https://www.beuxbunk.com/api/frame-image",
+    "imageUrl": "https://www.beuxbunk.com/itsFine.jpg",
     "buttonTitle": "Play Meme Games",
-    "splashImageUrl": "https://www.beuxbunk.com/api/frame-image",
+    "splashImageUrl": "https://www.beuxbunk.com/itsFine.jpg",
     "splashBackgroundColor": "#FF6B6B",
     "webhookUrl": "https://www.beuxbunk.com/api/webhook",
     "subtitle": "Choose Your Meme",
@@ -18,7 +18,7 @@
     "primaryCategory": "games",
     "heroImageUrl": "https://www.beuxbunk.com/itsFine.jpg",
     "tagline": "memes",
-    "ogImageUrl": "https://www.beuxbunk.com/api/frame-image"
+    "ogImageUrl": "https://www.beuxbunk.com/itsFine.jpg"
   },
   "accountAssociation": {
     "header": "eyJmaWQiOjg4NjUwMywidHlwZSI6ImF1dGgiLCJrZXkiOiIweEQyRTc4MzlDOTI2QTlBMzQ5ODdFM0E4NjI2ODFDYTUyZmU2M2M0ZTYifQ",
