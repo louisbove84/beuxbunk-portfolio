@@ -66,8 +66,20 @@ const SpaceInvadersGame = () => {
     
     // Set canvas size based on device
     if (isMobile) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      // Set high resolution for crisp graphics
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      
+      // Set actual canvas size (internal resolution)
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      
+      // Scale the drawing context to match device pixel ratio
+      ctx.scale(dpr, dpr);
+      
+      // Set CSS size to fill screen
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
       
       // Update player position for mobile (bottom of screen with room)
       setGameObjects(prev => ({
@@ -316,18 +328,15 @@ const SpaceInvadersGame = () => {
     ctx.fillStyle = '#0a0a2e';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Draw touch indicator behind player (mobile only)
+    // Draw touch indicator below player (mobile only)
     if (isMobile) {
-      // Draw semi-transparent circle behind ship
+      // Draw semi-transparent circle below ship
+      const circleX = gameObjects.player.x + gameObjects.player.width / 2;
+      const circleY = gameObjects.player.y + gameObjects.player.height + 50;
+      
       ctx.fillStyle = 'rgba(74, 144, 226, 0.2)';
       ctx.beginPath();
-      ctx.arc(
-        gameObjects.player.x + gameObjects.player.width / 2,
-        gameObjects.player.y + gameObjects.player.height / 2,
-        40, // radius
-        0,
-        2 * Math.PI
-      );
+      ctx.arc(circleX, circleY, 40, 0, 2 * Math.PI);
       ctx.fill();
       
       // Draw dashed circle border
@@ -337,11 +346,11 @@ const SpaceInvadersGame = () => {
       ctx.stroke();
       ctx.setLineDash([]); // Reset line dash
       
-      // Draw small hand icon or arrow pointing to ship
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-      ctx.font = '16px monospace';
+      // Draw small hand icon in the center of circle
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.font = '24px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('👆', gameObjects.player.x + gameObjects.player.width / 2, gameObjects.player.y - 10);
+      ctx.fillText('👆', circleX, circleY + 8);
     }
     
     // Draw player
@@ -444,6 +453,7 @@ const SpaceInvadersGame = () => {
               width: isMobile ? '100vw' : '320px',
               height: isMobile ? '100vh' : '320px',
               touchAction: 'none', // Prevent scrolling on touch
+              imageRendering: 'pixelated', // Keep crisp pixels for retro feel
             }}
             onTouchStart={isMobile ? handleTouchStart : undefined}
             onTouchMove={isMobile ? handleTouchMove : undefined}
