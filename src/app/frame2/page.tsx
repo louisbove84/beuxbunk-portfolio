@@ -37,7 +37,7 @@ const ThisIsFineGame = () => {
   });
   const [gameWidth, setGameWidth] = useState(320);
   const [gameHeight, setGameHeight] = useState(320);
-  const groundY = 0; // Will be set dynamically
+  // const groundY = 0; // Will be set dynamically
   const gravity = 0.5;
   const jumpPower = -10;
   const scrollSpeed = 2;
@@ -81,7 +81,6 @@ const ThisIsFineGame = () => {
     
     // Set canvas size based on device
     const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
     
     // Set actual canvas size (internal resolution)
     canvas.width = gameWidth * dpr;
@@ -116,7 +115,7 @@ const ThisIsFineGame = () => {
 
     const gameLoop = setInterval(() => {
       setGameObjects(prev => {
-        let { player, obstacles, collectibles } = prev;
+        const { player, obstacles: prevObstacles, collectibles: prevCollectibles } = prev;
 
         // Apply gravity and jumping
         player.velocityY += gravity;
@@ -138,10 +137,12 @@ const ThisIsFineGame = () => {
         }
 
         // Move obstacles and collectibles left (scroll)
-        obstacles = obstacles.map(obs => ({ ...obs, x: obs.x - scrollSpeed }))
+        // eslint-disable-next-line prefer-const
+        let obstacles = prevObstacles.map(obs => ({ ...obs, x: obs.x - scrollSpeed }))
           .filter(obs => obs.x + obs.width > 0);
 
-        collectibles = collectibles.map(col => ({ ...col, x: col.x - scrollSpeed }))
+        // eslint-disable-next-line prefer-const
+        let collectibles = prevCollectibles.map(col => ({ ...col, x: col.x - scrollSpeed }))
           .filter(col => col.x + col.width > 0);
 
         // Spawn new obstacles and collectibles
@@ -252,7 +253,7 @@ const ThisIsFineGame = () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [gameState]);
+  }, [gameState, jumpPower]);
 
   // Mobile touch controls
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -284,7 +285,7 @@ const ThisIsFineGame = () => {
     }
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
+  const handleTouchEnd = () => {
     setGameObjects(prev => ({
       ...prev,
       player: { ...prev.player, isDucking: false }
