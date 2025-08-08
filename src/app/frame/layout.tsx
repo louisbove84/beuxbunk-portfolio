@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Meme Games Hub - Choose Your Chaos',
-  description: 'Two iconic meme games: Space Invaders and This Is Fine Room Defense. Choose your chaos!',
+  description: 'Two iconic meme games: Space Invaders and This Is Fine Runner. Choose your chaos!',
 
   other: {
     // Mini App embed (new format)
