@@ -1,8 +1,23 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Home = () => {
+  useEffect(() => {
+    // If this is being loaded in a Farcaster context, redirect to the frame
+    if (typeof window !== 'undefined') {
+      const userAgent = window.navigator.userAgent;
+      const isFarcaster = userAgent.includes('Farcaster') || 
+                         window.location.search.includes('farcaster') ||
+                         document.referrer.includes('farcaster');
+      
+      if (isFarcaster) {
+        window.location.href = '/frame';
+        return;
+      }
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
       <div className="text-center">
