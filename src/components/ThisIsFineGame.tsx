@@ -65,7 +65,7 @@ const ThisIsFineGame: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   // Game state
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(100); // Start with $100
   const [level, setLevel] = useState(1);
   const [gameState, setGameState] = useState<'start' | 'playing' | 'gameOver'>('start');
   
@@ -128,7 +128,7 @@ const ThisIsFineGame: React.FC = () => {
     dogCalmCooldownRef.current = 0;
     spawnTimerRef.current = 0;
     idCounterRef.current = 1;
-    setScore(0);
+    setScore(100); // Start with $100 to buy initial defenses
     setLevel(1);
     dogRef.current = {
       x: gameWidth / 2,
@@ -792,9 +792,10 @@ const ThisIsFineGame: React.FC = () => {
       ctx.fillStyle = '#fff';
       ctx.font = '14px "Courier New"';
       ctx.fillText('Protect the dog from chaos!', gameWidth / 2, gameHeight / 2);
-      ctx.fillText('← Extinguisher ↑ Fan → Umbrella', gameWidth / 2, gameHeight / 2 + 20);
-      ctx.fillText('SPACE/↓ = "THIS IS FINE" ability', gameWidth / 2, gameHeight / 2 + 40);
-      ctx.fillText('Press ENTER or tap to start', gameWidth / 2, gameHeight / 2 + 70);
+      ctx.fillText('Start with $100 to buy defenses', gameWidth / 2, gameHeight / 2 + 20);
+      ctx.fillText('← Extinguisher ↑ Fan → Umbrella', gameWidth / 2, gameHeight / 2 + 40);
+      ctx.fillText('SPACE/↓ = "THIS IS FINE" ability', gameWidth / 2, gameHeight / 2 + 60);
+      ctx.fillText('Press ENTER or tap to start', gameWidth / 2, gameHeight / 2 + 90);
       ctx.textAlign = 'start';
     } else if (gameState === 'gameOver') {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
