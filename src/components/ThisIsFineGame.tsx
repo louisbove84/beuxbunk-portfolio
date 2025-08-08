@@ -369,6 +369,82 @@ const ThisIsFineGame: React.FC = () => {
     };
   }, [gameState, gameWidth, gameHeight, level, score]);
 
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (gameState === 'start' || gameState === 'gameOver') {
+        if (e.key === 'Enter' || e.key === ' ') {
+          startGame();
+        }
+        return;
+      }
+      
+      if (gameState !== 'playing') return;
+
+      // Number keys 1-3 to buy defenses
+      if (e.key === '1') {
+        // Extinguisher
+        if (score >= 30) {
+          setScore(s => s - 30);
+          defensesRef.current.push({
+            id: idCounterRef.current++,
+            x: Math.random() * (gameWidth - 100) + 50,
+            y: Math.random() * (gameHeight - 200) + 100,
+            range: 60,
+            cooldown: 0,
+            maxCooldown: 2000,
+            type: 'extinguisher',
+            active: false
+          });
+        }
+      } else if (e.key === '2') {
+        // Fan
+        if (score >= 25) {
+          setScore(s => s - 25);
+          defensesRef.current.push({
+            id: idCounterRef.current++,
+            x: Math.random() * (gameWidth - 100) + 50,
+            y: Math.random() * (gameHeight - 200) + 100,
+            range: 80,
+            cooldown: 0,
+            maxCooldown: 1500,
+            type: 'fan',
+            active: false
+          });
+        }
+      } else if (e.key === '3') {
+        // Umbrella
+        if (score >= 35) {
+          setScore(s => s - 35);
+          defensesRef.current.push({
+            id: idCounterRef.current++,
+            x: Math.random() * (gameWidth - 100) + 50,
+            y: Math.random() * (gameHeight - 200) + 100,
+            range: 60,
+            cooldown: 0,
+            maxCooldown: 3000,
+            type: 'umbrella',
+            active: false
+          });
+        }
+      } else if (e.key === ' ' || e.key === 'f' || e.key === 'F') {
+        // "This is fine" ability
+        if (dogCalmCooldownRef.current <= 0) {
+          hazardsRef.current.forEach(h => {
+            h.stunned = true;
+            h.vx *= 0.1;
+            h.vy *= 0.1;
+          });
+          dogCalmCooldownRef.current = 8000;
+          dogRef.current.calmness = Math.min(100, dogRef.current.calmness + 20);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [gameState, score, gameWidth, gameHeight, startGame]);
+
   // Draw scene
   const draw = (ctx: CanvasRenderingContext2D) => {
     // Background - room on fire
@@ -675,9 +751,9 @@ const ThisIsFineGame: React.FC = () => {
       ctx.fillStyle = '#fff';
       ctx.font = '14px "Courier New"';
       ctx.fillText('Protect the dog from chaos!', gameWidth / 2, gameHeight / 2);
-      ctx.fillText('Tap to place defenses', gameWidth / 2, gameHeight / 2 + 20);
-      ctx.fillText('Use "THIS IS FINE" to calm hazards', gameWidth / 2, gameHeight / 2 + 40);
-      ctx.fillText('Tap to start', gameWidth / 2, gameHeight / 2 + 70);
+      ctx.fillText('Keys: 1=Extinguisher 2=Fan 3=Umbrella', gameWidth / 2, gameHeight / 2 + 20);
+      ctx.fillText('SPACE/F = "THIS IS FINE" ability', gameWidth / 2, gameHeight / 2 + 40);
+      ctx.fillText('Press ENTER or tap to start', gameWidth / 2, gameHeight / 2 + 70);
       ctx.textAlign = 'start';
     } else if (gameState === 'gameOver') {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
