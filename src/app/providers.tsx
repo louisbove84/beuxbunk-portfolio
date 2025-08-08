@@ -13,8 +13,8 @@ export function Providers({ children }: { children: ReactNode }) {
         appearance: {
           mode: 'auto',
           theme: 'snake',
-          name: 'Space Engineer',
-          logo: process.env.NEXT_PUBLIC_ICON_URL,
+          name: 'Meme Games Hub',
+          logo: 'https://www.beuxbunk.com/itsFine-200x200.jpg',
         },
       }}
     >
