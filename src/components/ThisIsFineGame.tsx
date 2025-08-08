@@ -1,400 +1,789 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+
+// "This Is Fine" Room Defense - Protect the dog from chaos
+type HazardType = 'fire' | 'smoke' | 'debris' | 'water';
+type DefenseType = 'extinguisher' | 'fan' | 'umbrella';
+
+interface Hazard {
+  id: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  hp: number;
+  maxHp: number;
+  type: HazardType;
+  age: number;
+  stunned: boolean;
+}
+
+interface Defense {
+  id: number;
+  x: number;
+  y: number;
+  range: number;
+  cooldown: number;
+  maxCooldown: number;
+  type: DefenseType;
+  active: boolean;
+}
+
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  maxLife: number;
+  color: string;
+  size: number;
+}
+
+interface Dog {
+  x: number;
+  y: number;
+  health: number;
+  maxHealth: number;
+  calmness: number; // 0-100, affects defense effectiveness
+  hatWobble: number;
+}
+
+const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 
 const ThisIsFineGame: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [gameState, setGameState] = useState('playing');
-  const [score, setScore] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  const lastTsRef = useRef<number>(0);
+  const bgImgRef = useRef<HTMLImageElement | null>(null);
+
+  // Game dimensions
+  const [gameWidth, setGameWidth] = useState(420);
+  const [gameHeight, setGameHeight] = useState(560);
   const [isMobile, setIsMobile] = useState(false);
-  const [gameObjects, setGameObjects] = useState({
-    player: { x: 50, y: 0, width: 40, height: 50, velocityY: 0, isJumping: false, isDucking: false },
-    obstacles: [] as Array<{x: number; y: number; width: number; height: number; type: string}>,
-    collectibles: [] as Array<{x: number; y: number; width: number; height: number; type: string}>,
+
+  // Game state
+  const [score, setScore] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [gameState, setGameState] = useState<'start' | 'playing' | 'gameOver'>('start');
+  
+  // Game objects
+  const hazardsRef = useRef<Hazard[]>([]);
+  const defensesRef = useRef<Defense[]>([]);
+  const particlesRef = useRef<Particle[]>([]);
+  const dogRef = useRef<Dog>({
+    x: 0, y: 0, health: 100, maxHealth: 100, calmness: 100, hatWobble: 0
   });
-  const [gameWidth, setGameWidth] = useState(320);
-  const [gameHeight, setGameHeight] = useState(320);
-  const gravity = 0.5;
-  const jumpPower = -10;
-  const scrollSpeed = 2;
+  
+  // Game mechanics
+  const chaosLevelRef = useRef<number>(0); // 0-100, increases over time
+  const dogCalmCooldownRef = useRef<number>(0); // cooldown for "This is fine" ability
+  const spawnTimerRef = useRef<number>(0);
+  const idCounterRef = useRef<number>(1);
 
-  // Initialize the game when component mounts
+  // Initialize canvas and load assets
   useEffect(() => {
-    console.log('This Is Fine game initialized');
-
-    // Detect if we're on mobile and set dimensions (no SDK initialization here)
-    const updateDimensions = () => {
+    const update = () => {
       const mobile = window.innerWidth <= 768 || 'ontouchstart' in window;
       setIsMobile(mobile);
-      setGameWidth(mobile ? window.innerWidth : 320);
-      setGameHeight(mobile ? window.innerHeight : 320);
+      const w = mobile ? window.innerWidth : 420;
+      const h = mobile ? window.innerHeight : 560;
+      setGameWidth(w);
+      setGameHeight(h);
+      
+      // Position dog in center-bottom
+      dogRef.current.x = w / 2;
+      dogRef.current.y = h - 120;
+      
+      // Load background image
+      if (!bgImgRef.current) {
+        const img = new Image();
+        img.src = '/itsFine-3x2.jpg';
+        img.onload = () => (bgImgRef.current = img);
+      }
     };
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, []);
 
-  // Initialize canvas and game objects when dimensions change
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Set canvas size based on device
     const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(gameWidth * dpr);
+    canvas.height = Math.floor(gameHeight * dpr);
+    const ctx = canvas.getContext('2d');
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }, [gameWidth, gameHeight]);
 
-    // Set actual canvas size (internal resolution)
-    canvas.width = gameWidth * dpr;
-    canvas.height = gameHeight * dpr;
-
-    // Scale the drawing context to match device pixel ratio
-    ctx.scale(dpr, dpr);
-
-    // Set CSS size
-    canvas.style.width = gameWidth + 'px';
-    canvas.style.height = gameHeight + 'px';
-
-    // Update player position
-    const playerHeight = 50;
-    setGameObjects(prev => ({
-      ...prev,
-      player: {
-        x: 50,
-        y: gameHeight - playerHeight - 50, // Ground level
-        width: 40,
-        height: playerHeight,
-        velocityY: 0,
-        isJumping: false,
-        isDucking: false
-      }
-    }));
+  // Start new game
+  const startGame = useCallback(() => {
+    hazardsRef.current = [];
+    defensesRef.current = [];
+    particlesRef.current = [];
+    chaosLevelRef.current = 0;
+    dogCalmCooldownRef.current = 0;
+    spawnTimerRef.current = 0;
+    idCounterRef.current = 1;
+    setScore(0);
+    setLevel(1);
+    dogRef.current = {
+      x: gameWidth / 2,
+      y: gameHeight - 120,
+      health: 100,
+      maxHealth: 100,
+      calmness: 100,
+      hatWobble: 0
+    };
+    setGameState('playing');
   }, [gameWidth, gameHeight]);
 
   // Game loop
   useEffect(() => {
     if (gameState !== 'playing') return;
+    lastTsRef.current = performance.now();
+    
+    const step = (ts: number) => {
+      const dt = Math.min(0.033, (ts - lastTsRef.current) / 1000);
+      lastTsRef.current = ts;
 
-    const gameLoop = setInterval(() => {
-      setGameObjects(prev => {
-        const { player, obstacles: prevObstacles, collectibles: prevCollectibles } = prev;
+      // Update timers
+      dogCalmCooldownRef.current = Math.max(0, dogCalmCooldownRef.current - dt * 1000);
+      spawnTimerRef.current -= dt;
+      
+      // Increase chaos over time
+      chaosLevelRef.current = Math.min(100, chaosLevelRef.current + dt * 2);
+      
+      // Update dog's hat wobble
+      dogRef.current.hatWobble = Math.sin(ts * 0.003) * 2;
 
-        // Apply gravity and jumping
-        player.velocityY += gravity;
-        player.y += player.velocityY;
-
-        // Ground collision
-        const groundLevel = gameHeight - 50 - (player.isDucking ? 25 : player.height);
-        if (player.y > groundLevel) {
-          player.y = groundLevel;
-          player.velocityY = 0;
-          player.isJumping = false;
+      // Spawn hazards based on chaos level
+      if (spawnTimerRef.current <= 0) {
+        const spawnRate = 1.5 - (chaosLevelRef.current / 100) * 1.2; // faster spawning as chaos increases
+        spawnTimerRef.current = spawnRate;
+        
+        // Spawn from edges
+        const side = Math.floor(Math.random() * 4);
+        let x = 0, y = 0, vx = 0, vy = 0;
+        
+        switch (side) {
+          case 0: // top
+            x = Math.random() * gameWidth;
+            y = -20;
+            vx = (Math.random() - 0.5) * 30;
+            vy = 20 + Math.random() * 40;
+            break;
+          case 1: // right
+            x = gameWidth + 20;
+            y = Math.random() * gameHeight;
+            vx = -(20 + Math.random() * 40);
+            vy = (Math.random() - 0.5) * 30;
+            break;
+          case 2: // bottom
+            x = Math.random() * gameWidth;
+            y = gameHeight + 20;
+            vx = (Math.random() - 0.5) * 30;
+            vy = -(20 + Math.random() * 40);
+            break;
+          case 3: // left
+            x = -20;
+            y = Math.random() * gameHeight;
+            vx = 20 + Math.random() * 40;
+            vy = (Math.random() - 0.5) * 30;
+            break;
         }
+        
+        const hazardTypes: HazardType[] = ['fire', 'smoke', 'debris', 'water'];
+        const type = hazardTypes[Math.floor(Math.random() * hazardTypes.length)];
+        
+        hazardsRef.current.push({
+          id: idCounterRef.current++,
+          x, y, vx, vy,
+          size: 15 + Math.random() * 10,
+          hp: type === 'debris' ? 30 : 20,
+          maxHp: type === 'debris' ? 30 : 20,
+          type,
+          age: 0,
+          stunned: false
+        });
+      }
 
-        // Duck height adjustment
-        if (player.isDucking) {
-          player.height = 25;
-        } else {
-          player.height = 50;
-        }
-
-        // Move obstacles and collectibles left (scroll)
-        // eslint-disable-next-line prefer-const
-        let obstacles = prevObstacles.map(obs => ({ ...obs, x: obs.x - scrollSpeed }))
-          .filter(obs => obs.x + obs.width > 0);
-
-        // eslint-disable-next-line prefer-const
-        let collectibles = prevCollectibles.map(col => ({ ...col, x: col.x - scrollSpeed }))
-          .filter(col => col.x + col.width > 0);
-
-        // Spawn new obstacles and collectibles
-        if (Math.random() < 0.05) { // Chance to spawn flame on ground
-          obstacles.push({
-            x: gameWidth,
-            y: gameHeight - 50 - 30,
-            width: 20,
-            height: 30,
-            type: 'flame'
-          });
-        }
-        if (Math.random() < 0.03) { // Chance to spawn debris from ceiling
-          obstacles.push({
-            x: gameWidth,
-            y: 0,
-            width: 30,
-            height: 40,
-            type: 'debris'
-          });
-        }
-        if (Math.random() < 0.02) { // Chance to spawn coffee
-          collectibles.push({
-            x: gameWidth,
-            y: Math.random() * (gameHeight - 150) + 50,
-            width: 20,
-            height: 20,
-            type: 'coffee'
-          });
-        }
-
-        // Check collisions with obstacles
-        const playerHit = obstacles.some(obs =>
-          player.x < obs.x + obs.width &&
-          player.x + player.width > obs.x &&
-          player.y < obs.y + obs.height &&
-          player.y + player.height > obs.y
-        );
-
-        if (playerHit) {
-          setGameState('gameOver');
-        }
-
-        // Check collectibles
-        const newCollectibles = collectibles.filter(col => {
-          const collected = player.x < col.x + col.width &&
-            player.x + player.width > col.x &&
-            player.y < col.y + col.height &&
-            player.y + player.height > col.y;
-
-          if (collected) {
-            setScore(prev => prev + 10);
+      // Update hazards
+      hazardsRef.current = hazardsRef.current
+        .map(h => ({
+          ...h,
+          x: h.x + h.vx * dt,
+          y: h.y + h.vy * dt,
+          age: h.age + dt,
+          stunned: false // reset stun state
+        }))
+        .filter(h => {
+          // Remove hazards that are too old or off-screen
+          if (h.age > 15 || h.x < -50 || h.x > gameWidth + 50 || h.y < -50 || h.y > gameHeight + 50) {
             return false;
+          }
+          
+          // Check collision with dog
+          const dogDist = Math.hypot(h.x - dogRef.current.x, h.y - dogRef.current.y);
+          if (dogDist < h.size + 25) {
+            // Damage dog based on hazard type
+            let damage = 0;
+            switch (h.type) {
+              case 'fire': damage = 15; break;
+              case 'smoke': damage = 5; break;
+              case 'debris': damage = 25; break;
+              case 'water': damage = 10; break;
+            }
+            dogRef.current.health = Math.max(0, dogRef.current.health - damage);
+            dogRef.current.calmness = Math.max(0, dogRef.current.calmness - damage * 0.8);
+            
+            if (dogRef.current.health <= 0) {
+              setGameState('gameOver');
+            }
+            
+            // Create impact particles
+            for (let i = 0; i < 8; i++) {
+              particlesRef.current.push({
+                x: h.x,
+                y: h.y,
+                vx: (Math.random() - 0.5) * 120,
+                vy: (Math.random() - 0.5) * 120,
+                life: 0,
+                maxLife: 0.8,
+                color: h.type === 'fire' ? '#ff4500' : h.type === 'water' ? '#4169e1' : '#8b4513',
+                size: 3 + Math.random() * 4
+              });
+            }
+            
+            return false; // remove hazard
           }
           return true;
         });
 
-        // Increase score over time
-        setScore(prev => prev + 1);
-
-        return {
-          player,
-          obstacles,
-          collectibles: newCollectibles
-        };
-      });
-    }, 30);
-
-    return () => clearInterval(gameLoop);
-  }, [gameState, gameWidth, gameHeight, gravity, scrollSpeed]);
-
-  // Handle keyboard input
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (gameState !== 'playing') return;
-
-      if (e.key === 'ArrowDown') {
-        setGameObjects(prev => ({
-          ...prev,
-          player: { ...prev.player, isDucking: true }
-        }));
-      }
-      if (e.key === ' ' || e.key === 'ArrowUp') {
-        setGameObjects(prev => {
-          if (!prev.player.isJumping) {
-            return {
-              ...prev,
-              player: { ...prev.player, velocityY: jumpPower, isJumping: true }
-            };
+      // Update defenses
+      defensesRef.current = defensesRef.current.map(d => {
+        const newD = { ...d, cooldown: Math.max(0, d.cooldown - dt * 1000), active: false };
+        
+        if (newD.cooldown <= 0) {
+          // Find hazards in range
+          const inRange = hazardsRef.current.filter(h => 
+            Math.hypot(h.x - d.x, h.y - d.y) <= d.range
+          );
+          
+          if (inRange.length > 0) {
+            newD.active = true;
+            newD.cooldown = newD.maxCooldown;
+            
+            // Apply defense effects
+            inRange.forEach(h => {
+              switch (d.type) {
+                case 'extinguisher':
+                  if (h.type === 'fire') {
+                    h.hp -= 40 * dt; // extinguish fire quickly
+                  } else {
+                    h.hp -= 15 * dt; // slow other hazards
+                  }
+                  break;
+                case 'fan':
+                  if (h.type === 'smoke') {
+                    h.hp -= 50 * dt; // blow away smoke
+                  } else {
+                    // Push hazards away
+                    const angle = Math.atan2(h.y - d.y, h.x - d.x);
+                    h.vx += Math.cos(angle) * 80 * dt;
+                    h.vy += Math.sin(angle) * 80 * dt;
+                  }
+                  break;
+                case 'umbrella':
+                  if (h.type === 'water') {
+                    h.hp -= 60 * dt; // block water
+                  } else if (h.type === 'debris') {
+                    h.hp -= 30 * dt; // deflect debris
+                  }
+                  break;
+              }
+            });
           }
-          return prev;
-        });
-      }
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown') {
-        setGameObjects(prev => ({
-          ...prev,
-          player: { ...prev.player, isDucking: false }
-        }));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, [gameState, jumpPower]);
-
-  // Mobile touch controls
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (gameState !== 'playing') return;
-
-    e.preventDefault();
-    const touch = e.touches[0];
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const touchY = touch.clientY - rect.top;
-
-    if (touchY < gameHeight / 2) {
-      // Upper half: jump
-      setGameObjects(prev => {
-        if (!prev.player.isJumping) {
-          return {
-            ...prev,
-            player: { ...prev.player, velocityY: jumpPower, isJumping: true }
-          };
         }
-        return prev;
+        
+        return newD;
       });
-    } else {
-      // Lower half: duck
-      setGameObjects(prev => ({
-        ...prev,
-        player: { ...prev.player, isDucking: true }
-      }));
-    }
-  };
 
-  const handleTouchEnd = () => {
-    setGameObjects(prev => ({
-      ...prev,
-      player: { ...prev.player, isDucking: false }
-    }));
-  };
+      // Remove destroyed hazards and award points
+      const aliveHazards: Hazard[] = [];
+      hazardsRef.current.forEach(h => {
+        if (h.hp <= 0) {
+          setScore(s => s + 10);
+          // Create destruction particles
+          for (let i = 0; i < 5; i++) {
+            particlesRef.current.push({
+              x: h.x,
+              y: h.y,
+              vx: (Math.random() - 0.5) * 80,
+              vy: (Math.random() - 0.5) * 80,
+              life: 0,
+              maxLife: 1.2,
+              color: '#ffff00',
+              size: 2 + Math.random() * 3
+            });
+          }
+        } else {
+          aliveHazards.push(h);
+        }
+      });
+      hazardsRef.current = aliveHazards;
 
-  // Draw game
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+      // Update particles
+      particlesRef.current = particlesRef.current
+        .map(p => ({
+          ...p,
+          x: p.x + p.vx * dt,
+          y: p.y + p.vy * dt,
+          life: p.life + dt
+        }))
+        .filter(p => p.life < p.maxLife);
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+      // Slowly restore dog's calmness
+      dogRef.current.calmness = Math.min(100, dogRef.current.calmness + dt * 5);
 
-    // Clear canvas
-    ctx.fillStyle = '#0a0a2e';
+      // Level progression
+      if (score > level * 200) {
+        setLevel(l => l + 1);
+        chaosLevelRef.current = Math.min(100, chaosLevelRef.current + 10);
+      }
+
+      // Render
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext('2d');
+      if (canvas && ctx) draw(ctx);
+
+      rafRef.current = requestAnimationFrame(step);
+    };
+    
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [gameState, gameWidth, gameHeight, level, score]);
+
+  // Draw scene
+  const draw = (ctx: CanvasRenderingContext2D) => {
+    // Background - room on fire
+    const bg = ctx.createLinearGradient(0, 0, 0, gameHeight);
+    bg.addColorStop(0, '#2d1b1b');
+    bg.addColorStop(0.7, '#4a2c2c');
+    bg.addColorStop(1, '#1a0f0f');
+    ctx.fillStyle = bg;
     ctx.fillRect(0, 0, gameWidth, gameHeight);
 
-    // Draw background (simple burning room)
-    ctx.fillStyle = '#8B4513'; // Brown floor
-    ctx.fillRect(0, gameHeight - 50, gameWidth, 50);
+    // Draw meme image faintly in background
+    if (bgImgRef.current) {
+      const img = bgImgRef.current;
+      const aspect = img.width / img.height;
+      const targetW = gameWidth * 0.8;
+      const targetH = targetW / aspect;
+      const x = (gameWidth - targetW) / 2;
+      const y = (gameHeight - targetH) / 2;
+      ctx.globalAlpha = 0.12;
+      ctx.drawImage(img, x, y, targetW, targetH);
+      ctx.globalAlpha = 1;
+    }
 
-    // Draw player (simple dog with hat)
-    const { player } = gameObjects;
-    const dogX = player.x;
-    const dogY = player.y;
-    const dogW = player.width;
-    const dogH = player.height;
+    // Room elements - table, walls, furniture silhouettes
+    ctx.fillStyle = 'rgba(139, 69, 19, 0.3)';
+    ctx.fillRect(gameWidth * 0.1, gameHeight - 60, gameWidth * 0.8, 8); // table edge
+    
+    // Window frames (left and right)
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(20, 50, 40, 80);
+    ctx.strokeRect(gameWidth - 60, 50, 40, 80);
 
-    // Body
-    ctx.fillStyle = '#8B4513';
-    ctx.fillRect(dogX + dogW * 0.2, dogY + dogH * 0.4, dogW * 0.6, dogH * 0.6);
+    // Chaos level indicator (background fire intensity)
+    const chaosAlpha = chaosLevelRef.current / 100 * 0.4;
+    ctx.fillStyle = `rgba(255, 69, 0, ${chaosAlpha})`;
+    ctx.fillRect(0, 0, gameWidth, gameHeight);
 
-    // Head
-    ctx.beginPath();
-    ctx.arc(dogX + dogW * 0.5, dogY + dogH * 0.3, dogH * 0.25, 0, 2 * Math.PI);
-    ctx.fill();
+    // Draw particles (fire, smoke, debris effects)
+    particlesRef.current.forEach(p => {
+      const alpha = 1 - (p.life / p.maxLife);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
 
-    // Eyes
-    ctx.fillStyle = '#FFFFFF';
-    ctx.beginPath();
-    ctx.arc(dogX + dogW * 0.35, dogY + dogH * 0.25, dogH * 0.05, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(dogX + dogW * 0.65, dogY + dogH * 0.25, dogH * 0.05, 0, 2 * Math.PI);
-    ctx.fill();
-
-    // Hat
-    ctx.fillStyle = '#A0522D';
-    ctx.fillRect(dogX + dogW * 0.3, dogY, dogW * 0.4, dogH * 0.1);
-    ctx.fillRect(dogX + dogW * 0.2, dogY + dogH * 0.1, dogW * 0.6, dogH * 0.05);
-
-    // Legs (simple)
-    ctx.fillStyle = '#8B4513';
-    ctx.fillRect(dogX, dogY + dogH * 0.7, dogW * 0.2, dogH * 0.3);
-    ctx.fillRect(dogX + dogW * 0.8, dogY + dogH * 0.7, dogW * 0.2, dogH * 0.3);
-
-    // Draw obstacles
-    gameObjects.obstacles.forEach(obs => {
-      if (obs.type === 'flame') {
-        ctx.fillStyle = '#FF4500';
-        ctx.beginPath();
-        ctx.moveTo(obs.x, obs.y + obs.height);
-        ctx.lineTo(obs.x + obs.width / 2, obs.y);
-        ctx.lineTo(obs.x + obs.width, obs.y + obs.height);
-        ctx.closePath();
-        ctx.fill();
-      } else if (obs.type === 'debris') {
-        ctx.fillStyle = '#808080';
-        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+    // Draw hazards
+    hazardsRef.current.forEach(h => {
+      switch (h.type) {
+        case 'fire':
+          // Animated flame
+          const flicker = Math.sin(h.age * 8) * 0.3 + 1;
+          const grad = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, h.size * flicker);
+          grad.addColorStop(0, '#ffff00');
+          grad.addColorStop(0.5, '#ff4500');
+          grad.addColorStop(1, '#8b0000');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(h.x, h.y, h.size * flicker, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+        case 'smoke':
+          // Pulsing smoke cloud
+          const pulse = Math.sin(h.age * 4) * 0.2 + 0.8;
+          ctx.fillStyle = `rgba(105, 105, 105, ${pulse * 0.7})`;
+          ctx.beginPath();
+          ctx.arc(h.x, h.y, h.size * pulse, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+        case 'debris':
+          // Rotating debris
+          ctx.save();
+          ctx.translate(h.x, h.y);
+          ctx.rotate(h.age * 3);
+          ctx.fillStyle = '#654321';
+          ctx.fillRect(-h.size/2, -h.size/2, h.size, h.size);
+          ctx.strokeStyle = '#8b4513';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(-h.size/2, -h.size/2, h.size, h.size);
+          ctx.restore();
+          break;
+        case 'water':
+          // Water droplet
+          ctx.fillStyle = '#4169e1';
+          ctx.beginPath();
+          ctx.arc(h.x, h.y - h.size * 0.3, h.size * 0.7, 0, Math.PI * 2);
+          ctx.arc(h.x, h.y + h.size * 0.3, h.size * 0.5, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+      }
+      
+      // HP bar for hazards
+      if (h.hp < h.maxHp) {
+        const barWidth = h.size * 1.5;
+        ctx.fillStyle = '#333';
+        ctx.fillRect(h.x - barWidth/2, h.y - h.size - 8, barWidth, 3);
+        ctx.fillStyle = '#ff0000';
+        const hpWidth = (h.hp / h.maxHp) * barWidth;
+        ctx.fillRect(h.x - barWidth/2, h.y - h.size - 8, hpWidth, 3);
       }
     });
 
-    // Draw collectibles (coffee cups)
-    gameObjects.collectibles.forEach(col => {
-      ctx.fillStyle = '#D2B48C';
-      ctx.fillRect(col.x, col.y, col.width, col.height);
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(col.x + col.width * 0.7, col.y + col.height / 2, col.width * 0.3, col.height / 2); // Handle
+    // Draw defenses
+    defensesRef.current.forEach(d => {
+      const activeGlow = d.active ? 0.8 : 0.3;
+      
+      switch (d.type) {
+        case 'extinguisher':
+          ctx.fillStyle = '#dc143c';
+          ctx.fillRect(d.x - 8, d.y - 12, 16, 24);
+          ctx.fillStyle = '#000';
+          ctx.fillRect(d.x + 4, d.y - 8, 4, 8);
+          if (d.active) {
+            // Spray effect
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 5; i++) {
+              const angle = (i - 2) * 0.2;
+              const len = d.range;
+              ctx.beginPath();
+              ctx.moveTo(d.x, d.y);
+              ctx.lineTo(d.x + Math.cos(angle) * len, d.y + Math.sin(angle) * len);
+              ctx.stroke();
+            }
+          }
+          break;
+        case 'fan':
+          ctx.fillStyle = '#708090';
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, 12, 0, Math.PI * 2);
+          ctx.fill();
+          // Fan blades
+          ctx.strokeStyle = d.active ? '#fff' : '#ddd';
+          ctx.lineWidth = 2;
+          for (let i = 0; i < 4; i++) {
+            const angle = (Date.now() * 0.01 + i * Math.PI / 2) % (Math.PI * 2);
+            ctx.beginPath();
+            ctx.moveTo(d.x, d.y);
+            ctx.lineTo(d.x + Math.cos(angle) * 10, d.y + Math.sin(angle) * 10);
+            ctx.stroke();
+          }
+          break;
+        case 'umbrella':
+          ctx.fillStyle = '#000080';
+          ctx.beginPath();
+          ctx.arc(d.x, d.y - 5, 15, 0, Math.PI, false);
+          ctx.fill();
+          ctx.strokeStyle = '#8b4513';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(d.x, d.y - 5);
+          ctx.lineTo(d.x, d.y + 15);
+          ctx.stroke();
+          break;
+      }
+      
+      // Range indicator when active
+      if (d.active) {
+        ctx.strokeStyle = `rgba(0, 255, 0, ${activeGlow})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.range, 0, Math.PI * 2);
+        ctx.stroke();
+      }
     });
 
-    // Draw score
-    ctx.fillStyle = '#ffffff';
+    // Draw the dog (This Is Fine dog)
+    const dog = dogRef.current;
+    
+    // Dog shadow
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+    ctx.beginPath();
+    ctx.ellipse(dog.x, dog.y + 25, 20, 8, 0, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Dog body
+    ctx.fillStyle = '#d2691e';
+    ctx.fillRect(dog.x - 15, dog.y - 5, 30, 25);
+    
+    // Dog head
+    ctx.beginPath();
+    ctx.arc(dog.x, dog.y - 15, 18, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Dog eyes
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(dog.x - 6, dog.y - 18, 4, 0, Math.PI * 2);
+    ctx.arc(dog.x + 6, dog.y - 18, 4, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(dog.x - 6, dog.y - 18, 2, 0, Math.PI * 2);
+    ctx.arc(dog.x + 6, dog.y - 18, 2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Dog nose
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(dog.x, dog.y - 12, 2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Dog hat (wobbles)
+    ctx.fillStyle = '#8b4513';
+    ctx.fillRect(dog.x - 12 + dog.hatWobble, dog.y - 35, 24, 8);
+    ctx.fillRect(dog.x - 8 + dog.hatWobble, dog.y - 30, 16, 6);
+    
+    // Dog legs
+    ctx.fillStyle = '#d2691e';
+    ctx.fillRect(dog.x - 12, dog.y + 15, 6, 10);
+    ctx.fillRect(dog.x + 6, dog.y + 15, 6, 10);
+    
+    // Health bar
+    const healthBarWidth = 80;
+    ctx.fillStyle = '#333';
+    ctx.fillRect(dog.x - healthBarWidth/2, dog.y - 50, healthBarWidth, 6);
+    ctx.fillStyle = dog.health > 30 ? '#4caf50' : '#f44336';
+    const healthWidth = (dog.health / dog.maxHealth) * healthBarWidth;
+    ctx.fillRect(dog.x - healthBarWidth/2, dog.y - 50, healthWidth, 6);
+    
+    // Calmness indicator (coffee cup icon)
+    const calmnessAlpha = dog.calmness / 100;
+    ctx.globalAlpha = calmnessAlpha;
+    ctx.fillStyle = '#8b4513';
+    ctx.fillRect(dog.x + 25, dog.y - 45, 12, 8);
+    ctx.fillStyle = '#4b2c20';
+    ctx.fillRect(dog.x + 27, dog.y - 43, 8, 4);
+    ctx.globalAlpha = 1;
+
+    // "This is fine" button (top right)
+    const buttonX = gameWidth - 60;
+    const buttonY = 30;
+    const canUseCalm = dogCalmCooldownRef.current <= 0;
+    ctx.fillStyle = canUseCalm ? 'rgba(255, 215, 0, 0.8)' : 'rgba(128, 128, 128, 0.5)';
+    ctx.beginPath();
+    ctx.arc(buttonX, buttonY, 25, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = canUseCalm ? '#000' : '#666';
+    ctx.font = '12px "Courier New"';
+    ctx.textAlign = 'center';
+    ctx.fillText('THIS IS', buttonX, buttonY - 4);
+    ctx.fillText('FINE', buttonX, buttonY + 8);
+    ctx.textAlign = 'start';
+
+    // Defense selection UI (bottom)
+    const defenseTypes: DefenseType[] = ['extinguisher', 'fan', 'umbrella'];
+    const costs = { extinguisher: 30, fan: 25, umbrella: 35 };
+    const spacing = gameWidth / 4;
+    
+    defenseTypes.forEach((type, i) => {
+      const x = spacing * (i + 1);
+      const y = gameHeight - 40;
+      const cost = costs[type];
+      
+      ctx.fillStyle = score >= cost ? 'rgba(0, 255, 0, 0.3)' : 'rgba(255, 0, 0, 0.3)';
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Mini defense icon
+      ctx.fillStyle = '#fff';
+      ctx.font = '10px "Courier New"';
+      ctx.textAlign = 'center';
+      
+      switch (type) {
+        case 'extinguisher':
+          ctx.fillText('EXT', x, y - 2);
+          ctx.fillText(`$${cost}`, x, y + 10);
+          break;
+        case 'fan':
+          ctx.fillText('FAN', x, y - 2);
+          ctx.fillText(`$${cost}`, x, y + 10);
+          break;
+        case 'umbrella':
+          ctx.fillText('UMB', x, y - 2);
+          ctx.fillText(`$${cost}`, x, y + 10);
+          break;
+      }
+    });
+    ctx.textAlign = 'start';
+
+    // HUD
+    ctx.fillStyle = '#fff';
     ctx.font = '16px "Courier New"';
-    const scoreText = `SCORE: ${score}`;
-    ctx.fillText(scoreText, gameWidth / 2 - ctx.measureText(scoreText).width / 2, 30);
+    ctx.fillText(`Score: ${score}`, 10, 25);
+    ctx.fillText(`Level: ${level}`, 10, 45);
+    ctx.fillText(`Chaos: ${Math.floor(chaosLevelRef.current)}%`, 10, 65);
 
-    // Draw game over screen
-    if (gameState === 'gameOver') {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    // Game state overlays
+    if (gameState === 'start') {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       ctx.fillRect(0, 0, gameWidth, gameHeight);
-      ctx.fillStyle = '#ff6b6b';
+      
+      ctx.fillStyle = '#ffcc66';
       ctx.font = '24px "Courier New"';
-      const gameOverText = 'THIS IS NOT FINE!';
-      ctx.fillText(gameOverText, gameWidth / 2 - ctx.measureText(gameOverText).width / 2, gameHeight / 2 - 20);
-      ctx.font = '16px "Courier New"';
-      const finalScoreText = `FINAL SCORE: ${score}`;
-      ctx.fillText(finalScoreText, gameWidth / 2 - ctx.measureText(finalScoreText).width / 2, gameHeight / 2 + 10);
+      ctx.textAlign = 'center';
+      ctx.fillText('THIS IS FINE', gameWidth / 2, gameHeight / 2 - 60);
+      ctx.fillText('ROOM DEFENSE', gameWidth / 2, gameHeight / 2 - 30);
+      
+      ctx.fillStyle = '#fff';
+      ctx.font = '14px "Courier New"';
+      ctx.fillText('Protect the dog from chaos!', gameWidth / 2, gameHeight / 2);
+      ctx.fillText('Tap to place defenses', gameWidth / 2, gameHeight / 2 + 20);
+      ctx.fillText('Use "THIS IS FINE" to calm hazards', gameWidth / 2, gameHeight / 2 + 40);
+      ctx.fillText('Tap to start', gameWidth / 2, gameHeight / 2 + 70);
+      ctx.textAlign = 'start';
+    } else if (gameState === 'gameOver') {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillRect(0, 0, gameWidth, gameHeight);
+      
+      ctx.fillStyle = '#ff6b6b';
+      ctx.font = '28px "Courier New"';
+      ctx.textAlign = 'center';
+      ctx.fillText('THIS IS NOT FINE!', gameWidth / 2, gameHeight / 2 - 20);
+      
+      ctx.fillStyle = '#fff';
+      ctx.font = '18px "Courier New"';
+      ctx.fillText(`Final Score: ${score}`, gameWidth / 2, gameHeight / 2 + 10);
+      ctx.fillText(`Survived ${level} levels`, gameWidth / 2, gameHeight / 2 + 35);
+      ctx.fillText('Tap to restart', gameWidth / 2, gameHeight / 2 + 60);
+      ctx.textAlign = 'start';
     }
-  }, [gameObjects, score, gameState, gameWidth, gameHeight]);
-
-  const resetGame = () => {
-    setGameState('playing');
-    setScore(0);
-
-    setGameObjects({
-      player: { x: 50, y: gameHeight - 50 - 50, width: 40, height: 50, velocityY: 0, isJumping: false, isDucking: false },
-      obstacles: [],
-      collectibles: [],
-    });
   };
+
+  // Input handling
+  const handleInput = useCallback((clientX: number, clientY: number) => {
+    if (gameState === 'start' || gameState === 'gameOver') {
+      startGame();
+      return;
+    }
+    
+    if (gameState !== 'playing') return;
+
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    // "This is fine" button
+    const buttonX = gameWidth - 60;
+    const buttonY = 30;
+    if (Math.hypot(x - buttonX, y - buttonY) <= 25) {
+      if (dogCalmCooldownRef.current <= 0) {
+        // Calm all hazards temporarily
+        hazardsRef.current.forEach(h => {
+          h.stunned = true;
+          h.vx *= 0.1;
+          h.vy *= 0.1;
+        });
+        dogCalmCooldownRef.current = 8000; // 8 second cooldown
+        dogRef.current.calmness = Math.min(100, dogRef.current.calmness + 20);
+      }
+      return;
+    }
+
+    // Defense selection (bottom UI)
+    const defenseTypes: DefenseType[] = ['extinguisher', 'fan', 'umbrella'];
+    const costs = { extinguisher: 30, fan: 25, umbrella: 35 };
+    const spacing = gameWidth / 4;
+    
+    for (let i = 0; i < defenseTypes.length; i++) {
+      const buttonX = spacing * (i + 1);
+      const buttonY = gameHeight - 40;
+      
+      if (Math.hypot(x - buttonX, y - buttonY) <= 20) {
+        const type = defenseTypes[i];
+        const cost = costs[type];
+        
+        if (score >= cost) {
+          setScore(s => s - cost);
+          defensesRef.current.push({
+            id: idCounterRef.current++,
+            x: Math.random() * (gameWidth - 100) + 50,
+            y: Math.random() * (gameHeight - 200) + 100,
+            range: type === 'fan' ? 80 : 60,
+            cooldown: 0,
+            maxCooldown: type === 'extinguisher' ? 2000 : type === 'fan' ? 1500 : 3000,
+            type,
+            active: false
+          });
+        }
+        return;
+      }
+    }
+  }, [gameState, gameWidth, gameHeight, score, startGame]);
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 ${isMobile ? 'p-0' : 'p-4'}`}>
-      {/* Game Title */}
       {!isMobile && (
         <div className="text-center mb-4">
-          <h1 className="text-3xl font-bold text-white font-mono">THIS IS FINE</h1>
+          <h1 className="text-3xl font-bold text-white font-mono">THIS IS FINE — ROOM DEFENSE</h1>
         </div>
       )}
-
-      {/* Game Canvas */}
       <div className={`flex justify-center ${isMobile ? 'h-screen' : 'mb-4'}`}>
         <div className="relative w-full h-full">
           <canvas
             ref={canvasRef}
-            className={isMobile ? '' : 'border-2 border-blue-500 rounded-lg'}
+            className={isMobile ? '' : 'border-2 border-orange-500 rounded-lg'}
             style={{
-              backgroundColor: '#0a0a2e',
+              backgroundColor: '#2d1b1b',
               width: `${gameWidth}px`,
               height: `${gameHeight}px`,
-              touchAction: 'none', // Prevent scrolling on touch
-              imageRendering: 'pixelated', // Keep crisp pixels for retro feel
+              touchAction: 'manipulation',
+              imageRendering: 'auto',
             }}
-            onTouchStart={isMobile ? handleTouchStart : undefined}
-            onTouchEnd={isMobile ? handleTouchEnd : undefined}
+            onTouchStart={e => {
+              const t = e.touches[0];
+              handleInput(t.clientX, t.clientY);
+            }}
+            onMouseDown={e => handleInput(e.clientX, e.clientY)}
           />
-
-          {gameState === 'gameOver' && (
-            <button
-              onClick={resetGame}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-20 bg-red-500 text-white font-mono font-bold px-4 py-2 rounded hover:bg-red-600 transition-all duration-300"
-            >
-              RESTART
-            </button>
-          )}
         </div>
       </div>
     </div>

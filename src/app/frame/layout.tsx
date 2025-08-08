@@ -15,7 +15,7 @@ export const metadata: Metadata = {
           type: "launch_miniapp",
           url: "https://www.beuxbunk.com/frame",
           name: "Meme Games Hub",
-                           splashImageUrl: "https://www.beuxbunk.com/itsFine-200x200.jpg",
+          splashImageUrl: "https://www.beuxbunk.com/itsFine-200x200.jpg",
           splashBackgroundColor: "#FF6B6B"
         }
       }
