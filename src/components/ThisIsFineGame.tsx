@@ -381,8 +381,8 @@ const ThisIsFineGame: React.FC = () => {
       
       if (gameState !== 'playing') return;
 
-      // Number keys 1-3 to buy defenses
-      if (e.key === '1') {
+      // Arrow keys and number keys to buy defenses
+      if (e.key === '1' || e.key === 'ArrowLeft') {
         // Extinguisher
         if (score >= 30) {
           setScore(s => s - 30);
@@ -397,7 +397,7 @@ const ThisIsFineGame: React.FC = () => {
             active: false
           });
         }
-      } else if (e.key === '2') {
+      } else if (e.key === '2' || e.key === 'ArrowUp') {
         // Fan
         if (score >= 25) {
           setScore(s => s - 25);
@@ -412,7 +412,7 @@ const ThisIsFineGame: React.FC = () => {
             active: false
           });
         }
-      } else if (e.key === '3') {
+      } else if (e.key === '3' || e.key === 'ArrowRight') {
         // Umbrella
         if (score >= 35) {
           setScore(s => s - 35);
@@ -427,7 +427,7 @@ const ThisIsFineGame: React.FC = () => {
             active: false
           });
         }
-      } else if (e.key === ' ' || e.key === 'f' || e.key === 'F') {
+      } else if (e.key === ' ' || e.key === 'ArrowDown' || e.key === 'f' || e.key === 'F') {
         // "This is fine" ability
         if (dogCalmCooldownRef.current <= 0) {
           hazardsRef.current.forEach(h => {
@@ -682,49 +682,90 @@ const ThisIsFineGame: React.FC = () => {
     const buttonX = gameWidth - 60;
     const buttonY = 30;
     const canUseCalm = dogCalmCooldownRef.current <= 0;
+    const buttonRadius = isMobile ? 30 : 25;
+    
+    // Button background
     ctx.fillStyle = canUseCalm ? 'rgba(255, 215, 0, 0.8)' : 'rgba(128, 128, 128, 0.5)';
     ctx.beginPath();
-    ctx.arc(buttonX, buttonY, 25, 0, Math.PI * 2);
+    ctx.arc(buttonX, buttonY, buttonRadius, 0, Math.PI * 2);
     ctx.fill();
+    
+    // Button border
+    ctx.strokeStyle = canUseCalm ? '#ffd700' : '#666';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(buttonX, buttonY, buttonRadius, 0, Math.PI * 2);
+    ctx.stroke();
+    
+    // Arrow key indicator (desktop)
+    if (!isMobile && canUseCalm) {
+      ctx.fillStyle = '#000';
+      ctx.font = 'bold 14px "Courier New"';
+      ctx.textAlign = 'center';
+      ctx.fillText('↓', buttonX, buttonY - 12);
+    }
+    
+    // Button text
     ctx.fillStyle = canUseCalm ? '#000' : '#666';
-    ctx.font = '12px "Courier New"';
+    ctx.font = isMobile ? '10px "Courier New"' : '12px "Courier New"';
     ctx.textAlign = 'center';
-    ctx.fillText('THIS IS', buttonX, buttonY - 4);
-    ctx.fillText('FINE', buttonX, buttonY + 8);
+    ctx.fillText('THIS IS', buttonX, buttonY + (isMobile ? -2 : 2));
+    ctx.fillText('FINE', buttonX, buttonY + (isMobile ? 10 : 12));
     ctx.textAlign = 'start';
 
     // Defense selection UI (bottom)
     const defenseTypes: DefenseType[] = ['extinguisher', 'fan', 'umbrella'];
     const costs = { extinguisher: 30, fan: 25, umbrella: 35 };
+    const arrows = ['←', '↑', '→'];
     const spacing = gameWidth / 4;
     
     defenseTypes.forEach((type, i) => {
       const x = spacing * (i + 1);
       const y = gameHeight - 40;
       const cost = costs[type];
+      const canAfford = score >= cost;
       
-      ctx.fillStyle = score >= cost ? 'rgba(0, 255, 0, 0.3)' : 'rgba(255, 0, 0, 0.3)';
+      // Larger touch area for mobile
+      const radius = isMobile ? 30 : 25;
+      
+      // Button background
+      ctx.fillStyle = canAfford ? 'rgba(0, 255, 0, 0.4)' : 'rgba(255, 0, 0, 0.4)';
       ctx.beginPath();
-      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
       ctx.fill();
       
-      // Mini defense icon
-      ctx.fillStyle = '#fff';
-      ctx.font = '10px "Courier New"';
+      // Button border
+      ctx.strokeStyle = canAfford ? '#00ff00' : '#ff0000';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // Arrow key indicator (desktop)
+      if (!isMobile) {
+        ctx.fillStyle = canAfford ? '#fff' : '#999';
+        ctx.font = 'bold 16px "Courier New"';
+        ctx.textAlign = 'center';
+        ctx.fillText(arrows[i], x, y - 8);
+      }
+      
+      // Defense name and cost
+      ctx.fillStyle = canAfford ? '#fff' : '#999';
+      ctx.font = isMobile ? '12px "Courier New"' : '10px "Courier New"';
       ctx.textAlign = 'center';
       
       switch (type) {
         case 'extinguisher':
-          ctx.fillText('EXT', x, y - 2);
-          ctx.fillText(`$${cost}`, x, y + 10);
+          ctx.fillText('EXT', x, y + (isMobile ? -2 : 2));
+          ctx.fillText(`$${cost}`, x, y + (isMobile ? 12 : 15));
           break;
         case 'fan':
-          ctx.fillText('FAN', x, y - 2);
-          ctx.fillText(`$${cost}`, x, y + 10);
+          ctx.fillText('FAN', x, y + (isMobile ? -2 : 2));
+          ctx.fillText(`$${cost}`, x, y + (isMobile ? 12 : 15));
           break;
         case 'umbrella':
-          ctx.fillText('UMB', x, y - 2);
-          ctx.fillText(`$${cost}`, x, y + 10);
+          ctx.fillText('UMB', x, y + (isMobile ? -2 : 2));
+          ctx.fillText(`$${cost}`, x, y + (isMobile ? 12 : 15));
           break;
       }
     });
@@ -751,8 +792,8 @@ const ThisIsFineGame: React.FC = () => {
       ctx.fillStyle = '#fff';
       ctx.font = '14px "Courier New"';
       ctx.fillText('Protect the dog from chaos!', gameWidth / 2, gameHeight / 2);
-      ctx.fillText('Keys: 1=Extinguisher 2=Fan 3=Umbrella', gameWidth / 2, gameHeight / 2 + 20);
-      ctx.fillText('SPACE/F = "THIS IS FINE" ability', gameWidth / 2, gameHeight / 2 + 40);
+      ctx.fillText('← Extinguisher ↑ Fan → Umbrella', gameWidth / 2, gameHeight / 2 + 20);
+      ctx.fillText('SPACE/↓ = "THIS IS FINE" ability', gameWidth / 2, gameHeight / 2 + 40);
       ctx.fillText('Press ENTER or tap to start', gameWidth / 2, gameHeight / 2 + 70);
       ctx.textAlign = 'start';
     } else if (gameState === 'gameOver') {
@@ -790,7 +831,8 @@ const ThisIsFineGame: React.FC = () => {
     // "This is fine" button
     const buttonX = gameWidth - 60;
     const buttonY = 30;
-    if (Math.hypot(x - buttonX, y - buttonY) <= 25) {
+    const buttonRadius = isMobile ? 30 : 25;
+    if (Math.hypot(x - buttonX, y - buttonY) <= buttonRadius) {
       if (dogCalmCooldownRef.current <= 0) {
         // Calm all hazards temporarily
         hazardsRef.current.forEach(h => {
@@ -812,8 +854,9 @@ const ThisIsFineGame: React.FC = () => {
     for (let i = 0; i < defenseTypes.length; i++) {
       const buttonX = spacing * (i + 1);
       const buttonY = gameHeight - 40;
+      const touchRadius = isMobile ? 30 : 25; // Larger touch area for mobile
       
-      if (Math.hypot(x - buttonX, y - buttonY) <= 20) {
+      if (Math.hypot(x - buttonX, y - buttonY) <= touchRadius) {
         const type = defenseTypes[i];
         const cost = costs[type];
         
