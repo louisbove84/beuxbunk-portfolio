@@ -1,3 +1,3 @@
 # Ignore submodule directory to prevent build conflicts
-src/app/games/generator/
+lib/game-generator/
 .git/modules/
