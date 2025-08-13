@@ -1,0 +1,3 @@
+[submodule "src/app/games/generator"]
+	path = src/app/games/generator
+	url = https://github.com/louisbove84/prompt-game-generator.git
