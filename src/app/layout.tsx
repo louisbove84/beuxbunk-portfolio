@@ -38,11 +38,11 @@ export const metadata: Metadata = {
       version: '1',
       imageUrl: 'https://www.beuxbunk.com/itsFine-3x2.jpg',
       button: {
-        title: '🎮 Play Meme Games',
+        title: '🤖 AI Game Generator',
         action: {
           type: 'launch_miniapp',
           url: 'https://www.beuxbunk.com/frame',
-          name: 'Meme Games Hub',
+          name: 'AI Game Generator',
           splashImageUrl: 'https://www.beuxbunk.com/itsFine-200x200.jpg',
           splashBackgroundColor: '#FF6B6B',
         },

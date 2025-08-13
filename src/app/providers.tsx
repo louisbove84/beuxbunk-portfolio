@@ -15,7 +15,7 @@ export function Providers({ children }: { children: ReactNode }) {
           appearance: {
             mode: 'auto',
             theme: 'snake',
-            name: 'Meme Games Hub',
+            name: 'AI Game Generator',
             logo: 'https://www.beuxbunk.com/itsFine-200x200.jpg',
           },
         }}
