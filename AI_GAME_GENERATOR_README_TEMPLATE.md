@@ -1,6 +1,6 @@
-# Meme Games Hub
+# AI Game Generator
 
-Interactive gaming platform featuring classic arcade games with modern web technologies.
+Intelligent game generation platform that creates custom games from user prompts using modern web technologies and AI.
 
 ![Meme Games Hub](./public/itsFine.jpg)
 

@@ -11,12 +11,12 @@ const Projects = () => {
   const projects = [
     {
       id: 1,
-      title: 'Meme Games Hub',
-      description: 'Interactive gaming platform featuring classic arcade games with modern web technologies. Built with React, Next.js, and Framer Motion for smooth animations.',
+      title: 'AI Game Generator',
+      description: 'Intelligent game generation platform that creates custom games from user prompts. Features interactive gameplay with modern web technologies and AI-driven content creation.',
       image: VISUAL_ASSETS.projectImages.memeGames,
-      technologies: ['Next.js', 'React', 'TypeScript', 'Framer Motion', 'Tailwind CSS'],
+      technologies: ['Next.js', 'React', 'TypeScript', 'AI/ML', 'Framer Motion', 'Tailwind CSS'],
       liveDemo: '/frame',
-      github: 'https://github.com/louisbove84/meme-games-hub',
+      github: 'https://github.com/louisbove84/prompt-game-generator',
       featured: true,
       hasDemo: true
     },
