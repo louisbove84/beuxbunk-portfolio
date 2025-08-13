@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { VISUAL_ASSETS } from '../constants/site';
+import { VISUAL_ASSETS, CONTACT_INFO } from '../constants/site';
 
 const Projects = () => {
   // Debug: Log image paths
@@ -15,7 +15,7 @@ const Projects = () => {
       description: 'Intelligent game generation platform that creates custom games from user prompts. Features interactive gameplay with modern web technologies and AI-driven content creation.',
       image: VISUAL_ASSETS.projectImages.memeGames,
       technologies: ['Next.js', 'React', 'TypeScript', 'AI/ML', 'Framer Motion', 'Tailwind CSS'],
-      liveDemo: '/frame',
+      liveDemo: CONTACT_INFO.gamesUrl,
       github: 'https://github.com/louisbove84/prompt-game-generator',
       featured: true,
       hasDemo: true

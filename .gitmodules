@@ -1,3 +1,0 @@
-[submodule "lib/game-generator"]
-	path = lib/game-generator
-	url = https://github.com/louisbove84/prompt-game-generator.git

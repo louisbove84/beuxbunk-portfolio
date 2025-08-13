@@ -36,14 +36,14 @@ export const metadata: Metadata = {
   other: {
     'fc:miniapp': JSON.stringify({
       version: '1',
-      imageUrl: 'https://www.beuxbunk.com/games/itsFine-3x2.jpg',
+      imageUrl: `${CONTACT_INFO.gamesUrl}/games/itsFine-3x2.jpg`,
       button: {
         title: '🤖 AI Game Generator',
         action: {
           type: 'launch_miniapp',
-          url: 'https://www.beuxbunk.com/frame',
+          url: `${CONTACT_INFO.gamesUrl}/frame`,
           name: 'AI Game Generator',
-          splashImageUrl: 'https://www.beuxbunk.com/games/itsFine-200x200.jpg',
+          splashImageUrl: `${CONTACT_INFO.gamesUrl}/games/itsFine-200x200.jpg`,
           splashBackgroundColor: '#FF6B6B',
         },
       },
