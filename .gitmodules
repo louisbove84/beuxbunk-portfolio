@@ -1,3 +1,0 @@
-[submodule "src/app/frame"]
-	path = src/app/frame
-	url = https://github.com/louisbove84/prompt-game-generator.git
