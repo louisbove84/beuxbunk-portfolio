@@ -16,7 +16,7 @@ export function Providers({ children }: { children: ReactNode }) {
             mode: 'auto',
             theme: 'snake',
             name: 'AI Game Generator',
-            logo: 'https://www.beuxbunk.com/itsFine-200x200.jpg',
+            logo: 'https://www.beuxbunk.com/games/itsFine-200x200.jpg',
           },
         }}
       >

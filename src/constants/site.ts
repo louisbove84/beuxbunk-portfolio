@@ -31,28 +31,29 @@ export const CONTACT_INFO = {
 // Visual Assets - Centralized image and theme paths
 export const VISUAL_ASSETS = {
   // Profile Images
-  headshot: '/headShot.jpeg',
+  headshot: '/profile/headShot.jpeg',
   
   // Background Images
-  heroBackground: '/granite.jpg',
-  projectsBackground: '/granite.jpg', // Same as hero for consistency
+  heroBackground: '/backgrounds/granite.jpg',
+  projectsBackground: '/backgrounds/granite.jpg', // Same as hero for consistency
   
   // Alternative backgrounds (for easy switching)
   backgrounds: {
-    granite: '/granite.jpg',
+    granite: '/backgrounds/granite.jpg',
+    alternative: '/backgrounds/pexels-pixabay-73873.jpg',
     // Add more background options here as needed
-    // mountain: '/mountain.jpg',
-    // abstract: '/abstract.jpg',
+    // mountain: '/backgrounds/mountain.jpg',
+    // abstract: '/backgrounds/abstract.jpg',
   },
   
   // Project Images (for easy management)
   projectImages: {
-    memeGames: '/itsFine.jpg',
-    ageRecognition: '/ageRecognition.jpeg',
-    hotelAnalysis: '/chargingStation.jpeg',
-    articlePredictor: '/articleRating.jpeg',
-    droneDetector: '/droneDector.jpeg',
-    birdsOfPlay: '/birdsOfPlay.jpg',
+    memeGames: '/games/itsFine.jpg',
+    ageRecognition: '/projects/ageRecognition.jpeg',
+    hotelAnalysis: '/projects/chargingStation.jpeg',
+    articlePredictor: '/projects/articleRating.jpeg',
+    droneDetector: '/projects/droneDector.jpeg',
+    birdsOfPlay: '/projects/birdsOfPlay.jpg',
   }
 } as const;
 
