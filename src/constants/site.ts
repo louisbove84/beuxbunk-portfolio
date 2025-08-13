@@ -13,7 +13,7 @@ export const CONTACT_INFO = {
   
   // Website Information
   website: 'https://www.beuxbunk.com',
-  gamesUrl: 'https://prompt-game-generator-y94azagr0-louis-projects-67d6b226.vercel.app',
+  gamesUrl: 'https://prompt-game-generator.vercel.app',
   
   // Professional Summary
   bio: {
