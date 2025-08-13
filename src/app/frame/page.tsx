@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import GameSelectionScreen from '@/components/GameSelectionScreen';
-import SpaceInvadersGame from '@/components/SpaceInvadersGame';
-import ThisIsFineGame from '@/components/ThisIsFineGame';
+import GameSelectionScreen from '../../components/GameSelectionScreen';
+import SpaceInvadersGame from '../../components/SpaceInvadersGame';
+import ThisIsFineGame from '../../components/ThisIsFineGame';
 
 const GameRouter = () => {
   const [gameType, setGameType] = useState<'selection' | 'spaceinvaders' | 'runner'>('selection');
