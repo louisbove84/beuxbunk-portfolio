@@ -5,9 +5,6 @@ import Image from 'next/image';
 import { VISUAL_ASSETS, CONTACT_INFO } from '../constants/site';
 
 const Projects = () => {
-  // Debug: Log image paths
-  console.log('VISUAL_ASSETS.projectImages:', VISUAL_ASSETS.projectImages);
-  
   const projects = [
     {
       id: 1,

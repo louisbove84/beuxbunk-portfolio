@@ -1,43 +1,43 @@
-# BeuxBunk Portfolio - Space Engineer
+# BeuxBunk Portfolio - Machine Learning Engineer
 
-A modern, responsive portfolio website built with Next.js 15, featuring an interactive Space Invaders game and Farcaster Frame integration.
+A modern, responsive portfolio website built with Next.js 15, showcasing ML engineering expertise and leadership experience in the defense sector.
 
 ## 🚀 Features
 
-- **Modern Design**: Clean, professional design with space engineer theme
-- **Responsive**: Works perfectly on desktop, tablet, and mobile
-- **Interactive Game**: Space Invaders game with canvas rendering
-- **Farcaster Integration**: Full Farcaster Frame support with MiniKit SDK
-- **Fast Performance**: Optimized Next.js components with TypeScript
-- **Material-UI**: Professional UI components with custom space theme
+- **Professional Portfolio**: Clean, modern design showcasing ML engineering expertise
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
+- **About Me**: Structured narrative highlighting ML, defense, and leadership experience
+- **Project Showcase**: Featured projects with live demos and GitHub links
+- **Contact Integration**: Professional contact form with social media links
+- **Patriotic Theming**: Subtle American flag overlay reflecting defense sector background
 
 ## 🛠️ Technologies Used
 
 - **Frontend**: Next.js 15, React 19, TypeScript
 - **Styling**: Tailwind CSS
-- **Animation**: Framer Motion
-- **Farcaster**: MiniKit SDK, OnchainKit
+- **Images**: Next.js Image optimization
+- **External Integration**: AI Game Generator (separate Vercel deployment)
 - **Deployment**: Vercel
 
 ## 📁 Project Structure
 
-### API Routes:
-- **`/src/app/api/frame/route.ts`** - Handles Farcaster frame interactions
-- **`/src/app/api/frame-image/route.ts`** - Generates dynamic SVG frame images
-
-### Frame Components:
-- **`/src/app/frame/page.tsx`** - Interactive Space Invaders game with MiniKit SDK
-- **`/src/app/frame/layout.tsx`** - Farcaster metadata and frame configuration
+### Core Components:
+- **`/src/components/Hero.tsx`** - Hero section with American flag overlay
+- **`/src/components/About.tsx`** - Professional narrative with technical skills
+- **`/src/components/Projects.tsx`** - Project showcase with featured/other projects
+- **`/src/components/Contact.tsx`** - Contact form with social media links
+- **`/src/components/Footer.tsx`** - Footer with quick links and branding
 
 ### Main App Files:
-- **`/src/app/page.tsx`** - Homepage with Space Engineer theme and play button
-- **`/src/app/layout.tsx`** - Root layout with providers
-- **`/src/app/globals.css`** - Global styling with Tailwind
-- **`/src/app/providers.tsx`** - MiniKit provider configuration
+- **`/src/app/page.tsx`** - Main portfolio homepage
+- **`/src/app/layout.tsx`** - Root layout with metadata and providers
+- **`/src/app/globals.css`** - Global styling with Tailwind CSS
+- **`/src/constants/site.ts`** - Centralized configuration and constants
 
 ### Configuration:
-- **`farcaster-manifest.json`** - Frame manifest for Farcaster
-- **`FRAME_README.md`** - Comprehensive documentation
+- **`/public/.well-known/farcaster.json`** - Farcaster frame configuration
+- **`.cursorrules`** - AI coding guidelines and commit message standards
+- **`.env.example`** - Environment variables template
 
 ## 🚀 Getting Started
 
@@ -163,9 +163,10 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📧 Contact
 
 - **Website**: [beuxbunk.com](https://beuxbunk.com)
-- **Email**: louis@beuxbunk.com
-- **Frame**: Play Space Invaders directly in Farcaster
+- **Email**: louisbove84@gmail.com
+- **LinkedIn**: [linkedin.com/in/louisbove84](https://linkedin.com/in/louisbove84)
+- **GitHub**: [github.com/louisbove84](https://github.com/louisbove84)
 
 ---
 
-Made with ❤️ by BeuxBunk - Space Engineer
+Made with ❤️ by Louis Bove - Machine Learning Engineer | Leader
