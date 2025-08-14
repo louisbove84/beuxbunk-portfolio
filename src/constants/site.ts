@@ -1,10 +1,10 @@
 // Global site configuration - Single source of truth for all constants
 export const CONTACT_INFO = {
   // Personal Information
-  name: 'Louis Bové',
-  title: 'Data Scientist & Full-Stack Developer',
+  name: 'Louis Bove',
+  title: 'Machine Learning Engineer | Leader',
   location: 'Denver, CO',
-  tagline: 'Turning data into insights and building intelligent applications with modern technologies',
+  tagline: 'Developing cutting-edge ML solutions for defense applications and leading high-performance teams',
   
   // Contact Details
   email: 'louisbove84@gmail.com',
@@ -17,10 +17,10 @@ export const CONTACT_INFO = {
   
   // Professional Summary
   bio: {
-    short: 'Data Scientist and Full-Stack Developer based in Denver, CO, with a passion for turning data into actionable insights and creating digital experiences that make a difference.',
-    skills: 'I specialize in machine learning, data analysis, and modern web technologies.',
-    experience: 'My work spans from building predictive models and neural networks to developing interactive web applications. I enjoy tackling complex problems in areas like age recognition, object detection, and article rating prediction using cutting-edge technologies.',
-    closing: 'When I\'m not analyzing data or coding, you can find me exploring new machine learning techniques, contributing to open-source projects, or sharing knowledge with the developer community.'
+    short: 'Machine Learning Engineer specializing in defense sector applications, with expertise in graph neural networks and edge computing solutions.',
+    skills: 'I develop customer-driven products through iterative test events, implementing innovative solutions for disconnected environments with deterministic requirements.',
+    experience: 'My technical work focuses on image classification, research and development for \'on the edge\' systems, and building robust ML solutions that operate without internet connectivity. I bring 15 years of military experience spanning tactical operations through executive leadership, managing teams from single digits to 30+ personnel.',
+    closing: 'I excel at presenting complex technical solutions to enterprise-level leadership and translating operational requirements into innovative machine learning applications.'
   },
   
   // Social Media
@@ -33,6 +33,7 @@ export const CONTACT_INFO = {
 export const VISUAL_ASSETS = {
   // Profile Images
   headshot: '/profile/headShot.jpeg',
+  flag: '/profile/flag.jpg',
   
   // Background Images
   heroBackground: '/backgrounds/granite.jpg',
@@ -50,6 +51,7 @@ export const VISUAL_ASSETS = {
   // Project Images (for easy management)
   projectImages: {
     memeGames: '/games/itsFine.jpg',
+    aiGaming: '/projects/aiGaming.png',
     ageRecognition: '/projects/ageRecognition.jpeg',
     hotelAnalysis: '/projects/chargingStation.jpeg',
     articlePredictor: '/projects/articleRating.jpeg',

@@ -14,7 +14,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-2xl font-bold">{CONTACT_INFO.name}</h3>
             <p className="text-gray-300 max-w-sm">
-              {CONTACT_INFO.title} passionate about creating innovative digital solutions and beautiful user experiences.
+              {CONTACT_INFO.title}
             </p>
           </div>
 

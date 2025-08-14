@@ -13,7 +13,7 @@ const Projects = () => {
       id: 1,
       title: 'AI Game Generator',
       description: 'Intelligent game generation platform that creates custom games from user prompts. Features interactive gameplay with modern web technologies and AI-driven content creation.',
-      image: VISUAL_ASSETS.projectImages.memeGames,
+      image: VISUAL_ASSETS.projectImages.aiGaming,
       technologies: ['Next.js', 'React', 'TypeScript', 'AI/ML', 'Framer Motion', 'Tailwind CSS'],
       liveDemo: CONTACT_INFO.gamesUrl,
       github: 'https://github.com/louisbove84/prompt-game-generator',
@@ -22,6 +22,17 @@ const Projects = () => {
     },
     {
       id: 2,
+      title: 'Drone Object Detector',
+      description: 'Object detection model trained on drone footage using YOLO architecture. Processes video clips to identify and track objects in aerial imagery.',
+      image: VISUAL_ASSETS.projectImages.droneDetector,
+      technologies: ['Python', 'YOLO', 'Computer Vision', 'OpenCV', 'Deep Learning'],
+      liveDemo: '#',
+      github: 'https://github.com/louisbove84/Drone_Object_Detector',
+      featured: false,
+      hasDemo: false
+    },
+    {
+      id: 3,
       title: 'Age Recognition Model',
       description: 'Deep learning model using Convolutional Neural Networks to predict age from facial images. Implemented with TensorFlow and achieved high accuracy on diverse datasets.',
       image: VISUAL_ASSETS.projectImages.ageRecognition,
@@ -32,7 +43,7 @@ const Projects = () => {
       hasDemo: false
     },
     {
-      id: 3,
+      id: 4,
       title: 'Hotel EV Charging Stations Analysis',
       description: 'Data analysis project examining how Electric Vehicle Charging Stations affect hotel ratings. Comprehensive statistical analysis with data visualization.',
       image: VISUAL_ASSETS.projectImages.hotelAnalysis,
@@ -43,24 +54,13 @@ const Projects = () => {
       hasDemo: false
     },
     {
-      id: 4,
+      id: 5,
       title: 'Article Rating Predictor',
       description: 'Machine learning model to predict the popularity of articles on Towards Data Science based on titles and content. Uses NLP and feature engineering.',
       image: VISUAL_ASSETS.projectImages.articlePredictor,
       technologies: ['Python', 'NLP', 'Scikit-learn', 'Feature Engineering', 'Text Analysis'],
       liveDemo: '#',
       github: 'https://github.com/louisbove84/Article-Rating-Predictor',
-      featured: false,
-      hasDemo: false
-    },
-    {
-      id: 5,
-      title: 'Drone Object Detector',
-      description: 'Object detection model trained on drone footage using YOLO architecture. Processes video clips to identify and track objects in aerial imagery.',
-      image: VISUAL_ASSETS.projectImages.droneDetector,
-      technologies: ['Python', 'YOLO', 'Computer Vision', 'OpenCV', 'Deep Learning'],
-      liveDemo: '#',
-      github: 'https://github.com/louisbove84/Drone_Object_Detector',
       featured: false,
       hasDemo: false
     },
@@ -152,7 +152,7 @@ const Projects = () => {
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
-                      Live Demo
+                      Try Now
                     </a>
                   )}
                   

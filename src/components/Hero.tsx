@@ -32,7 +32,16 @@ const Hero = () => {
                 priority
               />
             </div>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 opacity-20 animate-pulse"></div>
+            {/* Subtle American Flag Overlay */}
+            <div className="absolute inset-0 rounded-full overflow-hidden">
+              <Image
+                src={VISUAL_ASSETS.flag}
+                alt="American Flag"
+                width={192}
+                height={192}
+                className="w-full h-full object-cover opacity-15 animate-pulse mix-blend-multiply"
+              />
+            </div>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg mb-6 animate-fade-in">
