@@ -2,23 +2,23 @@
   "frame": {
     "name": "AI Game Generator",
     "version": "1",
-    "iconUrl": "https://prompt-game-generator.vercel.app/games/itsFine-200x200.jpg",
+    "iconUrl": "https://prompt-game-generator.vercel.app/projects/aiGaming.png",
     "homeUrl": "https://prompt-game-generator.vercel.app",
-    "imageUrl": "https://prompt-game-generator.vercel.app/games/itsFine-3x2.jpg",
+    "imageUrl": "https://prompt-game-generator.vercel.app/projects/aiGaming.png",
     "buttonTitle": "🤖 AI Game Generator",
-    "splashImageUrl": "https://prompt-game-generator.vercel.app/games/itsFine-200x200.jpg",
+    "splashImageUrl": "https://prompt-game-generator.vercel.app/projects/aiGaming.png",
     "splashBackgroundColor": "#FF6B6B",
     "webhookUrl": "https://prompt-game-generator.vercel.app/api/webhook",
     "subtitle": "Create Games with AI",
-    "description": "Intelligent game generation platform that creates custom games from user prompts. Features interactive gameplay with modern web technologies and AI-driven content creation.",
+    "description": "AI-powered platform that creates custom games from text prompts. Build and play unique games with modern web technologies.",
     "screenshotUrls": [
       "https://prompt-game-generator.vercel.app/images/screenshot1.svg",
       "https://prompt-game-generator.vercel.app/images/screenshot2.svg"
     ],
     "primaryCategory": "games",
-    "heroImageUrl": "https://prompt-game-generator.vercel.app/games/itsFine-3x2.jpg",
+    "heroImageUrl": "https://prompt-game-generator.vercel.app/projects/aiGaming.png",
     "tagline": "AI-powered game creation",
-    "ogImageUrl": "https://prompt-game-generator.vercel.app/games/itsFine-3x2.jpg"
+    "ogImageUrl": "https://prompt-game-generator.vercel.app/projects/aiGaming.png"
   },
   "accountAssociation": {
     "header": "eyJmaWQiOjg4NjUwMywidHlwZSI6ImF1dGgiLCJrZXkiOiIweEQyRTc4MzlDOTI2QTlBMzQ5ODdFM0E4NjI2ODFDYTUyZmU2M2M0ZTYifQ",
