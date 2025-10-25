@@ -21,7 +21,6 @@
     "ogImageUrl": "https://www.beuxbunk.com/images/gameForge.jpg",
     "ogTitle": "GameForge Hub",
     "ogDescription": "AI-powered game generator. Create custom arcade games with LLMs or play free demos on Base network.",
-    "noindex": false,
     "tags": ["games", "ai", "arcade", "base", "generator"]
   },
   "accountAssociation": {
