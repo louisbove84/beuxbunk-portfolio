@@ -64,13 +64,13 @@ const Projects = () => {
     {
       id: 6,
       title: 'Birds of Play',
-      description: 'C++ application for motion detection and tracking. Advanced computer vision project with real-time processing capabilities.',
+      description: 'Advanced motion detection system using DBSCAN clustering with overlap-aware distance metrics. Real-time bird tracking with YOLO11 object detection, unsupervised ML clustering, and supervised fine-tuning interface.',
       image: VISUAL_ASSETS.projectImages.birdsOfPlay,
-      technologies: ['Python', 'YOLO', 'Computer Vision', 'OpenCV', 'Deep Learning'],
-      liveDemo: '#',
+      technologies: ['C++', 'Python', 'DBSCAN', 'YOLO11', 'OpenCV', 'MongoDB', 'ML'],
+      liveDemo: 'https://birds-of-play.vercel.app',
       github: 'https://github.com/louisbove84/birds_of_play',
       featured: true,
-      hasDemo: false
+      hasDemo: true
     }
   ];
 
