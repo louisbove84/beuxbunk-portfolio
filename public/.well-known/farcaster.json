@@ -10,7 +10,7 @@
     "splashBackgroundColor": "#1a1a2e",
     "webhookUrl": "https://launch.beuxbunk.com/api/webhook",
     "subtitle": "Create Games with AI",
-    "description": "AI-powered game generator. Pay 0.20 USDC to create custom arcade games or play free demos. Built on Base network.",
+    "description": "AI-powered game generator that creates custom arcade games or play free demos on Base network using LLMs and blockchain technology",
     "screenshotUrls": [
       "https://www.beuxbunk.com/images/gameForge.jpg",
       "https://www.beuxbunk.com/images/gameForgeLoading.jpg"
