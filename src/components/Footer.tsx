@@ -114,9 +114,12 @@ const Footer = () => {
           </p>
           
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <button className="text-gray-400 hover:text-white text-sm transition-colors">
+            <a 
+              href="/privacy" 
+              className="text-gray-400 hover:text-white text-sm transition-colors"
+            >
               Privacy Policy
-            </button>
+            </a>
             <button className="text-gray-400 hover:text-white text-sm transition-colors">
               Terms of Service
             </button>

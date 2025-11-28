@@ -1,11 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { CONTACT_INFO } from '../constants/site';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
 
   const navItems = useMemo(() => [
     { id: 'hero', label: 'Home' },
@@ -15,6 +19,8 @@ const Navigation = () => {
   ], []);
 
   useEffect(() => {
+    if (!isHomePage) return;
+    
     const handleScroll = () => {
       const sections = navItems.map(item => document.getElementById(item.id));
       const scrollPosition = window.scrollY + 100;
@@ -30,9 +36,15 @@ const Navigation = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [navItems]);
+  }, [navItems, isHomePage]);
 
   const scrollToSection = (sectionId: string) => {
+    if (!isHomePage) {
+      // If not on home page, navigate to home page with hash
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+    
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -46,12 +58,12 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <button
-              onClick={() => scrollToSection('hero')}
+            <Link
+              href="/"
               className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {CONTACT_INFO.name}
-            </button>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
