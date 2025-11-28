@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { CONTACT_INFO, getMailtoLink, getTwitterUrl } from '../constants/site';
 
 const Footer = () => {
@@ -46,6 +47,12 @@ const Footer = () => {
               >
                 Contact
               </button>
+              <Link
+                href="/privacy"
+                className="text-gray-300 hover:text-white transition-colors text-left"
+              >
+                Privacy Policy
+              </Link>
             </nav>
           </div>
 
@@ -114,12 +121,12 @@ const Footer = () => {
           </p>
           
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a 
+            <Link 
               href="/privacy" 
               className="text-gray-400 hover:text-white text-sm transition-colors"
             >
               Privacy Policy
-            </a>
+            </Link>
             <button className="text-gray-400 hover:text-white text-sm transition-colors">
               Terms of Service
             </button>
