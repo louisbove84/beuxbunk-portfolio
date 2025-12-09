@@ -18,7 +18,7 @@ const SupportPage = () => {
             </h1>
             
             <p className="text-gray-600 dark:text-gray-400 mb-8">
-              Need help? We're here to assist you with any questions or issues you may have.
+              Need help? We&apos;re here to assist you with any questions or issues you may have.
             </p>
 
             <div className="space-y-8 text-gray-700 dark:text-gray-300">
@@ -27,8 +27,8 @@ const SupportPage = () => {
                   App Support
                 </h2>
                 <p className="mb-4">
-                  Need help with one of my applications? Whether you're experiencing technical issues, 
-                  have questions about features, or want to provide feedback, I'm here to help. Please 
+                  Need help with one of my applications? Whether you&apos;re experiencing technical issues, 
+                  have questions about features, or want to provide feedback, I&apos;m here to help. Please 
                   reach out using the contact information below.
                 </p>
               </section>
@@ -58,8 +58,8 @@ const SupportPage = () => {
                       Feature Requests
                     </h3>
                     <p>
-                      Have an idea for improving an app? I'd love to hear from you! 
-                      Send your suggestions and I'll consider them for future updates.
+                      Have an idea for improving an app? I&apos;d love to hear from you! 
+                      Send your suggestions and I&apos;ll consider them for future updates.
                     </p>
                   </div>
 
@@ -123,7 +123,7 @@ const SupportPage = () => {
                 </h2>
                 <p className="mb-4">
                   We aim to respond to all support inquiries within 24-48 hours during business days. 
-                  For urgent issues, please indicate "URGENT" in your email subject line.
+                  For urgent issues, please indicate &quot;URGENT&quot; in your email subject line.
                 </p>
               </section>
 
