@@ -2,10 +2,13 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { CONTACT_INFO, getMailtoLink, getTwitterUrl } from '../constants/site';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
 
   return (
     <footer className="bg-gray-900 text-white py-12">
@@ -23,35 +26,72 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold">Quick Links</h4>
             <nav className="flex flex-col space-y-2">
-              <button
-                onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-300 hover:text-white transition-colors text-left"
-              >
-                Home
-              </button>
-              <button
-                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-300 hover:text-white transition-colors text-left"
-              >
-                About
-              </button>
-              <button
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-300 hover:text-white transition-colors text-left"
-              >
-                Projects
-              </button>
-              <button
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-300 hover:text-white transition-colors text-left"
-              >
-                Contact
-              </button>
+              {isHomePage ? (
+                <>
+                  <button
+                    onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  >
+                    Home
+                  </button>
+                  <button
+                    onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  >
+                    About
+                  </button>
+                  <button
+                    onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  >
+                    Projects
+                  </button>
+                  <button
+                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  >
+                    Contact
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/#hero"
+                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/#about"
+                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/#projects"
+                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  >
+                    Projects
+                  </Link>
+                  <Link
+                    href="/#contact"
+                    className="text-gray-300 hover:text-white transition-colors text-left"
+                  >
+                    Contact
+                  </Link>
+                </>
+              )}
               <Link
                 href="/privacy"
                 className="text-gray-300 hover:text-white transition-colors text-left"
               >
                 Privacy Policy
+              </Link>
+              <Link
+                href="/support"
+                className="text-gray-300 hover:text-white transition-colors text-left"
+              >
+                App Support
               </Link>
             </nav>
           </div>
