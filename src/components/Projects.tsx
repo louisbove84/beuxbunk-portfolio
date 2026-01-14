@@ -13,6 +13,10 @@ const Projects = () => {
       image: VISUAL_ASSETS.projectImages.carbonCheckField,
       technologies: ['Flutter', 'Dart', 'Vertex AI', 'Google Earth Engine', 'Cloud Run'],
       appLinks: {
+        web: {
+          label: 'Web App',
+          url: '/carboncheck/'
+        },
         android: {
           label: 'Google Play',
           url: 'https://play.google.com/store/apps/details?id=com.carboncheck.field&hl=en-US&ah=zvSku2bjX8c_Eo4TAMY6Z21_jII'
@@ -173,6 +177,14 @@ const Projects = () => {
                         Try Now
                       </a>
                     )}
+                    {project.appLinks?.web && (
+                      <a
+                        href={project.appLinks.web.url}
+                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        {project.appLinks.web.label}
+                      </a>
+                    )}
                     {project.appLinks?.android && (
                       <a
                         href={project.appLinks.android.url}
@@ -275,6 +287,14 @@ const Projects = () => {
                           className="flex-1 text-center py-2 bg-blue-600 text-white text-sm font-semibold rounded hover:bg-blue-700 transition-colors"
                         >
                           Demo
+                        </a>
+                      )}
+                      {project.appLinks?.web && (
+                        <a
+                          href={project.appLinks.web.url}
+                          className="flex-1 text-center py-2 bg-blue-600 text-white text-sm font-semibold rounded hover:bg-blue-700 transition-colors"
+                        >
+                          {project.appLinks.web.label}
                         </a>
                       )}
                       {project.appLinks?.android && (
