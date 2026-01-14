@@ -87,7 +87,7 @@ const Projects = () => {
       title: 'Birds of Play',
       description: 'Advanced motion detection system using DBSCAN clustering with overlap-aware distance metrics. Real-time bird tracking with YOLO11 object detection, unsupervised ML clustering, and supervised fine-tuning interface.',
       image: VISUAL_ASSETS.projectImages.birdsOfPlay,
-      technologies: ['C++', 'Python', 'DBSCAN', 'YOLO11', 'OpenCV', 'MongoDB', 'ML'],
+      technologies: ['C++', 'Python', 'DBSCAN', 'YOLO11', 'OpenCV', 'MongoDB'],
       liveDemo: 'https://birds-of-play.vercel.app',
       github: 'https://github.com/louisbove84/birds_of_play',
       featured: true,
