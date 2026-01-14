@@ -11,5 +11,15 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/carboncheck",
+      "destination": "/carboncheck/index.html"
+    },
+    {
+      "source": "/carboncheck/:path*",
+      "destination": "/carboncheck/index.html"
+    }
   ]
 }
