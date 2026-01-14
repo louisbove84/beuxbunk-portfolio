@@ -22,7 +22,7 @@ const About = () => {
               <div className="space-y-3">
                 <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Machine Learning Engineering</h4>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Specializes in developing cutting-edge ML solutions with a focus on graph neural networks and edge computing systems. Creates customer-driven products through iterative test events, ensuring solutions meet real-world requirements while operating in resource-constrained environments.
+                  Builds production-grade ML solutions for resource-constrained and mission-critical environments. Leverages a GCP ML pipeline and expertise in graph neural networks and edge computing — delivering customer-validated systems through rapid iteration and real-world test events.
                 </p>
                 <div className="flex flex-wrap gap-2 pt-2">
                   <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-sm">
@@ -44,10 +44,10 @@ const About = () => {
                     AFSIM
                   </span>
                   <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-sm">
-                    Next.js
+                    GCP
                   </span>
                   <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-sm">
-                    LLM Integration
+                    Graph Neural Networks
                   </span>
                 </div>
               </div>
@@ -59,7 +59,7 @@ const About = () => {
               <div className="space-y-3">
                 <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Defense Sector Expertise</h4>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  With 15+ years of military experience, brings deep understanding of defense operations and analysis. Specializes in implementing innovative solutions for disconnected environments where reliability and deterministic behavior are critical for mission success.
+                  15+ years of military operations experience inform reliable, deterministic AI for disconnected and high-stakes settings. Proven ability to translate complex battlefield needs into scalable technical solutions.
                 </p>
                 <div className="flex flex-wrap gap-2 pt-2">
                   <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-sm">
@@ -84,7 +84,7 @@ const About = () => {
               <div className="space-y-3">
                 <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Leadership & Communication</h4>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Extensive experience managing teams ranging from 5 to 30+ personnel across tactical and strategic roles. Comfortable presenting complex technical concepts to enterprise leadership and facilitating decision-making cycles in high-stakes environments.
+                  Led teams of 5–30+ in tactical and strategic roles, briefing senior leaders and driving decisions under pressure. Skilled at aligning technical teams with mission objectives in dynamic environments.
                 </p>
                 <div className="flex flex-wrap gap-2 pt-2">
                   <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-sm">
@@ -102,6 +102,7 @@ const About = () => {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>

@@ -52,6 +52,7 @@ export const VISUAL_ASSETS = {
   projectImages: {
     memeGames: '/games/itsFine.jpg',
     aiGaming: '/projects/aiGaming.png',
+    carbonCheckField: '/projects/carbonCheck.png',
     ageRecognition: '/projects/ageRecognition.jpeg',
     hotelAnalysis: '/projects/chargingStation.jpeg',
     articlePredictor: '/projects/articleRating.jpeg',
