@@ -15,7 +15,7 @@ const Projects = () => {
       appLinks: {
         web: {
           label: 'Web App',
-          url: '/carboncheck/'
+          url: 'https://carboncheck.beuxbunk.com'
         },
         android: {
           label: 'Google Play',
