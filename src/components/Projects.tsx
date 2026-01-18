@@ -12,20 +12,16 @@ const Projects = () => {
       description: 'Flutter mobile app that helps farmers analyze crop types and estimate carbon credit income using satellite imagery and AI.',
       image: VISUAL_ASSETS.projectImages.carbonCheckField,
       technologies: ['Flutter', 'Dart', 'Vertex AI', 'Google Earth Engine', 'Cloud Run'],
+      qrCode: {
+        src: '/images/qr-code.png',
+        alt: 'CarbonCheck Field app QR code',
+        label: 'Download for Andriod'
+      },
       appLinks: {
         web: {
           label: 'Web App',
           url: 'https://carboncheck.beuxbunk.com'
         },
-        android: {
-          label: 'Google Play',
-          url: 'https://play.google.com/store/apps/details?id=com.carboncheck.field&hl=en-US&ah=zvSku2bjX8c_Eo4TAMY6Z21_jII'
-        },
-        ios: {
-          label: 'App Store',
-          url: '#',
-          placeholder: true
-        }
       },
       github: 'https://github.com/louisbove84/carbon_check_field',
       featured: true,
@@ -163,6 +159,24 @@ const Projects = () => {
                     ))}
                   </div>
 
+                  {project.qrCode && (
+                    <div className="mb-6 flex flex-col items-center gap-3">
+                      <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                        {project.qrCode.label}
+                      </span>
+                      <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white p-2 shadow-sm">
+                        <Image
+                          src={project.qrCode.src}
+                          alt={project.qrCode.alt}
+                          width={140}
+                          height={140}
+                          className="h-32 w-32 object-contain"
+                          unoptimized
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex flex-wrap justify-center gap-3">
                     {project.hasDemo && !project.appLinks && (
                       <a
@@ -185,33 +199,6 @@ const Projects = () => {
                         {project.appLinks.web.label}
                       </a>
                     )}
-                    {project.appLinks?.android && (
-                      <a
-                        href={project.appLinks.android.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                      >
-                        {project.appLinks.android.label}
-                      </a>
-                    )}
-                    {project.appLinks?.ios && (
-                      <a
-                        href={project.appLinks.ios.url}
-                        target={project.appLinks.ios.placeholder ? '_self' : '_blank'}
-                        rel={project.appLinks.ios.placeholder ? undefined : 'noopener noreferrer'}
-                        onClick={project.appLinks.ios.placeholder ? (event) => event.preventDefault() : undefined}
-                        aria-disabled={project.appLinks.ios.placeholder ? 'true' : undefined}
-                        className={`inline-flex items-center px-4 py-2 font-semibold rounded-lg transition-colors ${
-                          project.appLinks.ios.placeholder
-                            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                            : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }`}
-                      >
-                        {project.appLinks.ios.label}
-                      </a>
-                    )}
-
                     {project.github && (
                       <a
                         href={project.github}
@@ -297,33 +284,6 @@ const Projects = () => {
                           {project.appLinks.web.label}
                         </a>
                       )}
-                      {project.appLinks?.android && (
-                        <a
-                          href={project.appLinks.android.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 text-center py-2 bg-blue-600 text-white text-sm font-semibold rounded hover:bg-blue-700 transition-colors"
-                        >
-                          {project.appLinks.android.label}
-                        </a>
-                      )}
-                      {project.appLinks?.ios && (
-                        <a
-                          href={project.appLinks.ios.url}
-                          target={project.appLinks.ios.placeholder ? '_self' : '_blank'}
-                          rel={project.appLinks.ios.placeholder ? undefined : 'noopener noreferrer'}
-                          onClick={project.appLinks.ios.placeholder ? (event) => event.preventDefault() : undefined}
-                          aria-disabled={project.appLinks.ios.placeholder ? 'true' : undefined}
-                          className={`flex-1 text-center py-2 text-sm font-semibold rounded transition-colors ${
-                            project.appLinks.ios.placeholder
-                              ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                              : 'bg-blue-600 text-white hover:bg-blue-700'
-                          }`}
-                        >
-                          {project.appLinks.ios.label}
-                        </a>
-                      )}
-
                       {project.github && (
                         <a
                           href={project.github}
