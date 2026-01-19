@@ -4,6 +4,10 @@ import React from 'react';
 import Image from 'next/image';
 import { VISUAL_ASSETS, CONTACT_INFO } from '../constants/site';
 
+type QrItem =
+  | { label: string; placeholder: true }
+  | { label: string; placeholder: false; src: string; alt: string };
+
 const Projects = () => {
   const projects = [
     {
@@ -166,7 +170,7 @@ const Projects = () => {
 
                   {(project.qrCode || project.iosQr) && (
                     <div className="mb-6 flex flex-wrap justify-center gap-6">
-                      {[project.qrCode, project.iosQr].filter(Boolean).map((qrItem) => (
+                      {([project.qrCode, project.iosQr].filter(Boolean) as QrItem[]).map((qrItem) => (
                         <div
                           key={qrItem.label}
                           className="flex flex-col items-center gap-3"
