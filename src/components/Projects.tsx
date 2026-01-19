@@ -15,7 +15,8 @@ const Projects = () => {
       qrCode: {
         src: '/images/qr-code.png',
         alt: 'CarbonCheck Field app QR code',
-        label: 'Download for Andriod'
+        label: 'Download for Andriod',
+        placeholder: false
       },
       iosQr: {
         label: 'Download for iOS',
