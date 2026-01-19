@@ -28,30 +28,30 @@ const Footer = () => {
             <nav className="flex flex-col space-y-2">
               {isHomePage ? (
                 <>
-                  <button
-                    onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
-                  >
-                    Home
-                  </button>
-                  <button
-                    onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
-                  >
-                    About
-                  </button>
-                  <button
-                    onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
-                  >
-                    Projects
-                  </button>
-                  <button
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-gray-300 hover:text-white transition-colors text-left"
-                  >
-                    Contact
-                  </button>
+              <button
+                onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-300 hover:text-white transition-colors text-left"
+              >
+                Home
+              </button>
+              <button
+                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-300 hover:text-white transition-colors text-left"
+              >
+                About
+              </button>
+              <button
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-300 hover:text-white transition-colors text-left"
+              >
+                Projects
+              </button>
+              <button
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-300 hover:text-white transition-colors text-left"
+              >
+                Contact
+              </button>
                 </>
               ) : (
                 <>

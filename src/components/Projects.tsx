@@ -17,6 +17,10 @@ const Projects = () => {
         alt: 'CarbonCheck Field app QR code',
         label: 'Download for Andriod'
       },
+      iosQr: {
+        label: 'Download for iOS',
+        placeholder: true
+      },
       appLinks: {
         web: {
           label: 'Web App',
@@ -159,21 +163,34 @@ const Projects = () => {
                     ))}
                   </div>
 
-                  {project.qrCode && (
-                    <div className="mb-6 flex flex-col items-center gap-3">
-                      <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                        {project.qrCode.label}
-                      </span>
-                      <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white p-2 shadow-sm">
-                        <Image
-                          src={project.qrCode.src}
-                          alt={project.qrCode.alt}
-                          width={140}
-                          height={140}
-                          className="h-32 w-32 object-contain"
-                          unoptimized
-                        />
-                      </div>
+                  {(project.qrCode || project.iosQr) && (
+                    <div className="mb-6 flex flex-wrap justify-center gap-6">
+                      {[project.qrCode, project.iosQr].filter(Boolean).map((qrItem) => (
+                        <div
+                          key={qrItem.label}
+                          className="flex flex-col items-center gap-3"
+                        >
+                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                            {qrItem.label}
+                          </span>
+                          {qrItem.placeholder ? (
+                            <div className="flex h-32 w-32 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-xs font-medium text-gray-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                              QR coming soon
+                            </div>
+                          ) : (
+                            <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white p-2 shadow-sm">
+                              <Image
+                                src={qrItem.src}
+                                alt={qrItem.alt}
+                                width={140}
+                                height={140}
+                                className="h-32 w-32 object-contain"
+                                unoptimized
+                              />
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   )}
 
