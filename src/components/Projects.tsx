@@ -23,8 +23,10 @@ const Projects = () => {
         placeholder: false
       },
       iosQr: {
+        src: '/images/qr-code_ios.png',
+        alt: 'CarbonCheck Field app iOS QR code',
         label: 'Download for iOS',
-        placeholder: true
+        placeholder: false
       },
       appLinks: {
         web: {
