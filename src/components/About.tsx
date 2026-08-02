@@ -38,7 +38,7 @@ const About = () => {
                     CI/CD
                   </span>
                   <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-sm">
-                    Javascript
+                    TypeScript
                   </span>
                   <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md text-sm">
                     AFSIM

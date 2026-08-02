@@ -173,9 +173,6 @@ const Footer = () => {
             >
               Privacy Policy
             </Link>
-            <button className="text-gray-400 hover:text-white text-sm transition-colors">
-              Terms of Service
-            </button>
           </div>
         </div>
       </div>

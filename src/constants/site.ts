@@ -33,29 +33,11 @@ export const CONTACT_INFO = {
 export const VISUAL_ASSETS = {
   // Profile Images
   headshot: '/profile/headShot.jpeg',
-  flag: '/profile/flag.jpg',
-  
-  // Background Images
-  heroBackground: '/backgrounds/granite.jpg',
-  projectsBackground: '/backgrounds/granite.jpg', // Same as hero for consistency
-  
-  // Alternative backgrounds (for easy switching)
-  backgrounds: {
-    granite: '/backgrounds/granite.jpg',
-    alternative: '/backgrounds/pexels-pixabay-73873.jpg',
-    // Add more background options here as needed
-    // mountain: '/backgrounds/mountain.jpg',
-    // abstract: '/backgrounds/abstract.jpg',
-  },
-  
+
   // Project Images (for easy management)
   projectImages: {
-    memeGames: '/games/itsFine.jpg',
     aiGaming: '/projects/aiGaming.png',
     carbonCheckField: '/projects/carbonCheck.png',
-    ageRecognition: '/projects/ageRecognition.jpeg',
-    hotelAnalysis: '/projects/chargingStation.jpeg',
-    articlePredictor: '/projects/articleRating.jpeg',
     droneDetector: '/projects/droneDector.jpeg',
     birdsOfPlay: '/projects/birdsOfPlay.jpg',
   }
