@@ -82,6 +82,12 @@ const Footer = () => {
                 </>
               )}
               <Link
+                href="/blog"
+                className="text-gray-300 hover:text-white transition-colors text-left"
+              >
+                Blog
+              </Link>
+              <Link
                 href="/privacy"
                 className="text-gray-300 hover:text-white transition-colors text-left"
               >

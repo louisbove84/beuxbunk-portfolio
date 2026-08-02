@@ -10,6 +10,7 @@ const Navigation = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+  const isBlogRoute = pathname?.startsWith('/blog') ?? false;
 
   const navItems = useMemo(() => [
     { id: 'hero', label: 'Home' },
@@ -20,7 +21,7 @@ const Navigation = () => {
 
   useEffect(() => {
     if (!isHomePage) return;
-    
+
     const handleScroll = () => {
       const sections = navItems.map(item => document.getElementById(item.id));
       const scrollPosition = window.scrollY + 100;
@@ -38,18 +39,43 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navItems, isHomePage]);
 
+  // Honor hash links from other pages (e.g. /blog -> /#projects).
+  useEffect(() => {
+    if (!isHomePage) return;
+
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+
+    requestAnimationFrame(() => {
+      document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }, [isHomePage]);
+
+  // Section highlighting only applies while the sections are actually on screen.
+  const isSectionActive = (sectionId: string) => isHomePage && activeSection === sectionId;
+
   const scrollToSection = (sectionId: string) => {
-    if (!isHomePage) {
-      // If not on home page, navigate to home page with hash
-      window.location.href = `/#${sectionId}`;
-      return;
-    }
-    
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
       setIsOpen(false);
     }
+  };
+
+  const navLinkClass = (active: boolean, mobile = false) => {
+    if (mobile) {
+      return `block w-full text-left px-3 py-2 text-base font-medium transition-colors ${
+        active
+          ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+          : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+      }`;
+    }
+
+    return `px-3 py-2 text-sm font-medium transition-colors ${
+      active
+        ? 'text-blue-600 dark:text-blue-400'
+        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+    }`;
   };
 
   return (
@@ -69,19 +95,31 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`px-3 py-2 text-sm font-medium transition-colors ${
-                    activeSection === item.id
-                      ? 'text-blue-600 dark:text-blue-400'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+              {navItems.map((item) =>
+                isHomePage ? (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={navLinkClass(isSectionActive(item.id))}
+                  >
+                    {item.label}
+                  </button>
+                ) : (
+                  <Link
+                    key={item.id}
+                    href={`/#${item.id}`}
+                    className={navLinkClass(false)}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              )}
+              <Link
+                href="/blog"
+                className={navLinkClass(isBlogRoute)}
+              >
+                Blog
+              </Link>
             </div>
           </div>
 
@@ -109,19 +147,33 @@ const Navigation = () => {
         {isOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-left px-3 py-2 text-base font-medium transition-colors ${
-                    activeSection === item.id
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+              {navItems.map((item) =>
+                isHomePage ? (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={navLinkClass(isSectionActive(item.id), true)}
+                  >
+                    {item.label}
+                  </button>
+                ) : (
+                  <Link
+                    key={item.id}
+                    href={`/#${item.id}`}
+                    onClick={() => setIsOpen(false)}
+                    className={navLinkClass(false, true)}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              )}
+              <Link
+                href="/blog"
+                onClick={() => setIsOpen(false)}
+                className={navLinkClass(isBlogRoute, true)}
+              >
+                Blog
+              </Link>
             </div>
           </div>
         )}
