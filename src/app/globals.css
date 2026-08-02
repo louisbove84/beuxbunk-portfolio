@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;
@@ -138,6 +139,92 @@ html {
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
+}
+
+/* Blog article code blocks.
+   Kept dark in both themes so highlight tokens have one contrast target. */
+.prose pre {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+.prose :not(pre) > code {
+  background-color: rgba(148, 163, 184, 0.18);
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none;
+}
+
+/* highlight.js tokens (rehype-highlight output) */
+.hljs-comment,
+.hljs-quote {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-doctag,
+.hljs-name {
+  color: #c4b5fd;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string {
+  color: #86efac;
+}
+
+.hljs-number,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #fdba74;
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.function_,
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #7dd3fc;
+}
+
+.hljs-attr,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta {
+  color: #67e8f9;
+}
+
+.hljs-deletion {
+  color: #fca5a5;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+/* Anchor targets sit below the fixed navigation */
+.prose :is(h2, h3, h4)[id] {
+  scroll-margin-top: 5rem;
 }
 
 /* Focus styles for accessibility */

@@ -74,6 +74,32 @@ npm run build
 
 This creates a `.next` folder with optimized production files.
 
+## ✍️ Blog
+
+Posts are Markdown files in `content/blog/`. The filename becomes the URL slug, so
+`content/blog/my-post.md` is served at `/blog/my-post`. Add a post by creating a file with
+frontmatter:
+
+```markdown
+---
+title: 'Post title'
+date: '2026-08-02'
+description: 'One or two sentences used on the index page and in social previews.'
+tags: ['kubernetes', 'llm-serving']
+series: 'Building mnemos'
+draft: false
+---
+
+Body content in Markdown.
+```
+
+`series` is optional. Set `draft: true` to keep a post out of the index, the sitemap of
+generated routes, and direct URL access.
+
+GitHub-flavored Markdown is supported (tables, task lists, strikethrough), fenced code blocks
+get syntax highlighting, and headings receive anchor IDs automatically. Rendering happens at
+build time in [`src/lib/blog.ts`](src/lib/blog.ts) — no client-side Markdown parsing.
+
 ## 🎮 Farcaster Frame Features
 
 ### Frame URLs

@@ -7,6 +7,7 @@ import { CONTACT_INFO } from '../constants/site'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(CONTACT_INFO.website),
   title: `${CONTACT_INFO.name} - ${CONTACT_INFO.title}`,
   description: `${CONTACT_INFO.bio.short} ${CONTACT_INFO.bio.skills} Explore my portfolio of ML models and applications.`,
   keywords: `${CONTACT_INFO.name}, Data Scientist, Machine Learning, Python, TensorFlow, Full-Stack Developer, React, Next.js, ${CONTACT_INFO.location}, Portfolio`,
