@@ -11,9 +11,7 @@ I am building [mnemos](https://github.com/louisbove84/mnemos) in the open, one p
 
 ## Where we left off
 
-[Phase 0](/blog/mnemos-phase-0-gpu-inference) answered a narrow question: can I schedule a model on my own GPU and call it over HTTP from the Mac? The answer was yes — with a hand-applied manifest and a lot of `kubectl port-forward`.
-
-That does not scale past one component. The roadmap still has object storage, a graph database, an MCP server, and more. Phase 1 exists so I stop deploying by typing commands at the node.
+[Phase 0](/blog/mnemos-phase-0-gpu-inference) was setting up GPU enabled Kubernetes structure on a server to host LLMs and a local machine for developing.
 
 ## The roadmap
 
@@ -56,20 +54,6 @@ Two ADRs landed before the charts:
 
 - [ADR 0005](https://github.com/louisbove84/mnemos/blob/main/docs/adr/0005-gitops-with-argo-cd.md) — Argo CD in an App-of-Apps layout. Argo does not manage itself; upgrading it stays a deliberate Helm command.
 - [ADR 0006](https://github.com/louisbove84/mnemos/blob/main/docs/adr/0006-observability-stack.md) — kube-prometheus-stack, with Alertmanager off and the k3s-incompatible control-plane scrapes disabled. Components opt into scraping via `ServiceMonitor` in their own charts.
-
-## What the first real bootstrap taught
-
-Paper plans lie. Three things only showed up on the live node:
-
-1. **A chart that invents a random password cannot be reconciled.** Grafana generated a new admin secret on every render, so Argo never stayed Synced. Credentials now come from a secret created out of band.
-2. **A sync waiting on an unhealthy resource can block its own fix.** An undersized memory limit crash-looped the GPU exporter; Argo sat waiting for it to become healthy and could not apply the corrected values until that deadlock was broken by hand.
-3. **The GPU was fine.** I had predicted trouble running datacentre GPU tooling on a consumer Pascal card. DCGM initialized cleanly; the crash was an ordinary OOM limit.
-
-I also learned that deleting `deployment llm service llm` does not delete the Service — kubectl parses that as three Deployment names. `--ignore-not-found` then hides the mistake. Use `deployment/llm service/llm`.
-
-## What I deliberately did not build
-
-Harbor. Zarf. Alertmanager routing. Secret managers. Backups. Multi-node. Anything from Phase 3 onward. Phase 1 is only: deploy without hands, see the cluster.
 
 ## Next: Phase 2
 
