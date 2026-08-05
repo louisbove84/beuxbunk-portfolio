@@ -11,7 +11,7 @@ I am building [mnemos](https://github.com/louisbove84/mnemos) in the open, one p
 
 ## Where we left off
 
-[Phase 0](/blog/mnemos-phase-0-gpu-inference) was setting up GPU enabled Kubernetes structure on a server to host LLMs and a local machine for developing.
+[Phase 0](/blog/mnemos-phase-0-gpu-inference) stood up GPU inference on a k3s laptop and a Mac client to call it.
 
 ## The roadmap
 
